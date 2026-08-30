@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-site-verification" content="73Cfgx_tAgQkbVBOotWkMOT-NGllKgY2Ig2m_q_H-Vs" />
     <title>SR-SICM Suite | Super-Resolution & QSCM Analysis</title>
+    <!-- logo placeholder: filled-pipette favicon (replace later) -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><path d='M13 3h6l1 17-4 9-4-9z' fill='%2312355b'/><circle cx='16' cy='24' r='2.4' fill='%232a9d8f'/></svg>">
     <!-- for the export files we need these extentions--> 
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -12,6 +14,19 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/utif@3.1.0/UTIF.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+    <script>
+    window.addEventListener('DOMContentLoaded',function(){
+      (function r(){
+        if(!window.katex){return setTimeout(r,60);}
+        document.querySelectorAll('.katex-eq').forEach(function(el){
+          try{katex.render(el.getAttribute('data-tex'),el,{displayMode:true,throwOnError:false});}
+          catch(e){el.textContent=el.getAttribute('data-tex');}
+        });
+      })();
+    });
+    </script>
     <style>
         :root {
             /* Dark Theme (Default) - Navy Blue */
@@ -1443,11 +1458,11 @@ body.is-owner .owner-only{display:block}
 }
 :root[data-lp="paper"]{
   --bg:#F4F6F9; --surface:#FFFFFF; --raised:#FBFCFE;
-  --line:rgba(20,30,50,.12); --line-2:rgba(20,30,50,.07); --hair:rgba(20,30,50,.24);
-  --txt:#141A24; --muted:#5A6675; --faint:#98A2B3; --ghost:rgba(20,30,50,.30);
+  --line:rgba(20,30,50,.18); --line-2:rgba(20,30,50,.10); --hair:rgba(20,30,50,.40);
+  --txt:#141A24; --muted:#4E5A6B; --faint:#7A8494; --ghost:rgba(20,30,50,.30);
   --plus:#1288C4; --minus:#7C55E0; --set:rgba(20,30,50,.28); --hl:#0B1220;
-  --glass-a:rgba(20,40,80,.02); --glass-b:rgba(20,40,80,.07); --glass-c:rgba(20,40,80,.03);
-  --film:rgba(20,40,80,.05); --fillP:rgba(18,136,196,.12); --fillM:rgba(124,85,224,.12);
+  --glass-a:rgba(20,40,80,.04); --glass-b:rgba(20,40,80,.14); --glass-c:rgba(20,40,80,.06);
+  --film:rgba(20,40,80,.10); --fillP:rgba(18,136,196,.26); --fillM:rgba(124,85,224,.26);
   --ov1:rgba(20,30,50,.28); --ov2:rgba(20,30,50,.05); --ov3:rgba(20,30,50,.14);
   --tile-base:#E7ECF3; --tile-neg:#1288C4; --tile-pos:#7C55E0;
   --amb1:rgba(18,136,196,.05); --amb2:rgba(124,85,224,.05); --grain:.02;
@@ -1648,8 +1663,8 @@ body.lp-lock{overflow:hidden}
     <div class="brand"><div class="mark">SR</div>SR-SICM Suite <span>v1.0</span></div>
     <div class="navright">
       <div class="navlinks">
-        <a href="javascript:void(0)" onclick="openSuite('sicm')">SR-SICM</a><a href="javascript:void(0)" onclick="openSuite('approach')">Approach</a>
-        <a href="javascript:void(0)" onclick="openSuite('qscm')">QSCM</a><a href="javascript:void(0)" onclick="openSuite('theory')">Theory</a>
+        <a href="javascript:void(0)" onclick="openSuite('approach')">Current-Distance Curve</a><a href="javascript:void(0)" onclick="openSuite('qscm')">QSCM</a>
+        <a href="javascript:void(0)" onclick="openSuite('sicm')">SR-SICM</a><a href="javascript:void(0)" onclick="openSuite('theory')">Theory</a>
       </div>
       <div class="themebar" role="group" aria-label="Colour theme">
         <button class="sw" data-t="ink"    title="Ink"    style="background:#0A0C10"></button>
@@ -1668,7 +1683,7 @@ body.lp-lock{overflow:hidden}
       <h1>Surface charge,<br>resolved without<br><span class="dim">ever touching.</span></h1>
       <p class="lede">
         A nanopipette approaches at two bias polarities. Each approach stops at the same
-        current setpoint, but at a different height — and that gap, <b>Δh</b>, converts
+        current setpoint, but at a different height. That gap, <b>Δh</b>, converts
         directly into local surface charge density.
       </p>
       <div class="actions">
@@ -1685,7 +1700,7 @@ body.lp-lock{overflow:hidden}
     <!-- instrument -->
     <section class="lp-panel rise" style="--d:260ms">
       <div class="phead">
-        <span>Approach spectroscopy</span>
+        <span>Current-Distance Curve</span>
         <span id="status">bias +100 mV</span>
       </div>
 
@@ -1703,8 +1718,8 @@ body.lp-lock{overflow:hidden}
             <stop offset="1" stop-color="transparent"/>
           </linearGradient>
           <linearGradient id="gbath" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0" stop-color="var(--glass-a)"/>
-            <stop offset="1" stop-color="var(--glass-c)"/>
+            <stop offset="0" stop-color="var(--glass-b)"/>
+            <stop offset="1" stop-color="var(--glass-b)"/>
           </linearGradient>
           <radialGradient id="gtip" cx=".5" cy=".5" r=".5">
             <stop offset="0" stop-color="var(--fillP)"/><stop offset="1" stop-color="transparent"/>
@@ -1842,7 +1857,7 @@ body.lp-lock{overflow:hidden}
 
     <div class="lp-panel rise" style="--d:180ms">
       <div class="phead">
-        <span>σ mapping — raster scan</span>
+        <span>σ mapping · raster scan</span>
         <span id="pstat">line 1 / 20</span>
       </div>
 
@@ -1922,9 +1937,12 @@ body.lp-lock{overflow:hidden}
             
             <nav class="tab-nav">
                 <button class="tab-btn active" onclick="switchTab('intro')" id="tab-intro">About</button>
+                <button class="tab-btn" onclick="switchTab('approach')" id="tab-approach">Current-Distance Curve</button>
+                <button class="tab-btn" onclick="switchTab('image')" id="tab-image">Topography</button>
+                <button class="tab-btn" onclick="switchTab('qscm')" id="tab-qscm">Surface Charge (QSCM)</button>
+                <button class="tab-btn" onclick="switchTab('asym')" id="tab-asym">Asymmetric Conductivity</button>
+                <button class="tab-btn" onclick="switchTab('stiffness')" id="tab-stiffness">Stiffness</button>
                 <button class="tab-btn" onclick="switchTab('sicm')" id="tab-sicm">SR-SICM</button>
-                <button class="tab-btn" onclick="switchTab('approach')" id="tab-approach">Approach</button>
-                <button class="tab-btn" onclick="switchTab('qscm')" id="tab-qscm">QSCM</button>
                 <button class="tab-btn" onclick="switchTab('theory')" id="tab-theory">Theory</button>
                 <button class="tab-btn" onclick="switchTab('aboutapp')" id="tab-aboutapp">Info</button>
             </nav>
@@ -1949,12 +1967,43 @@ body.lp-lock{overflow:hidden}
         <!-- ==================== INTRO/ABOUT TAB ==================== -->
         <div class="tab-content active" id="content-intro">
             <div class="hero-section">
-                <div class="section-eyebrow">Analysis suite · v1.0</div>
-                <h2>Everything the method needs,<br><span class="dim">in one place.</span></h2>
-                <p>
-                    Load approach curves, resolve Δh at a shared setpoint, convert it to surface
-                    charge density, and export the session — the workflow from the intro, made operational.
-                </p>
+                <div style="display:flex;gap:2rem;flex-wrap:wrap;align-items:flex-start;">
+                    <div style="flex:1 1 300px;min-width:260px;">
+                        <div class="section-eyebrow">Analysis suite · v1.0</div>
+                        <h2>Everything the method needs,<br><span class="dim">in one place.</span></h2>
+                        <p>
+                            Load approach curves, resolve Δh at a shared setpoint, convert it to surface
+                            charge density, and export the session. The workflow from the intro, made operational.
+                        </p>
+                    </div>
+                    <div style="flex:1.5 1 470px;min-width:320px;">
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.6rem;">
+                            <h3 style="font-size:0.95rem;margin:0;color:var(--txt);">Key Publications</h3>
+                            <div id="pubDots" style="display:flex;gap:0.35rem;"></div>
+                        </div>
+                        <div style="position:relative;overflow:hidden;border-radius:12px;background:var(--glass-a);transition:height 0.45s cubic-bezier(.4,0,.2,1);">
+                            <div id="pubTrack" style="display:flex;align-items:flex-start;transition:transform 0.55s cubic-bezier(.4,0,.2,1);">
+                                <a href="https://doi.org/10.1038/ncomms12447" target="_blank" class="pub-slide" style="flex:0 0 100%;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;gap:0.6rem;padding:0.9rem 1rem 1.1rem;text-decoration:none;color:inherit;"><div style="width:100%;max-width:340px;border-radius:10px;border:1px solid var(--line);background:var(--glass-b);overflow:hidden;"><img id="pubImg1" src="WEBpage_img/charge.png" style="width:100%;height:auto;display:block;"></div><div style="text-align:center;font-size:0.86rem;line-height:1.5;"><span class="authors" style="font-weight:600;">Klausen et al.</span> (2016)<br><span class="title">&quot;Mapping surface charge density...&quot;</span></div></a><a href="https://doi.org/10.1038/s44303-025-00108-9" target="_blank" class="pub-slide" style="flex:0 0 100%;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;gap:0.6rem;padding:0.9rem 1rem 1.1rem;text-decoration:none;color:inherit;"><div style="width:100%;max-width:340px;border-radius:10px;border:1px solid var(--line);background:var(--glass-b);overflow:hidden;"><img id="pubImg2" src="WEBpage_img/sr.png" style="width:100%;height:auto;display:block;"></div><div style="text-align:center;font-size:0.86rem;line-height:1.5;"><span class="authors" style="font-weight:600;">S&oslash;nderskov et al.</span> (2025)<br><span class="title">&quot;Super-resolution with nanopipettes&quot;</span></div></a><a href="https://doi.org/10.1021/acsnano.4c16079" target="_blank" class="pub-slide" style="flex:0 0 100%;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;gap:0.6rem;padding:0.9rem 1rem 1.1rem;text-decoration:none;color:inherit;"><div style="width:100%;max-width:340px;border-radius:10px;border:1px solid var(--line);background:var(--glass-b);overflow:hidden;"><img id="pubImg3" src="WEBpage_img/Pressurecontrollednanopipette.png" style="width:100%;height:auto;display:block;"></div><div style="text-align:center;font-size:0.86rem;line-height:1.5;"><span class="authors" style="font-weight:600;">Skaanvik et al.</span> (2025)<br><span class="title">&quot;Pressure-controlled nanopipette sensing...&quot;</span></div></a>
+                            </div>
+                            <button onclick="pubMove(-1)" aria-label="Previous" style="position:absolute;top:50%;transform:translateY(-50%);border:none;background:rgba(20,40,70,.32);color:#fff;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:1rem;line-height:1;display:flex;align-items:center;justify-content:center;left:6px;">&#8249;</button>
+                            <button onclick="pubMove(1)" aria-label="Next" style="position:absolute;top:50%;transform:translateY(-50%);border:none;background:rgba(20,40,70,.32);color:#fff;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:1rem;line-height:1;display:flex;align-items:center;justify-content:center;right:6px;">&#8250;</button>
+                        </div>
+                    </div>
+                    <script>
+                    (function(){
+                      var idx=0,N=3;
+                      function setH(){var t=document.getElementById('pubTrack');if(!t)return;var a=t.children[idx],p=t.parentElement;if(a&&p)p.style.height=a.offsetHeight+'px';}
+                      function dots(){var c=document.getElementById('pubDots');if(!c)return;c.innerHTML='';for(var i=0;i<N;i++){var b=document.createElement('button');b.style.cssText='width:8px;height:8px;border-radius:50%;border:none;cursor:pointer;padding:0;background:'+(i===idx?'var(--plus)':'var(--hair)')+';';(function(k){b.onclick=function(){idx=k;upd();};})(i);c.appendChild(b);}}
+                      function upd(){var t=document.getElementById('pubTrack');if(t)t.style.transform='translateX('+(-idx*100)+'%)';dots();setH();}
+                      window.pubMove=function(d){idx=(idx+d+N)%N;upd();};
+                      upd();
+                      window.addEventListener('load',upd);
+                      var t0=document.getElementById('pubTrack');
+                      if(t0){var im=t0.getElementsByTagName('img');for(var i=0;i<im.length;i++){if(im[i].complete)setH();else im[i].addEventListener('load',setH);}}
+                      setInterval(function(){if(document.getElementById('pubTrack')){idx=(idx+1)%N;upd();}},4800);
+                    })();
+                    </script>
+                </div>
             </div>
 
             <div class="feature-grid">
@@ -2026,114 +2075,7 @@ body.lp-lock{overflow:hidden}
                     <p>Nanopipette, bath electrode, piezo scanner and the feedback loop that holds the tip off the surface.</p>
                     <div class="circuit-diagram" id="setupImageContainer" onclick="openSetupZoom()" title="Click to enlarge">
                         <div id="setupPlaceholder">
-<svg id="setupDiagram" viewBox="0 0 660 310" preserveAspectRatio="xMidYMid meet"
-     style="width:100%;height:auto;display:block"
-     aria-label="SICM schematic: bias source and ammeter in series with the pipette electrode and the bath reference electrode, tapered nanopipette above the sample on a piezo scanner">
-  <defs>
-    <linearGradient id="sdGlass" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="var(--glass-a)"/>
-      <stop offset=".42" stop-color="var(--glass-b)"/>
-      <stop offset=".60" stop-color="var(--glass-c)"/>
-      <stop offset="1" stop-color="var(--glass-a)"/>
-    </linearGradient>
-    <linearGradient id="sdBath" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="var(--glass-a)"/>
-      <stop offset="1" stop-color="var(--glass-c)"/>
-    </linearGradient>
-    <linearGradient id="sdSub" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="var(--film)"/>
-      <stop offset="1" stop-color="transparent"/>
-    </linearGradient>
-    <marker id="sdArr" viewBox="0 0 9 9" refX="7.5" refY="4.5" markerWidth="5.5" markerHeight="5.5" orient="auto">
-      <path d="M0 0 L9 4.5 L0 9 Z" fill="var(--faint)"/>
-    </marker>
-  </defs>
-
-  <g font-family="Geist Mono, monospace" font-size="9.5" fill="var(--muted)" letter-spacing=".05em">
-
-    <!-- ============ measuring circuit: RE — Vbias — I — PE ============ -->
-    <g fill="none" stroke="var(--hair)" stroke-width="1.2" stroke-linecap="round">
-      <path d="M 240 146 L 240 44 L 292 44"/>
-      <path d="M 306 44 L 347 44"/>
-      <path d="M 373 44 L 420 44 L 420 142"/>
-    </g>
-    <!-- bias source -->
-    <g stroke="var(--hair)" stroke-width="1.6" stroke-linecap="round">
-      <line x1="294" y1="33" x2="294" y2="55"/>
-      <line x1="304" y1="38" x2="304" y2="50"/>
-    </g>
-    <text x="288" y="27" text-anchor="middle" font-size="10">+</text>
-    <text x="310" y="27" text-anchor="middle" font-size="10">−</text>
-    <text x="299" y="70" text-anchor="middle" fill="var(--faint)">V bias · ±100 mV</text>
-    <!-- ammeter -->
-    <circle cx="360" cy="44" r="13" fill="none" stroke="var(--hair)" stroke-width="1.2"/>
-    <text x="360" y="48" text-anchor="middle" font-size="11" font-style="italic" fill="var(--txt)">I</text>
-    <text x="360" y="76" text-anchor="middle" fill="var(--faint)">ion current</text>
-
-    <!-- ============ bath ============ -->
-    <rect x="190" y="118" width="380" height="146" fill="url(#sdBath)"/>
-    <line x1="190" y1="118" x2="570" y2="118" stroke="var(--line)" stroke-width="1"/>
-    <line x1="190" y1="118" x2="190" y2="264" stroke="var(--line-2)" stroke-width="1"/>
-    <line x1="570" y1="118" x2="570" y2="264" stroke="var(--line-2)" stroke-width="1"/>
-    <text x="198" y="136" fill="var(--faint)">bath · 150 mM NaCl</text>
-
-    <!-- ============ reference electrode (bath) ============ -->
-    <rect x="236" y="146" width="8" height="90" rx="3" fill="var(--ov3)" stroke="var(--hair)" stroke-width="1"/>
-    <rect x="236" y="206" width="8" height="30" rx="3" fill="var(--muted)" opacity=".55"/>
-    <text x="228" y="180" text-anchor="end" fill="var(--txt)" font-size="11">RE</text>
-    <text x="228" y="194" text-anchor="end" fill="var(--faint)">Ag/AgCl</text>
-
-    <!-- ============ tapered nanopipette, open at the tip ============ -->
-    <!-- glass wall: outer cone truncated at the aperture plane y = 236 -->
-    <path d="M 368 150 L 380 150 L 415.1 236 L 413.6 236 Z" fill="url(#sdGlass)"
-          stroke="var(--hair)" stroke-width="1.2" stroke-linejoin="round"/>
-    <path d="M 472 150 L 460 150 L 424.9 236 L 426.4 236 Z" fill="url(#sdGlass)"
-          stroke="var(--hair)" stroke-width="1.2" stroke-linejoin="round"/>
-    <!-- electrolyte-filled bore, open to the bath at the aperture -->
-    <path d="M 380 150 L 460 150 L 424.9 236 L 415.1 236 Z" fill="var(--glass-a)"/>
-    <!-- half angle, measured from the pipette axis to the inner wall -->
-    <line x1="420" y1="192" x2="420" y2="250" stroke="var(--line)" stroke-width="1" stroke-dasharray="2 4"/>
-    <path d="M 420 192 A 56 56 0 0 1 441.1 196.1" fill="none" stroke="var(--plus)" stroke-width="1"/>
-    <text x="452" y="196" fill="var(--plus)">θ</text>
-    <text x="486" y="186" fill="var(--faint)">rᵢ 50 nm</text>
-
-    <!-- pipette electrode -->
-    <rect x="416" y="142" width="8" height="50" rx="3" fill="var(--ov3)" stroke="var(--hair)" stroke-width="1"/>
-    <rect x="416" y="172" width="8" height="20" rx="3" fill="var(--muted)" opacity=".55"/>
-    <text x="434" y="160" fill="var(--txt)" font-size="11">PE</text>
-    <text x="434" y="174" fill="var(--faint)">Ag/AgCl</text>
-
-    <!-- tip–sample gap -->
-    <line x1="420" y1="236" x2="420" y2="250" stroke="var(--minus)" stroke-width="1.4"/>
-    <text x="430" y="247" fill="var(--minus)">z</text>
-
-    <!-- ============ sample ============ -->
-    <rect x="190" y="250" width="380" height="14" fill="url(#sdSub)"/>
-    <path d="M 190 250 L 452 250 Q 476 250 488 234 Q 500 218 516 218 Q 532 218 542 234 Q 552 250 570 250"
-          fill="none" stroke="var(--hair)" stroke-width="1.2"/>
-    <line x1="190" y1="250" x2="452" y2="250" stroke="var(--hair)" stroke-width="1.2"/>
-    <text x="562" y="264" text-anchor="end" fill="var(--faint)">sample</text>
-
-    <!-- ============ piezo scanner ============ -->
-    <rect x="190" y="272" width="380" height="20" fill="var(--ov2)" stroke="var(--line)" stroke-width="1"/>
-    <g stroke="var(--line)" stroke-width="1">
-      <line x1="253" y1="272" x2="253" y2="292"/><line x1="316" y1="272" x2="316" y2="292"/>
-      <line x1="380" y1="272" x2="380" y2="292"/><line x1="443" y1="272" x2="443" y2="292"/>
-      <line x1="506" y1="272" x2="506" y2="292"/>
-    </g>
-    <text x="380" y="286" text-anchor="middle" fill="var(--faint)">XYZ PIEZO SCANNER</text>
-
-    <!-- ============ feedback loop ============ -->
-    <rect x="30" y="196" width="124" height="46" rx="8" fill="var(--ov2)" stroke="var(--line)" stroke-width="1"/>
-    <text x="92" y="216" text-anchor="middle" fill="var(--txt)" font-size="10.5">CONTROLLER</text>
-    <text x="92" y="230" text-anchor="middle" fill="var(--faint)">setpoint · feedback</text>
-    <path d="M 360 57 L 360 92 L 92 92 L 92 196" fill="none" stroke="var(--line)"
-          stroke-width="1" stroke-dasharray="3 4" marker-end="url(#sdArr)"/>
-    <path d="M 92 242 L 92 282 L 190 282" fill="none" stroke="var(--line)"
-          stroke-width="1" stroke-dasharray="3 4" marker-end="url(#sdArr)"/>
-    <text x="104" y="264" fill="var(--minus)">Δz</text>
-  </g>
-</svg>
+<img id="setupDiagram" src="WEBpage_img/setup.png" style="width:100%;height:auto;display:block;border-radius:8px;" alt="SICM setup schematic">
                         </div>
                         <input type="file" id="setupImageInput" accept="image/*" style="display:none" onchange="loadSetupImage(event)">
                         <img id="setupImage" style="display:none;width:100%;max-height:260px;object-fit:contain;border-radius:8px;">
@@ -2144,24 +2086,28 @@ body.lp-lock{overflow:hidden}
                     </div>
                 </div>
 
-                <!-- Key Publications -->
-                <div class="feature-card">
-                    <h3>Key Publications</h3>
-                    <div class="reference-list" style="margin-top: 0.6rem;">
-                        <div class="reference-item">
-                            <span class="authors">Klausen et al.</span> (2016)<br>
-                            <span class="title">"Mapping surface charge density..."</span><br>
-                            <span class="journal">Nat. Commun. 7, 12447</span><br>
-                            <a href="https://doi.org/10.1038/ncomms12447" target="_blank">doi.org/10.1038/ncomms12447</a>
+                <!-- Pipette Expandable Card (Leyla: add pipette images into the boxes later) -->
+                <div class="feature-card expandable" onclick="toggleExpand(this)">
+                    <h3>Pipette <span class="expand-icon">▼</span></h3>
+                    <p class="summary">
+                        Tip size sets resolution and resistance. Click to see the shapes and where to add your own pipette images.
+                    </p>
+                    <div class="expand-content">
+                        <ul>
+                            <li><strong>Fine tip</strong> (small rᵢ): high resolution, high resistance; best for fine features and charge sensitivity</li>
+                            <li><strong>Medium tip:</strong> balanced resolution and stability; general-purpose</li>
+                            <li><strong>Large tip</strong> (large rᵢ): lower resolution, low resistance; more robust, higher throughput</li>
+                        </ul>
+                        <div style="display:flex;gap:0.6rem;justify-content:space-around;flex-wrap:wrap;margin-top:0.6rem;">
+                            <div style="text-align:center;"><div style="width:110px;height:120px;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--glass-b);"><img src="WEBpage_img/pipette_fine.png" style="width:100%;height:100%;object-fit:cover;"></div><div style="font-size:0.6rem;color:var(--muted);margin-top:0.3rem;">Fine tip</div></div>
+                            <div style="text-align:center;"><div style="width:110px;height:120px;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--glass-b);"><img src="WEBpage_img/pipette_medium.png" style="width:100%;height:100%;object-fit:cover;"></div><div style="font-size:0.6rem;color:var(--muted);margin-top:0.3rem;">Medium tip</div></div>
+                            <div style="text-align:center;"><div style="width:110px;height:120px;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--glass-b);"><img src="WEBpage_img/pipette_large.png" style="width:100%;height:100%;object-fit:cover;"></div><div style="font-size:0.6rem;color:var(--muted);margin-top:0.3rem;">Large tip</div></div>
                         </div>
-                        <div class="reference-item">
-                            <span class="authors">Sønderskov et al.</span> (2025)<br>
-                            <span class="title">"Super-resolution with nanopipettes"</span><br>
-                            <span class="journal">npj Imaging 3, 1</span><br>
-                            <a href="https://doi.org/10.1038/s44303-025-00108-9" target="_blank">doi.org/10.1038/s44303-025-00108-9</a>
-                        </div>
+                        <div style="font-size:0.6rem;color:var(--text-muted);margin-top:0.4rem;">Fine, medium, and large nanopipette tips.</div>
                     </div>
                 </div>
+
+                <!-- Key Publications moved to hero header -->
             </div>
 
             <!-- Tutorial Video Section -->
@@ -2210,6 +2156,7 @@ body.lp-lock{overflow:hidden}
       <g id="vzSurface"></g>
       <text x="36" y="238">sample · 3 µm × 3 µm</text>
 
+      <polyline id="vzTrail" fill="none" stroke="var(--plus)" stroke-width="1.4" opacity="0.4" stroke-linecap="round" stroke-linejoin="round"/>
       <g id="vzPip">
         <path d="M -6.5 -40 L -5 -13 L -2 0 L 2 0 L 5 -13 L 6.5 -40 Z"
               fill="url(#vzGlass)" stroke="var(--hair)" stroke-width="1" stroke-linejoin="round"/>
@@ -2243,8 +2190,263 @@ body.lp-lock{overflow:hidden}
             </div>
         </div>
 
+        <!-- ==================== STIFFNESS TAB ==================== -->
+        <div class="tab-content" id="content-stiffness">
+            <div class="card" style="margin-bottom:0.7rem;">
+                <div class="card-header">
+                    <div class="card-icon">🧫</div>
+                    <div><div class="card-title">Stiffness (SICM)</div><div class="card-subtitle">Non-contact elastic modulus from approach slopes</div></div>
+                </div>
+                <p style="font-size:0.8rem;color:var(--muted);line-height:1.6;margin:0 0 0.6rem;">
+                    SICM measures cell stiffness without touching the sample. Under the pipette's hydrostatic pressure a soft surface deforms slightly, which lowers the slope of the approach curve. Comparing the slope on the sample with the slope on a stiff reference gives the effective elastic modulus.
+                </p>
+                <div style="background:var(--raised);border:1px solid var(--line);padding:0.6rem;border-radius:8px;text-align:center;font-size:0.95rem;margin-bottom:0.6rem;">
+                    <div class="eq katex-eq" data-tex="E = \rho_0\, A \left( \dfrac{s_\infty}{s} - 1 \right)^{-1}"></div>
+                </div>
+                <ul style="font-size:0.72rem;color:var(--muted);line-height:1.6;padding-left:1.1rem;margin:0;">
+                    <li><strong>s</strong>: approach-curve slope on the sample (softer sample → smaller s)</li>
+                    <li><strong>s∞</strong>: slope on a stiff reference, where the surface does not deform</li>
+                    <li><strong>ρ₀</strong>: applied pressure &nbsp;·&nbsp; <strong>A</strong>: geometry constant from FEM</li>
+                    <li>Smaller s means a lower modulus, so soft cells read as small E</li>
+                </ul>
+                <div style="margin-top:0.6rem;font-size:0.68rem;color:var(--text-muted);">
+                    Section under construction. Planned: load approach curves, fit s and s∞, compute E, and separate the mechanical response from charge using ±bias.
+                    <!-- Leyla: add the method / figure from MD's paper and build the workflow here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== ASYMMETRIC-CONDUCTIVITY TAB ==================== -->
+        <div class="tab-content" id="content-asym">
+            <div class="card" style="margin-bottom:0.7rem;">
+                <div class="card-header">
+                    <div class="card-icon">🧪</div>
+                    <div><div class="card-title">Asymmetric-Conductivity Configuration</div><div class="card-subtitle">Pressure-controlled nanopipette sensing</div></div>
+                </div>
+                <div style="display:flex;gap:1.4rem;flex-wrap:wrap;align-items:flex-start;">
+                    <div style="flex:1 1 340px;min-width:280px;">
+                        <p style="font-size:0.8rem;color:var(--muted);line-height:1.6;margin:0 0 0.6rem;">
+                            In the asymmetric-conductivity configuration the electrolyte inside the pipette differs in concentration from the bulk. This mismatch, set by the dilution factor R<sub>dil</sub> = c<sub>pip</sub> / c<sub>bulk</sub>, minimises the classical surface-charge rectification while maximising electroosmotic flow. The current then reflects the rate and direction of solution mixing at the aperture, which external pressure can tune in situ to control the local ionic environment.
+                        </p>
+                        <p style="font-size:0.72rem;color:var(--muted);line-height:1.6;margin:0;">
+                            This makes the configuration sensitive to surface charge and useful for constant-current imaging, surface-charge mapping, and single-entity translocation. The current response is described by finite-element modelling coupling the Poisson, Nernst-Planck, and Navier-Stokes equations. Based on Skaanvik et al., ACS Nano 19, 12853 (2025).
+                        </p>
+                    </div>
+                    <div style="flex:0 1 300px;min-width:220px;text-align:center;">
+                        <img id="asymFigImg" src="WEBpage_img/Pressurecontrollednanopipette.png" style="max-width:100%;border-radius:10px;border:1px solid var(--line);">
+                        <div style="font-size:0.62rem;color:var(--faint);margin-top:0.4rem;line-height:1.4;">Figure reproduced from Skaanvik et al., ACS Nano 19, 12853 (2025).</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- key metrics -->
+            <div class="card" style="margin-bottom:0.7rem;">
+                <div class="card-header"><div class="card-icon">📐</div><div><div class="card-title">How the configuration is characterised</div><div class="card-subtitle">The three quantities used in the paper</div></div></div>
+                <div class="equation-box"><div class="eq-num">(1)</div><div class="eq katex-eq" data-tex="R_{dil} = \dfrac{c_{pip}}{c_{bulk}}"></div><div class="description">Dilution factor: ratio of pipette to bulk concentration. R<sub>dil</sub> = 1 is the symmetric (classical) case; R<sub>dil</sub> &gt; 1 makes the pipette more conductive than the bulk.</div></div>
+                <div class="equation-box"><div class="eq-num">(2)</div><div class="eq katex-eq" data-tex="R_{rect} = \dfrac{i(+V)}{i(-V)}"></div><div class="description">Rectification ratio from the i–E curve, evaluated at ±V (the paper uses ±0.75 V). R<sub>rect</sub> = 1 means no rectification; larger values mean stronger rectification.</div></div>
+                <div class="equation-box"><div class="eq-num">(3)</div><div class="eq katex-eq" data-tex="R_{hyst}(E) = i_{forward}(E) - i_{backward}(E)"></div><div class="description">Current hysteresis between forward and backward sweeps, a signature of time-dependent solution mixing. Needs a full cyclic i–E loop.</div></div>
+            </div>
+
+            <!-- parameters + upload + compute -->
+            <div class="card" style="margin-bottom:0.7rem;">
+                <div class="card-header"><div class="card-icon">⚙️</div><div><div class="card-title">Parameters &amp; data</div><div class="card-subtitle">Enter concentrations, load an i–E curve, compute</div></div></div>
+                <div style="display:flex;flex-wrap:wrap;gap:0.9rem;align-items:flex-end;margin-bottom:0.7rem;">
+                    <label style="font-size:0.72rem;color:var(--muted);">c<sub>pip</sub> (mM)<br><input type="number" id="asymCpip" value="150" step="1" oninput="asymUpdateRdil()" style="width:90px;padding:0.3rem 0.4rem;border-radius:6px;border:1px solid var(--line);background:var(--glass-a);color:var(--txt);font-size:0.8rem;"></label>
+                    <label style="font-size:0.72rem;color:var(--muted);">c<sub>bulk</sub> (mM)<br><input type="number" id="asymCbulk" value="30" step="1" oninput="asymUpdateRdil()" style="width:90px;padding:0.3rem 0.4rem;border-radius:6px;border:1px solid var(--line);background:var(--glass-a);color:var(--txt);font-size:0.8rem;"></label>
+                    <label style="font-size:0.72rem;color:var(--muted);">V<sub>eval</sub> (V)<br><input type="number" id="asymVeval" value="0.75" step="0.05" style="width:90px;padding:0.3rem 0.4rem;border-radius:6px;border:1px solid var(--line);background:var(--glass-a);color:var(--txt);font-size:0.8rem;"></label>
+                    <div style="font-size:0.85rem;color:var(--muted);">R<sub>dil</sub> = <b id="asymRdilOut" style="color:var(--plus);">5.00</b></div>
+                </div>
+                <div style="display:flex;flex-wrap:wrap;gap:0.6rem;align-items:center;">
+                    <input type="file" id="asymDataFile" accept=".csv,.txt" onchange="asymLoadData(this)" style="font-size:0.75rem;">
+                    <button onclick="asymCompute()" style="padding:0.4rem 0.9rem;border-radius:8px;border:1px solid var(--line);background:var(--plus);color:#fff;font-weight:600;cursor:pointer;font-size:0.8rem;">Compute</button>
+                    <span id="asymDataInfo" style="font-size:0.7rem;color:var(--faint);"></span>
+                </div>
+                <div style="font-size:0.66rem;color:var(--faint);margin-top:0.4rem;">CSV format: two columns E (V), I (nA). A full up-and-down sweep enables hysteresis.</div>
+            </div>
+
+            <!-- results -->
+            <div class="card">
+                <div class="card-header"><div class="card-icon">📊</div><div><div class="card-title">Results</div><div class="card-subtitle">i–E curve and derived quantities</div></div></div>
+                <canvas id="asymPlot" width="620" height="360" style="max-width:100%;background:var(--glass-b);border:1px solid var(--line);border-radius:8px;"></canvas>
+                <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.6rem;">
+                    <button onclick="asymExportPDF()" style="padding:0.4rem 0.9rem;border-radius:8px;border:1px solid var(--line);background:var(--glass-a);color:var(--txt);font-weight:600;cursor:pointer;font-size:0.78rem;">Export PDF report</button>
+                    <button onclick="asymExportPNG()" style="padding:0.4rem 0.9rem;border-radius:8px;border:1px solid var(--line);background:var(--glass-a);color:var(--txt);font-weight:600;cursor:pointer;font-size:0.78rem;">Export i–E · 300 DPI</button>
+                </div>
+                <div id="asymResults" style="margin-top:0.7rem;font-size:0.8rem;color:var(--muted);line-height:1.7;">Load an i–E curve and press Compute.</div>
+            </div>
+        </div>
+
+        <script>
+        function asymUpdateRdil(){
+            const cp=parseFloat(document.getElementById('asymCpip').value);
+            const cb=parseFloat(document.getElementById('asymCbulk').value);
+            const out=document.getElementById('asymRdilOut');
+            out.textContent=(isFinite(cp)&&isFinite(cb)&&cb!==0)?(cp/cb).toFixed(2):'—';
+        }
+        function asymLoadFig(input){
+            const f=input.files[0]; if(!f) return;
+            const r=new FileReader();
+            r.onload=e=>{const img=document.getElementById('asymFigImg');img.src=e.target.result;img.style.display='block';document.getElementById('asymFigBox').style.display='none';};
+            r.readAsDataURL(f);
+        }
+        function asymLoadData(input){
+            const f=input.files[0]; if(!f) return;
+            const r=new FileReader();
+            r.onload=e=>{
+                const E=[],I=[];
+                e.target.result.split(/\r?\n/).forEach(line=>{
+                    const p=line.trim().split(/[\s,;]+/);
+                    if(p.length<2) return;
+                    const a=parseFloat(p[0]),b=parseFloat(p[1]);
+                    if(isFinite(a)&&isFinite(b)){E.push(a);I.push(b);}
+                });
+                window.asymData={E,I};
+                document.getElementById('asymDataInfo').textContent=E.length+' points loaded';
+            };
+            r.readAsText(f);
+        }
+        function asymInterp(E,I,target){
+            for(let k=0;k<E.length-1;k++){
+                const a=E[k],b=E[k+1];
+                if((a-target)*(b-target)<=0 && a!==b){const t=(target-a)/(b-a);return I[k]+t*(I[k+1]-I[k]);}
+            }
+            let best=null,bd=Infinity;
+            for(let k=0;k<E.length;k++){const d=Math.abs(E[k]-target);if(d<bd){bd=d;best=I[k];}}
+            return best;
+        }
+        function asymCompute(){
+            const d=window.asymData, res=document.getElementById('asymResults');
+            if(!d||!d.E.length){res.innerHTML='<span style="color:var(--minus)">Load an i–E curve first.</span>';return;}
+            const E=d.E,I=d.I,n=E.length;
+            const cp=parseFloat(document.getElementById('asymCpip').value);
+            const cb=parseFloat(document.getElementById('asymCbulk').value);
+            const Rdil=(isFinite(cp)&&isFinite(cb)&&cb!==0)?cp/cb:NaN;
+            const Vev=Math.abs(parseFloat(document.getElementById('asymVeval').value))||0.75;
+            let pkMax=0,pkMin=0;
+            for(let k=1;k<n;k++){if(E[k]>E[pkMax])pkMax=k;if(E[k]<E[pkMin])pkMin=k;}
+            let cyclic=false,pk=-1;
+            if(pkMax>3&&pkMax<n-4){cyclic=true;pk=pkMax;}
+            else if(pkMin>3&&pkMin<n-4){cyclic=true;pk=pkMin;}
+            const Ef=cyclic?E.slice(0,pk+1):E, If=cyclic?I.slice(0,pk+1):I;
+            const iPlus=asymInterp(Ef,If,Vev), iMinus=asymInterp(Ef,If,-Vev);
+            const Rrect=(iPlus!=null&&iMinus!=null&&iMinus!==0)?Math.abs(iPlus/iMinus):NaN;
+            let hyst=null,hystE=null;
+            if(cyclic){
+                const Eb=E.slice(pk),Ib=I.slice(pk);
+                let mx=0,mxE=null;
+                for(let k=0;k<Ef.length;k++){const ib=asymInterp(Eb,Ib,Ef[k]);if(ib==null)continue;const diff=Math.abs(If[k]-ib);if(diff>mx){mx=diff;mxE=Ef[k];}}
+                hyst=mx;hystE=mxE;
+            }
+            window._asymLast={E:E,I:I,cyclic:cyclic,pk:pk,Vev:Vev,iPlus:iPlus,iMinus:iMinus,Rdil:Rdil,Rrect:Rrect,hyst:hyst,hystE:hystE};
+            asymDrawPlot(document.getElementById('asymPlot'),window._asymLast,1);
+            let h='';
+            h+='<div>R<sub>dil</sub> = <b style="color:var(--plus)">'+(isFinite(Rdil)?Rdil.toFixed(2):'—')+'</b> (c<sub>pip</sub>/c<sub>bulk</sub>)</div>';
+            h+='<div>R<sub>rect</sub> = <b style="color:var(--plus)">'+(isFinite(Rrect)?Rrect.toFixed(2):'—')+'</b> at ±'+Vev+' V &nbsp;<span style="color:var(--faint)">(i(+V)='+(iPlus!=null?iPlus.toFixed(2):'—')+' nA, i(−V)='+(iMinus!=null?iMinus.toFixed(2):'—')+' nA)</span></div>';
+            if(cyclic) h+='<div>R<sub>hyst</sub> (max) = <b style="color:var(--plus)">'+hyst.toFixed(2)+'</b> nA at E = '+hystE.toFixed(2)+' V</div>';
+            else h+='<div style="color:var(--faint)">Single sweep detected. Load a full up-and-down loop to get hysteresis.</div>';
+            h+='<div style="margin-top:0.4rem;font-size:0.72rem;color:var(--muted)">';
+            if(isFinite(Rrect)){
+                if(Rrect>1.1) h+='Rectifying response (R<sub>rect</sub> &gt; 1): surface-charge / mixing asymmetry present.';
+                else if(Rrect<0.91) h+='Inverse rectification (R<sub>rect</sub> &lt; 1).';
+                else h+='Near-symmetric response (R<sub>rect</sub> ≈ 1): classical rectification minimised, as expected in the asymmetric-conductivity regime.';
+            }
+            h+='</div>';
+            res.innerHTML=h;
+        }
+        function asymDrawPlot(cv,D,s){
+            s=s||1;
+            const E=D.E,I=D.I,cyclic=D.cyclic,pk=D.pk,Vev=D.Vev,iPlus=D.iPlus,iMinus=D.iMinus;
+            const W=620,H=360;
+            cv.width=W*s;cv.height=H*s;
+            const ctx=cv.getContext('2d');ctx.setTransform(s,0,0,s,0,0);ctx.clearRect(0,0,W,H);
+            const mL=54,mR=18,mT=18,mB=42;
+            let Emin=Math.min.apply(0,E),Emax=Math.max.apply(0,E),Imin=Math.min.apply(0,I),Imax=Math.max.apply(0,I);
+            const ep=(Emax-Emin)*0.05||0.1, ip=(Imax-Imin)*0.08||1;
+            Emin-=ep;Emax+=ep;Imin-=ip;Imax+=ip;
+            const X=e=>mL+(e-Emin)/(Emax-Emin)*(W-mL-mR);
+            const Y=i=>H-mB-(i-Imin)/(Imax-Imin)*(H-mT-mB);
+            const axc=(getComputedStyle(document.documentElement).getPropertyValue('--muted')||'#8a97a8').trim()||'#8a97a8';
+            ctx.strokeStyle='rgba(140,150,165,0.35)';ctx.lineWidth=1;
+            if(Emin<0&&Emax>0){ctx.beginPath();ctx.moveTo(X(0),mT);ctx.lineTo(X(0),H-mB);ctx.stroke();}
+            if(Imin<0&&Imax>0){ctx.beginPath();ctx.moveTo(mL,Y(0));ctx.lineTo(W-mR,Y(0));ctx.stroke();}
+            ctx.strokeStyle='rgba(140,150,165,0.5)';ctx.strokeRect(mL,mT,W-mL-mR,H-mT-mB);
+            function seg(s,e,c){ctx.strokeStyle=c;ctx.lineWidth=2;ctx.beginPath();for(let k=s;k<=e;k++){const x=X(E[k]),y=Y(I[k]);k===s?ctx.moveTo(x,y):ctx.lineTo(x,y);}ctx.stroke();}
+            if(cyclic){seg(0,pk,'#2a9df4');seg(pk,E.length-1,'#f0912a');}
+            else seg(0,E.length-1,'#2a9df4');
+            ctx.fillStyle='#e04f5f';
+            [[Vev,iPlus],[-Vev,iMinus]].forEach(pt=>{if(pt[1]==null)return;ctx.beginPath();ctx.arc(X(pt[0]),Y(pt[1]),4,0,7);ctx.fill();});
+            ctx.fillStyle=axc;ctx.font='12px sans-serif';ctx.textAlign='center';
+            ctx.fillText('E (V)',(mL+W-mR)/2,H-8);
+            ctx.save();ctx.translate(14,(mT+H-mB)/2);ctx.rotate(-Math.PI/2);ctx.fillText('I (nA)',0,0);ctx.restore();
+            ctx.textAlign='right';ctx.fillText(Imax.toFixed(0),mL-5,Y(Imax)+10);ctx.fillText(Imin.toFixed(0),mL-5,Y(Imin)-3);
+            ctx.textAlign='center';ctx.fillText(Emin.toFixed(1),X(Emin)+12,H-mB+15);ctx.fillText(Emax.toFixed(1),X(Emax)-12,H-mB+15);
+            if(cyclic){ctx.textAlign='left';ctx.fillStyle='#2a9df4';ctx.fillText('forward',mL+8,mT+14);ctx.fillStyle='#f0912a';ctx.fillText('backward',mL+8,mT+30);}
+        }
+        function asymExportPNG(){
+            if(!window._asymLast){if(window.toast)toast('Compute a result first','info');return;}
+            const off=document.createElement('canvas');
+            asymDrawPlot(off,window._asymLast,4);
+            const a=document.createElement('a');a.download='asymmetric_conductivity_iE_300dpi.png';a.href=off.toDataURL('image/png');a.click();
+            if(window.toast)toast('PNG exported (300 DPI)','success');
+        }
+        async function asymExportPDF(){
+            const D=window._asymLast;
+            if(!D){if(window.toast)toast('Compute a result first','info');return;}
+            if(!window.jspdf){if(window.toast)toast('PDF library not loaded','error');return;}
+            try{
+                const { jsPDF }=window.jspdf;
+                const pdf=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
+                const pageW=210,pageH=297,margin=15;
+                pdf.setFillColor(10,37,64);pdf.rect(0,0,pageW,25,'F');
+                pdf.setTextColor(0,212,255);pdf.setFontSize(15);pdf.setFont('helvetica','bold');
+                pdf.text('SR-SICM Suite - Asymmetric-Conductivity Report',margin,14);
+                pdf.setFontSize(8);pdf.setFont('helvetica','normal');pdf.setTextColor(180,200,220);
+                pdf.text('Generated: '+new Date().toLocaleString()+' | by BIOSPM group LNA',margin,21);
+                let y=34;
+                pdf.setTextColor(0,0,0);pdf.setFontSize(11);pdf.setFont('helvetica','bold');
+                pdf.text('Parameters',margin,y);y+=6;
+                const cp=document.getElementById('asymCpip').value, cb=document.getElementById('asymCbulk').value;
+                const params=[['c_pip',cp+' mM'],['c_bulk',cb+' mM'],['R_dil',isFinite(D.Rdil)?D.Rdil.toFixed(2):'--'],['V_eval','+/- '+D.Vev+' V']];
+                pdf.setFontSize(9);
+                params.forEach(function(p){pdf.setFont('helvetica','bold');pdf.text(p[0]+':',margin,y);pdf.setFont('helvetica','normal');pdf.text(String(p[1]),margin+45,y);y+=5;});
+                y+=3;
+                pdf.setFontSize(11);pdf.setFont('helvetica','bold');pdf.text('Derived quantities',margin,y);y+=6;
+                const res=[['R_rect (at +/-'+D.Vev+' V)',isFinite(D.Rrect)?D.Rrect.toFixed(2):'--'],['i(+V)',D.iPlus!=null?D.iPlus.toFixed(2)+' nA':'--'],['i(-V)',D.iMinus!=null?D.iMinus.toFixed(2)+' nA':'--'],['R_hyst (max)',D.cyclic?D.hyst.toFixed(2)+' nA at E='+D.hystE.toFixed(2)+' V':'single sweep (n/a)']];
+                pdf.setFontSize(9);
+                res.forEach(function(p){pdf.setFont('helvetica','bold');pdf.text(p[0]+':',margin,y);pdf.setFont('helvetica','normal');pdf.text(String(p[1]),margin+58,y);y+=5;});
+                y+=4;
+                pdf.setFontSize(11);pdf.setFont('helvetica','bold');pdf.text('i-E curve',margin,y);y+=4;
+                const off=document.createElement('canvas');asymDrawPlot(off,D,3);
+                const imgW=pageW-2*margin, imgH=imgW*360/620;
+                pdf.addImage(off.toDataURL('image/png'),'PNG',margin,y,imgW,imgH);
+                y+=imgH+6;
+                pdf.setDrawColor(200,200,200);pdf.line(margin,pageH-14,pageW-margin,pageH-14);
+                pdf.setFontSize(8);pdf.setFont('helvetica','italic');pdf.setTextColor(120,120,120);
+                pdf.text('SR-SICM Suite | Asymmetric-conductivity module | Based on Skaanvik et al., ACS Nano 19, 12853 (2025)',margin,pageH-8);
+                pdf.save('asymmetric-conductivity-report-'+new Date().toISOString().slice(0,10)+'.pdf');
+                if(window.toast)toast('PDF report exported','success');
+            }catch(e){if(window.toast)toast('PDF error: '+e.message,'error');}
+        }
+        </script>
+
         <!-- ==================== SR-SICM TAB ==================== -->
         <div class="tab-content" id="content-sicm">
+            <div class="card" style="margin-bottom:0.7rem;">
+                <div class="card-header">
+                    <div class="card-icon">🔬</div>
+                    <div><div class="card-title">Super-Resolution SICM (SR-SICM)</div><div class="card-subtitle">Deconvolution of topography using the pipette PSF</div></div>
+                </div>
+                <div style="display:flex;gap:1.4rem;flex-wrap:wrap;align-items:center;">
+                    <div style="flex:1 1 320px;min-width:260px;">
+                        <p style="font-size:0.8rem;color:var(--muted);line-height:1.6;margin:0;">
+                            SICM topography is blurred by the finite pipette aperture. SR-SICM models this blur as a point-spread function set by the tip geometry, then deconvolves the image (Richardson-Lucy) to recover sharper features below the nominal resolution limit. Set the pipette and scan parameters below, load an image, and run the deconvolution.
+                        </p>
+                    </div>
+                    <div style="flex:0 1 260px;min-width:200px;text-align:center;">
+                        <img src="WEBpage_img/sr.png" style="max-width:100%;border-radius:10px;border:1px solid var(--line);" alt="SR-SICM illustration">
+                    </div>
+                </div>
+            </div>
             <div class="grid grid-4" style="margin-bottom: 0.7rem;">
                 <div class="card">
                     <div class="card-header">
@@ -2433,13 +2635,13 @@ body.lp-lock{overflow:hidden}
                 <!-- Line Profile Panel (SR) - spans full width, shows both Input and SR -->
                 <div id="srLineProfilePanel" style="display:none;grid-column:1/-1;margin-top:0.4rem;padding:0.7rem;background:var(--bg-card);border:1px solid var(--border-color);border-radius:10px;">
                     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.4rem;flex-wrap:wrap;gap:0.3rem;">
-                        <div style="font-weight:600;font-size:0.75rem;">Line Profile — Input vs SR Result</div>
+                        <div style="font-weight:600;font-size:0.75rem;">Line Profile · Input vs SR Result</div>
                         <div style="display:flex;gap:0.3rem;">
                             <button class="btn btn-secondary" style="width:auto;font-size:0.6rem;padding:0.25rem 0.5rem" onclick="clearSRLineProfile()">Clear</button>
                             <button class="btn btn-secondary" style="width:auto;font-size:0.6rem;padding:0.25rem 0.5rem" onclick="exportSRLineProfileCSV()">CSV</button>
                         </div>
                     </div>
-                    <div id="srLineProfileHint" style="font-size:0.6rem;color:var(--accent-cyan);margin-bottom:0.5rem;padding:0.3rem 0.5rem;background:rgba(0,212,255,0.08);border-radius:6px;">Click two points on either the <strong>Input</strong> or <strong>SR Result</strong> image above — both will be profiled along the same line.
+                    <div id="srLineProfileHint" style="font-size:0.6rem;color:var(--accent-cyan);margin-bottom:0.5rem;padding:0.3rem 0.5rem;background:rgba(0,212,255,0.08);border-radius:6px;">Click two points on either the <strong>Input</strong> or <strong>SR Result</strong> image above; both will be profiled along the same line.
                     </div>
                     <canvas id="srLineProfileCanvas" style="width:100%;height:160px;background:var(--bg-tertiary);border-radius:6px;display:block;"></canvas>
                     <div style="display:flex;gap:1rem;margin-top:0.4rem;flex-wrap:wrap;">
@@ -2453,6 +2655,10 @@ body.lp-lock{overflow:hidden}
 
         <!-- ==================== APPROACH CURVES TAB ==================== -->
         <div class="tab-content" id="content-approach">
+            <!-- CD Curve method references -->
+            <div style="font-size:0.62rem;color:var(--text-muted);padding:0.3rem 0.6rem;margin-bottom:0.4rem;border-left:2px solid var(--line);">
+                Method: Hansma et al., <em>Science</em> 243, 641 (1989) &nbsp;·&nbsp; Novak et al., <em>Nat. Methods</em> 6, 279 (2009) &nbsp;·&nbsp; Klausen et al., <em>Nat. Commun.</em> 7, 12447 (2016)
+            </div>
             <!-- DATA UPLOAD -->
             <div class="card" style="margin-bottom: 0.5rem;">
                 <div class="card-header">
@@ -2483,7 +2689,7 @@ body.lp-lock{overflow:hidden}
                 </div>
                 <!-- Loaded files list -->
                 <div id="loadedFilesList" style="display:none;margin-top:0.5rem;display:flex;flex-wrap:wrap;gap:0.4rem;"></div>
-                <div id="biasHint" style="display:none;font-family:'Geist Mono',monospace;font-size:11px;color:var(--faint);margin-top:0.45rem;">Bias is read from the filename — click +V / −V on any file to override it.</div>
+                <div id="biasHint" style="display:none;font-family:'Geist Mono',monospace;font-size:11px;color:var(--faint);margin-top:0.45rem;">Bias is read from the filename; click +V / −V on any file to override it.</div>
                 <!-- TIFF Info Panel (auto-shown after TIFF load) -->
                 <div id="tiffInfoPanel" style="display:none;margin-top:0.4rem;padding:0.5rem;background:var(--bg-tertiary);border-radius:8px;border:1px solid var(--border-color);">
                     <div style="display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;">
@@ -2500,7 +2706,7 @@ body.lp-lock{overflow:hidden}
                 <div class="card-header">
                     <div class="card-icon" style="background:var(--gradient-3);color:#fff">📝</div>
                     <div>
-                        <div class="card-title">Measurement Notes <span style="font-size:0.6rem;color:var(--text-muted);font-weight:400;">(optional — included in reports)</span></div>
+                        <div class="card-title">Measurement Notes <span style="font-size:0.6rem;color:var(--text-muted);font-weight:400;">(optional, included in reports)</span></div>
                     </div>
                 </div>
                 <div style="display:flex;gap:0.5rem;flex-wrap:wrap;align-items:flex-end;">
@@ -2605,8 +2811,8 @@ body.lp-lock{overflow:hidden}
                             <select id="exportFormatSelect" style="width:100%;padding:0.3rem;font-size:0.68rem;background:var(--bg-tertiary);border:1px solid var(--border-color);border-radius:6px;color:var(--text-primary);margin-bottom:0.3rem;">
                                 <option value="csv">CSV (raw data)</option>
                                 <option value="origin">Origin TXT</option>
-                                <option value="excel_norm">Excel — Normalized</option>
-                                <option value="excel_zoom">Excel — Zoom</option>
+                                <option value="excel_norm">Excel · Normalized</option>
+                                <option value="excel_zoom">Excel · Zoom</option>
                                 <option value="pdf">PDF Report</option>
                                 <option value="word">Word Report</option>
                             </select>
@@ -2803,6 +3009,99 @@ body.lp-lock{overflow:hidden}
             </div>
         </div>
 
+        <!-- ==================== IMAGE TAB (Δh from images) ==================== -->
+        <div class="tab-content" id="content-image">
+            <div class="grid grid-4" style="margin-bottom:0.7rem;">
+                <!-- 1. +bias image -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">🖼️</div>
+                        <div><input id="name1" value="Image 1" title="Rename (e.g. +bias)" style="font:inherit;font-weight:600;background:transparent;border:none;border-bottom:1px dashed var(--line);color:var(--txt);width:135px;padding:0;"><div class="card-subtitle">TIFF or PNG · editable name</div></div>
+                    </div>
+                    <input type="file" id="imgPlusFile" accept=".tif,.tiff,.png" style="display:none" onchange="loadImage(1, this)">
+                    <button class="btn btn-primary" style="width:100%" onclick="document.getElementById('imgPlusFile').click()">Load image 1</button>
+                    <div id="imgPlusView" style="margin-top:0.5rem;min-height:120px;border:1px dashed var(--line);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:0.7rem;">no image</div>
+                    <div style="display:flex;gap:0.3rem;margin-top:0.4rem;">
+                        <select id="flatten1" onchange="processImage(1)" style="flex:1;padding:0.25rem;font-size:0.62rem;border-radius:6px;border:1px solid var(--line);background:var(--surface);color:var(--txt);">
+                            <option value="none">No flatten</option><option value="0">0th order</option><option value="1">1st order</option><option value="plane">Plane</option>
+                        </select>
+                        <select id="cmap1" onchange="processImage(1)" style="flex:1;padding:0.25rem;font-size:0.62rem;border-radius:6px;border:1px solid var(--line);background:var(--surface);color:var(--txt);">
+                            <option value="gray">Gray</option><option value="viridis">Viridis</option><option value="afmhot">AFM hot</option><option value="inferno">Inferno</option><option value="jet">Jet</option>
+                        </select>
+                    </div>
+                </div>
+                <!-- 2. -bias image -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">🖼️</div>
+                        <div><input id="name2" value="Image 2" title="Rename (e.g. −bias)" style="font:inherit;font-weight:600;background:transparent;border:none;border-bottom:1px dashed var(--line);color:var(--txt);width:135px;padding:0;"><div class="card-subtitle">TIFF or PNG · editable name</div></div>
+                    </div>
+                    <input type="file" id="imgMinusFile" accept=".tif,.tiff,.png" style="display:none" onchange="loadImage(2, this)">
+                    <button class="btn btn-primary" style="width:100%" onclick="document.getElementById('imgMinusFile').click()">Load image 2</button>
+                    <div id="imgMinusView" style="margin-top:0.5rem;min-height:120px;border:1px dashed var(--line);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:0.7rem;">no image</div>
+                    <div style="display:flex;gap:0.3rem;margin-top:0.4rem;">
+                        <select id="flatten2" onchange="processImage(2)" style="flex:1;padding:0.25rem;font-size:0.62rem;border-radius:6px;border:1px solid var(--line);background:var(--surface);color:var(--txt);">
+                            <option value="none">No flatten</option><option value="0">0th order</option><option value="1">1st order</option><option value="plane">Plane</option>
+                        </select>
+                        <select id="cmap2" onchange="processImage(2)" style="flex:1;padding:0.25rem;font-size:0.62rem;border-radius:6px;border:1px solid var(--line);background:var(--surface);color:var(--txt);">
+                            <option value="gray">Gray</option><option value="viridis">Viridis</option><option value="afmhot">AFM hot</option><option value="inferno">Inferno</option><option value="jet">Jet</option>
+                        </select>
+                    </div>
+                </div>
+                <!-- 3. Δh compute -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">➗</div>
+                        <div><div class="card-title">Δh compute</div><div class="card-subtitle">Image 1 minus Image 2</div></div>
+                    </div>
+                    <label style="font-size:0.62rem;color:var(--text-muted);display:block;margin:0 0 0.15rem;">Δh colormap</label>
+                    <select id="cmapDh" onchange="if(window.dhData)computeDh()" style="width:100%;padding:0.3rem;font-size:0.68rem;border-radius:6px;border:1px solid var(--line);background:var(--surface);color:var(--txt);">
+                        <option value="viridis">Viridis</option>
+                        <option value="gray">Gray</option>
+                        <option value="afmhot">AFM hot</option>
+                        <option value="inferno">Inferno</option>
+                        <option value="jet">Jet</option>
+                    </select>
+                    <button class="btn btn-orange" style="width:100%;margin-top:0.4rem;" onclick="computeDh()">Compute Δh</button>
+                    <div style="margin-top:0.4rem;font-size:0.6rem;color:var(--text-muted);">Aligns and subtracts the two flattened images.</div>
+                </div>
+                <!-- 4. Δh map -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">📊</div>
+                        <div><div class="card-title">Δh map</div><div class="card-subtitle">from the two images</div></div>
+                    </div>
+                    <div id="imgDhView" style="min-height:120px;border:1px dashed var(--line);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:0.7rem;">Δh map → QSCM</div>
+                </div>
+            </div>
+            <!-- Line profile -->
+            <div class="card" style="margin-top:0.6rem;">
+                <div class="card-header">
+                    <div class="card-icon">📈</div>
+                    <div><div class="card-title">Line profile</div><div class="card-subtitle">Click two points on an image</div></div>
+                </div>
+                <div id="imgLineProfile" style="min-height:120px;border:1px dashed var(--line);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:0.7rem;">click two points on the image to profile</div>
+            </div>
+            <div class="card" style="margin-top:0.6rem;">
+                <div class="card-header"><div class="card-icon">⬇️</div><div><div class="card-title">Export</div><div class="card-subtitle">Choose what to export</div></div></div>
+                <div style="display:flex;gap:0.7rem;flex-wrap:wrap;align-items:center;">
+                    <label style="font-size:0.74rem;color:var(--muted);">Which:
+                        <select id="imgExportSel" style="margin-left:0.3rem;padding:0.3rem 0.5rem;border-radius:6px;border:1px solid var(--line);background:var(--glass-a);color:var(--txt);font-size:0.78rem;">
+                            <option value="1">Image 1</option>
+                            <option value="2">Image 2</option>
+                            <option value="dh">Δh map</option>
+                        </select>
+                    </label>
+                    <button onclick="exportImgPNG(({'1':1,'2':2,'dh':'dh'})[document.getElementById('imgExportSel').value])" style="padding:0.4rem 0.9rem;border-radius:8px;border:1px solid var(--line);background:var(--plus);color:#fff;font-weight:600;cursor:pointer;font-size:0.78rem;">PNG · 300 DPI</button>
+                    <button onclick="exportImgPDF()" style="padding:0.4rem 0.9rem;border-radius:8px;border:1px solid var(--line);background:var(--glass-a);color:var(--txt);font-weight:600;cursor:pointer;font-size:0.78rem;">PDF report</button>
+                </div>
+            </div>
+            <div style="font-size:0.7rem;color:var(--text-muted);padding:0.5rem;">
+                Workflow: load two images, flatten and colormap, obtain the Δh map, then use it in QSCM.
+                <!-- Leyla: hook loadImage / processImages (flatten + colormap) / Δh / line-profile logic -->
+            </div>
+        </div>
+
         <!-- ==================== QSCM TAB ==================== -->
         <div class="tab-content" id="content-qscm">
             <div class="grid grid-4" style="margin-bottom: 0.7rem;">
@@ -2932,7 +3231,7 @@ body.lp-lock{overflow:hidden}
             <div class="grid grid-2">
                 <div class="panel">
                     <div class="panel-header">
-                        <div class="panel-title green">Δh vs σ — Reference Data & Calibration</div>
+                        <div class="panel-title green">Δh vs σ · Reference Data & Calibration</div>
                         <button onclick="openChartModal()" style="background:rgba(0,212,255,0.12);border:1px solid rgba(0,212,255,0.3);border-radius:6px;padding:0.15rem 0.45rem;font-size:0.62rem;color:var(--accent-cyan);cursor:pointer;" title="Expand chart">Zoom</button>
                     </div>
                     <div class="panel-content" style="min-height: 250px;">
@@ -3012,15 +3311,15 @@ body.lp-lock{overflow:hidden}
                 <h2>Theory & Methodology</h2>
 
                 <h3>1. Scanning Ion Conductance Microscopy (SICM)</h3>
-                <p>SICM uses a glass nanopipette filled with electrolyte solution as a non-contact probe. A bias voltage (typically ±100 mV) drives ionic current through the pipette opening. As the tip approaches a surface, ion flow becomes restricted — the access resistance increases — and the measured current drops. This current drop is used as a distance signal, keeping the tip at a fixed height above the sample without ever touching it.</p>
-                <div class="equation-box"><div class="eq-num">(1)</div><div class="eq">I(z) = V<sub>bias</sub> / (R<sub>pip</sub> + R<sub>access</sub>(z))</div><div class="description">Total current = bias divided by pipette resistance + access resistance. R<sub>access</sub> increases as z → 0 (tip near surface), causing I to drop.</div></div>
+                <p>SICM uses a glass nanopipette filled with electrolyte solution as a non-contact probe. A bias voltage (typically ±100 mV) drives ionic current through the pipette opening. As the tip approaches a surface, ion flow becomes restricted (the access resistance increases) and the measured current drops. This current drop is used as a distance signal, keeping the tip at a fixed height above the sample without ever touching it.</p>
+                <div class="equation-box"><div class="eq-num">(1)</div><div class="eq katex-eq" data-tex="I(z) = \dfrac{V_{bias}}{R_{pip} + R_{access}(z)}"></div><div class="description">Total current = bias divided by pipette resistance + access resistance. R<sub>access</sub> increases as z → 0 (tip near surface), causing I to drop.</div></div>
                 <p>The access resistance scales approximately as R<sub>access</sub> ∝ 1/z for a flat surface. In practice, the current drops to ~99% of its bulk value at a tip–surface distance equal to roughly the inner radius of the pipette (r<sub>i</sub>). This defines the lateral and axial resolution: a smaller pipette gives sharper images but lower signal.</p>
                 <p><strong>Example:</strong> A pipette with r<sub>i</sub> = 50 nm in 150 mM NaCl at +100 mV typically gives I<sub>bulk</sub> ≈ 1–3 nA. When the tip is 50 nm from a glass surface, current drops to ~98–99% of bulk (the 1% setpoint).</p>
 
-                <h3>2. Approach Curve Processing</h3>
+                <h3>2. Current-Distance Curve Processing</h3>
                 <p>Raw approach curves (distance vs current) are normalized to the bulk current. This removes slow drift in the baseline and allows direct comparison across different tips, days, or bias polarities.</p>
-                <div class="equation-box"><div class="eq-num">(2)</div><div class="eq">I<sub>bulk</sub>(z) = a·z + b &nbsp;&nbsp; (linear fit over far-field, last 50% of curve)</div><div class="description">Baseline estimated by linear regression on the flat region far from the surface, where the tip does not yet feel the sample.</div></div>
-                <div class="equation-box"><div class="eq-num">(3)</div><div class="eq">I<sub>norm</sub>(z) = 100 × |I(z)| / I<sub>bulk</sub>(z)</div><div class="description">Normalized current expressed as % of bulk. At large z → 100%. At surface → drops to setpoint (e.g. 99%).</div></div>
+                <div class="equation-box"><div class="eq-num">(2)</div><div class="eq katex-eq" data-tex="I_{bulk}(z) = a\cdot z + b"></div><div class="description">Baseline estimated by linear regression on the flat region far from the surface, where the tip does not yet feel the sample.</div></div>
+                <div class="equation-box"><div class="eq-num">(3)</div><div class="eq katex-eq" data-tex="I_{norm}(z) = 100 \times \dfrac{|I(z)|}{I_{bulk}(z)}"></div><div class="description">Normalized current expressed as % of bulk. At large z → 100%. At surface → drops to setpoint (e.g. 99%).</div></div>
                 <p><strong>Why normalize?</strong> Without normalization, a tip with R<sub>pip</sub> = 100 MΩ gives different raw currents than one with 200 MΩ, even over the same sample. Normalization makes all curves start at 100% regardless of tip resistance.</p>
                 <p><strong>Setpoint choice:</strong> The x-value (distance) is extracted at a chosen setpoint, e.g. 99%. A stricter setpoint (e.g. 99.5%) gives a position closer to the surface but is more sensitive to noise. The default 99% is a good compromise for most SICM experiments.</p>
 
@@ -3035,23 +3334,23 @@ body.lp-lock{overflow:hidden}
 
                 <h3>4. Δh & Surface Charge (QSCM)</h3>
                 <p>When two approach curves are recorded at opposite bias polarities (+V and −V) over the same position, the curves are identical for an uncharged surface. On a charged surface, the electric double layer shifts the effective tip–surface distance differently for each polarity. This shift, Δh, is the core QSCM observable:</p>
-                <div class="equation-box"><div class="eq-num">(4)</div><div class="eq">Δh = x<sub>2</sub>(−V) − x<sub>1</sub>(+V)</div><div class="description">Distance at setpoint for −V bias minus distance at setpoint for +V bias. Units: nm. Δh > 0 for negative surfaces (anions repel Cl⁻ carrier ions, reducing current faster at +V).</div></div>
-                <p><strong>Physical picture:</strong> At +100 mV bias, Cl⁻ ions carry most of the current from pipette to bath. Near a negatively charged surface, the local anion concentration is depleted (repulsion), so the current drops earlier — at a larger apparent distance. At −100 mV, Na⁺ ions dominate; a negative surface attracts them and delays the current drop. The difference in these two distances is Δh.</p>
+                <div class="equation-box"><div class="eq-num">(4)</div><div class="eq katex-eq" data-tex="\Delta h = x_2(-V) - x_1(+V)"></div><div class="description">Distance at setpoint for −V bias minus distance at setpoint for +V bias. Units: nm. Δh > 0 for negative surfaces (anions repel Cl⁻ carrier ions, reducing current faster at +V).</div></div>
+                <p><strong>Physical picture:</strong> At +100 mV bias, Cl⁻ ions carry most of the current from pipette to bath. Near a negatively charged surface, the local anion concentration is depleted (repulsion), so the current drops earlier, at a larger apparent distance. At −100 mV, Na⁺ ions dominate; a negative surface attracts them and delays the current drop. The difference in these two distances is Δh.</p>
                 <p><strong>Example values:</strong> A bare glass surface in 150 mM NaCl typically gives Δh ≈ −2 to −4 nm (negative charge). A lipid bilayer of DPPE (near-neutral) gives Δh ≈ 0–1 nm. DPPG (negatively charged headgroup) gives Δh ≈ −5 to −8 nm. An amine-functionalized surface (APTES, positive charge) gives Δh > 0.</p>
-                <div class="equation-box"><div class="eq-num">(5)</div><div class="eq">σ = m × (Δh − c)</div><div class="description">Linear calibration converts Δh (nm) to surface charge density σ (mC/m²). Default: m = 5.79 mC/m²/nm, c = 0.81 nm (from Klausen et al. 2016, r<sub>i</sub> = 50 nm, 150 mM NaCl).</div></div>
+                <div class="equation-box"><div class="eq-num">(5)</div><div class="eq katex-eq" data-tex="\sigma = m \times (\Delta h - c)"></div><div class="description">Linear calibration converts Δh (nm) to surface charge density σ (mC/m²). Default: m = 5.79 mC/m²/nm, c = 0.81 nm (from Klausen et al. 2016, r<sub>i</sub> = 50 nm, 150 mM NaCl).</div></div>
                 <p><strong>Calibration validity:</strong> The m and c constants depend on pipette geometry (r<sub>i</sub>, r<sub>o</sub>/r<sub>i</sub>), electrolyte concentration, and bias magnitude. The default values apply specifically to r<sub>i</sub> = 50 nm pipettes in 150 mM NaCl at ±100 mV. For different conditions, recalibrate against surfaces of known charge density.</p>
 
                 <h3>5. Super-Resolution SR-SICM</h3>
-                <p>Lateral resolution in SICM is fundamentally limited by the pipette inner radius r<sub>i</sub>. The point spread function (PSF) — how the pipette "sees" a sharp feature — is approximately a disc of radius r<sub>i</sub>. Structures smaller than r<sub>i</sub> appear blurred in the raw image.</p>
+                <p>Lateral resolution in SICM is fundamentally limited by the pipette inner radius r<sub>i</sub>. The point spread function (PSF), how the pipette "sees" a sharp feature, is approximately a disc of radius r<sub>i</sub>. Structures smaller than r<sub>i</sub> appear blurred in the raw image.</p>
                 <p>Richardson–Lucy (RL) deconvolution iteratively sharpens the image by dividing out the PSF contribution. Starting from the measured image g and a PSF model h, the algorithm refines the estimate f of the true sample:</p>
-                <div class="equation-box"><div class="eq-num">(6)</div><div class="eq">f<sup>(k+1)</sup> = f<sup>(k)</sup> · (h<sup>T</sup> ∗ [g / (h ∗ f<sup>(k)</sup>)])</div><div class="description">RL iteration. h<sup>T</sup> = mirror-flipped PSF. ∗ = convolution with mirror boundary conditions. Converges in 5–50 iterations for typical SICM images.</div></div>
-                <p><strong>PSF model:</strong> The PSF is computed analytically from pipette geometry — inner radius r<sub>i</sub>, outer-to-inner ratio r<sub>o</sub>/r<sub>i</sub>, and the half-cone angle α. A larger r<sub>o</sub>/r<sub>i</sub> (thicker glass wall) gives a more extended PSF and stronger blurring. The PSF size in pixels is set to cover ≥ 3× the pipette radius relative to the scan field.</p>
+                <div class="equation-box"><div class="eq-num">(6)</div><div class="eq katex-eq" data-tex="f^{(k+1)} = f^{(k)} \cdot \left( h^{T} * \left[ \dfrac{g}{h * f^{(k)}} \right] \right)"></div><div class="description">RL iteration. h<sup>T</sup> = mirror-flipped PSF. ∗ = convolution with mirror boundary conditions. Converges in 5–50 iterations for typical SICM images.</div></div>
+                <p><strong>PSF model:</strong> The PSF is computed analytically from pipette geometry: inner radius r<sub>i</sub>, outer-to-inner ratio r<sub>o</sub>/r<sub>i</sub>, and the half-cone angle α. A larger r<sub>o</sub>/r<sub>i</sub> (thicker glass wall) gives a more extended PSF and stronger blurring. The PSF size in pixels is set to cover ≥ 3× the pipette radius relative to the scan field.</p>
                 <p><strong>Example:</strong> A 256×256 pixel scan of a 1 µm × 1 µm area with a r<sub>i</sub> = 50 nm pipette: features down to ~20 nm can be resolved after 10–20 RL iterations. After deconvolution, membrane protein clusters (typical diameter 20–100 nm) become clearly resolvable from the lipid bilayer background.</p>
                 <p><strong>Iteration choice:</strong> Too few iterations (< 5) under-sharpen; too many (> 50) amplify noise into ring artifacts around sharp edges. For noisy images, 5–15 iterations is typical; for high SNR images, 20–30 is appropriate.</p>
 
                 <h3>6. Statistics for Batch Δh Measurements</h3>
                 <p>When measuring Δh at multiple spatial positions (e.g. a grid of 10 points across a cell membrane), the batch gives a distribution of Δh values reflecting true heterogeneity plus measurement uncertainty.</p>
-                <div class="equation-box"><div class="eq-num">(7)</div><div class="eq">SEM = SD / √n &nbsp;&nbsp;|&nbsp;&nbsp; CI<sub>95%</sub> = x̄ ± t<sub>α/2, n−1</sub> × SEM</div><div class="description">SEM = standard error of the mean. CI uses the Student t-distribution with n−1 degrees of freedom. For n < 10 the CI is substantially wider than for n > 30.</div></div>
+                <div class="equation-box"><div class="eq-num">(7)</div><div class="eq katex-eq" data-tex="\mathrm{SEM} = \dfrac{SD}{\sqrt{n}} \quad|\quad CI_{95\%} = \bar{x} \pm t_{\alpha/2,\,n-1}\,\mathrm{SEM}"></div><div class="description">SEM = standard error of the mean. CI uses the Student t-distribution with n−1 degrees of freedom. For n < 10 the CI is substantially wider than for n > 30.</div></div>
                 <p><strong>Which uncertainty to report?</strong> SD describes the spread of individual measurements (biological variability + noise). SEM describes confidence in the mean. For comparing two conditions, use SEM or CI. For characterising heterogeneity, use SD. For n < 5, report individual points alongside the mean.</p>
                 <p><strong>One-sample t-test (Δh ≠ 0):</strong> Tests whether the measured Δh is significantly different from zero (i.e. from an uncharged surface). A p-value < 0.05 indicates the surface is detectably charged under these conditions. This is the most common test for QSCM experiments on a single surface type.</p>
                 <p><strong>Paired t-test (x₂ − x₁):</strong> Directly tests whether the individual Δh differences across all points are non-zero. More sensitive than the one-sample test when x₁ and x₂ are correlated (same point measured at both biases). Use this when you have matched +V/−V pairs at each spatial position.</p>
@@ -3067,13 +3366,7 @@ body.lp-lock{overflow:hidden}
                 </div>
             </div>
 
-            <div class="export-section">
-                <h3>Export Report</h3>
-                <div class="export-options">
-                    <button class="btn btn-purple" onclick="exportFullReportWord()">Word</button>
-                    <button class="btn btn-purple" onclick="exportFullReportPDF()">PDF</button>
-                </div>
-            </div>
+            <!-- Export Report removed (Word/PDF were non-functional) -->
         </div>
 
         <!-- ==================== AI EDITOR TAB ==================== -->
@@ -3089,15 +3382,15 @@ body.lp-lock{overflow:hidden}
 
             <!-- Features -->
             <div class="info-box" style="text-align:left;margin-bottom:1rem;">
-                <p><strong>SR-SICM</strong> — Super-resolution deconvolution for SICM images</p>
-                <p><strong>Approach Curves</strong> — Automated Δh extraction from SICM spectroscopy</p>
-                <p><strong>QSCM</strong> — Quantitative surface charge mapping (Klausen 2016)</p>
+                <p><strong>SR-SICM</strong>: Super-resolution deconvolution for SICM images</p>
+                <p><strong>Current-Distance Curves</strong>: Automated Δh extraction from SICM spectroscopy</p>
+                <p><strong>QSCM</strong>: Quantitative surface charge mapping (Klausen 2016)</p>
             </div>
 
             <!-- Developed by -->
             <div class="info-box orange" style="text-align:left;margin-bottom:1rem;">
                 <p><strong>Developed by</strong> BIOSPM group</p>
-                <p style="margin-top:0.3rem;font-size:0.75rem;color:var(--text-muted);">Will be updated — features and UI subject to change.</p>
+                <p style="margin-top:0.3rem;font-size:0.75rem;color:var(--text-muted);">Will be updated; features and UI subject to change.</p>
             </div>
 
             <!-- Contact & GitHub -->
@@ -3105,7 +3398,7 @@ body.lp-lock{overflow:hidden}
                 <p style="font-weight:700;margin-bottom:0.6rem;color:var(--accent-cyan);">Contact</p>
                 <p style="margin-bottom:0.4rem;">For questions, bug reports or collaboration:</p>
                 <p><a href="mailto:lnurakay@inano.au.dk" style="color:var(--accent-cyan);text-decoration:none;">lnurakay@inano.au.dk</a></p>
-                <p style="margin-top:0.6rem;"><a href="https://github.com/LeilaqL" target="_blank" style="color:var(--accent-cyan);text-decoration:none;">Visit us on GitHub</a> — source code, issues & updates</p>
+                <p style="margin-top:0.6rem;"><a href="https://github.com/LeilaqL" target="_blank" style="color:var(--accent-cyan);text-decoration:none;">Visit us on GitHub</a> · source code, issues & updates</p>
             </div>
 
             <!-- Cite -->
@@ -3116,7 +3409,7 @@ body.lp-lock{overflow:hidden}
                 <!-- SR-SICM Suite cite - auto date -->
                 <div style="background:var(--bg-tertiary);border-radius:8px;padding:0.7rem 1rem;margin-bottom:0.6rem;font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--text-secondary);line-height:1.7;position:relative;">
                     <span style="color:var(--accent-purple);font-weight:600;">SR-SICM Suite</span><br>
-                    BIOSPM group. <em>SR-SICM Suite — Super-Resolution & QSCM Analysis.</em> Available at: https://github.com/LeilaqL. Accessed <span id="cite-date-suite"></span>.
+                    BIOSPM group. <em>SR-SICM Suite: Super-Resolution & QSCM Analysis.</em> Available at: https://github.com/LeilaqL. Accessed <span id="cite-date-suite"></span>.
                     <button onclick="navigator.clipboard.writeText('BIOSPM group. SR-SICM Suite — Super-Resolution & QSCM Analysis. Available at: https://github.com/LeilaqL. Accessed ' + new Date().toISOString().slice(0,10) + '.');this.textContent='✅ Copied!';setTimeout(()=>this.textContent='Copy',1500)" style="position:absolute;top:0.4rem;right:0.4rem;background:rgba(139,92,246,0.2);border:1px solid rgba(139,92,246,0.4);color:var(--accent-purple);border-radius:5px;padding:0.15rem 0.5rem;font-size:0.62rem;cursor:pointer;">Copy</button>
                 </div>
 
@@ -7267,7 +7560,11 @@ const pip=$('vzPip'), glow=$('vzTipGlow'), bar=$('vzBar'), cur=$('vzCur'),
 
 function draw(u,r,tipH,I,label,contact,done){
   const v=r/(ROWS-1);
-  pip.setAttribute('transform',`translate(${px(u,v).toFixed(1)},${py(v,tipH).toFixed(1)})`);
+  const _tx=px(u,v), _ty=py(v,tipH);
+  pip.setAttribute('transform',`translate(${_tx.toFixed(1)},${_ty.toFixed(1)})`);
+  (window._vzTrail=window._vzTrail||[]).push(_tx.toFixed(1)+','+_ty.toFixed(1));
+  if(window._vzTrail.length>45) window._vzTrail.shift();
+  const _tr=document.getElementById('vzTrail'); if(_tr) _tr.setAttribute('points', window._vzTrail.join(' '));
   glow.setAttribute('opacity',contact?'.9':'0');
   bar.setAttribute('width',(120*Math.max(0,(I-95)/5)).toFixed(1));
   cur.textContent=I.toFixed(1)+' %';
@@ -7282,9 +7579,9 @@ function reveal(n){ for(let i=0;i<TOTAL;i++) tiles[i].setAttribute('opacity',i<n
 
 /* ---------- modes ---------- */
 const MODES={
-  dc:  {label:'DC · constant current', row:2600, pts:60},
-  ac:  {label:'AC · modulated approach', row:2900, pts:60},
-  hop: {label:'Hopping · point by point', row:2400, pts:COLS}
+  dc:  {label:'DC · constant current', row:3400, pts:60},
+  ac:  {label:'AC · modulated approach', row:3800, pts:60},
+  hop: {label:'Hopping · point by point', row:5400, pts:COLS}
 };
 const ORDER=['dc','ac','hop'];
 let mode='hop', locked=false, t0=null;
@@ -7348,5 +7645,228 @@ requestAnimationFrame(frame);
 })();
 </script>
     <div class="toast-container" id="toastContainer"></div>
+    <script>
+    /* ===== Image tab: load, flatten, colormap (per image) ===== */
+    const imgState = {1:null, 2:null};
+    function _imgView(slot){ return document.getElementById(slot===1?'imgPlusView':'imgMinusView'); }
+
+    function loadImage(slot, input){
+      const f = input.files && input.files[0]; if(!f) return;
+      const name = f.name.toLowerCase();
+      if(name.endsWith('.tif') || name.endsWith('.tiff')){
+        const r = new FileReader();
+        r.onload = e => {
+          try{
+            const buf = e.target.result;
+            const ifds = UTIF.decode(buf); UTIF.decodeImage(buf, ifds[0]);
+            _storeImg(slot, UTIF.toRGBA8(ifds[0]), ifds[0].width, ifds[0].height);
+          }catch(err){ _imgView(slot).textContent = 'TIFF decode error'; console.error(err); }
+        };
+        r.readAsArrayBuffer(f);
+      } else {
+        const img = new Image();
+        img.onload = () => {
+          const w = img.naturalWidth, h = img.naturalHeight;
+          const c = document.createElement('canvas'); c.width=w; c.height=h;
+          const ctx = c.getContext('2d'); ctx.drawImage(img,0,0);
+          _storeImg(slot, ctx.getImageData(0,0,w,h).data, w, h);
+          URL.revokeObjectURL(img.src);
+        };
+        img.src = URL.createObjectURL(f);
+      }
+    }
+
+    function _storeImg(slot, rgba, w, h){
+      const height = new Float32Array(w*h);
+      for(let i=0;i<w*h;i++) height[i] = rgba[i*4];   // R channel as grayscale height
+      imgState[slot] = {height, w, h};
+      processImage(slot);
+    }
+
+    function processImage(slot){
+      const st = imgState[slot]; if(!st) return;
+      const order = (document.getElementById('flatten'+slot)||{}).value || 'none';
+      const cmap  = (document.getElementById('cmap'+slot)||{}).value || 'gray';
+      const h = _flatten(st.height, st.w, st.h, order);
+      let mn=Infinity, mx=-Infinity;
+      for(let i=0;i<h.length;i++){ if(h[i]<mn)mn=h[i]; if(h[i]>mx)mx=h[i]; }
+      const rng = (mx-mn)||1;
+      const out = new Uint8ClampedArray(st.w*st.h*4);
+      for(let i=0;i<h.length;i++){
+        const rgb = _cmap(cmap, (h[i]-mn)/rng);
+        out[i*4]=rgb[0]; out[i*4+1]=rgb[1]; out[i*4+2]=rgb[2]; out[i*4+3]=255;
+      }
+      const c = document.createElement('canvas'); c.width=st.w; c.height=st.h;
+      c.getContext('2d').putImageData(new ImageData(out, st.w, st.h), 0, 0);
+      c.style.cssText = 'max-width:100%;max-height:200px;border-radius:6px;object-fit:contain;image-rendering:pixelated;';
+      const v = _imgView(slot); v.innerHTML='';
+      const wrap=document.createElement('div'); wrap.style.cssText='display:flex;gap:6px;align-items:center;justify-content:center;';
+      wrap.appendChild(c);
+      wrap.appendChild(_colorbar(cmap, mn, mx));
+      v.appendChild(wrap);
+      _attachProfile(c, slot);
+    }
+
+    /* vertical colorbar (height -> colour legend) with min/max labels */
+    function _colorbar(cmap, mn, mx){
+      const cb=document.createElement('canvas'); cb.width=12; cb.height=150;
+      const cx=cb.getContext('2d');
+      for(let yy=0; yy<150; yy++){ const rgb=_cmap(cmap, 1-yy/149); cx.fillStyle='rgb('+rgb[0]+','+rgb[1]+','+rgb[2]+')'; cx.fillRect(0,yy,12,1); }
+      cb.style.cssText='width:12px;height:150px;border-radius:3px;flex:none;';
+      const bar=document.createElement('div');
+      bar.style.cssText='display:flex;flex-direction:column;align-items:center;font-size:0.5rem;color:var(--text-muted);gap:1px;';
+      bar.innerHTML='<span>'+mx.toFixed(0)+'</span>';
+      bar.appendChild(cb);
+      const ml=document.createElement('span'); ml.textContent=mn.toFixed(0); bar.appendChild(ml);
+      return bar;
+    }
+
+    /* line profile: click two points on a loaded image (works right after load) */
+    let _profPts = [], _profSlot = null;
+    function _attachProfile(canvas, slot){
+      canvas.style.cursor = 'crosshair';
+      canvas.onclick = (ev)=>{
+        const st = imgState[slot]; if(!st) return;
+        const rect = canvas.getBoundingClientRect();
+        const x = Math.round((ev.clientX-rect.left)/rect.width*st.w);
+        const y = Math.round((ev.clientY-rect.top)/rect.height*st.h);
+        if(_profSlot!==slot){ _profPts=[]; _profSlot=slot; }
+        _profPts.push([x,y]);
+        if(_profPts.length===2){ _drawProfile(slot, _profPts[0], _profPts[1]); _profPts=[]; }
+      };
+    }
+    function _drawProfile(slot, p0, p1){
+      const n = Math.max(1, Math.round(Math.hypot(p1[0]-p0[0], p1[1]-p0[1])));
+      const sample = (data,w,h)=>{ const v=[]; for(let i=0;i<=n;i++){ const x=Math.round(p0[0]+(p1[0]-p0[0])*i/n), y=Math.round(p0[1]+(p1[1]-p0[1])*i/n); v.push((x>=0&&x<w&&y>=0&&y<h)?data[y*w+x]:null); } return v; };
+      const series=[];
+      const nm1=(document.getElementById('name1')||{}).value||'Image 1';
+      const nm2=(document.getElementById('name2')||{}).value||'Image 2';
+      if(imgState[1]){ const o=(document.getElementById('flatten1')||{}).value||'none'; series.push({name:nm1, color:'var(--plus)', vals:sample(_flatten(imgState[1].height,imgState[1].w,imgState[1].h,o), imgState[1].w, imgState[1].h)}); }
+      if(imgState[2]){ const o=(document.getElementById('flatten2')||{}).value||'none'; series.push({name:nm2, color:'var(--minus)', vals:sample(_flatten(imgState[2].height,imgState[2].w,imgState[2].h,o), imgState[2].w, imgState[2].h)}); }
+      if(window.dhData){ const d=window.dhData; series.push({name:'Δh', color:'#10b981', vals:sample(d.dh, d.w, d.h)}); }
+      if(!series.length) return;
+      let mn=Infinity,mx=-Infinity; series.forEach(s=>s.vals.forEach(v=>{ if(v!=null){ if(v<mn)mn=v; if(v>mx)mx=v; } }));
+      const rng=(mx-mn)||1;
+      const view=document.getElementById('imgLineProfile');
+      const W=Math.max(300, view.clientWidth||600), H=150, pad=24;
+      let svg=`<svg width="100%" viewBox="0 0 ${W} ${H}" style="display:block;">`;
+      series.forEach(s=>{
+        const pts=s.vals.map((v,i)=> v==null?null:`${(pad+(W-2*pad)*i/(s.vals.length-1)).toFixed(1)},${(H-pad-(H-2*pad)*(v-mn)/rng).toFixed(1)}`).filter(Boolean).join(' ');
+        svg+=`<polyline points="${pts}" fill="none" stroke="${s.color}" stroke-width="1.4"/>`;
+      });
+      let lx=pad;
+      series.forEach(s=>{ svg+=`<rect x="${lx}" y="5" width="11" height="3" fill="${s.color}"/><text x="${lx+15}" y="11" font-size="9" fill="var(--text-muted)">${s.name}</text>`; lx+=72; });
+      svg+=`</svg>`;
+      view.innerHTML=svg;
+    }
+
+    /* flatten: none / 0th (line mean) / 1st (line linear) / plane */
+    function _flatten(src, w, h, order){
+      const o = Float32Array.from(src);
+      if(order==='0'){
+        for(let y=0;y<h;y++){ let s=0; for(let x=0;x<w;x++) s+=o[y*w+x]; const m=s/w; for(let x=0;x<w;x++) o[y*w+x]-=m; }
+      } else if(order==='1'){
+        for(let y=0;y<h;y++){
+          let sx=0,sy=0,sxx=0,sxy=0;
+          for(let x=0;x<w;x++){ const v=o[y*w+x]; sx+=x; sy+=v; sxx+=x*x; sxy+=x*v; }
+          const d=(w*sxx - sx*sx)||1, a=(w*sxy - sx*sy)/d, b=(sy - a*sx)/w;
+          for(let x=0;x<w;x++) o[y*w+x] -= (a*x+b);
+        }
+      } else if(order==='plane'){
+        let n=w*h, Sx=0,Sy=0,Sz=0,Sxx=0,Syy=0,Sxy=0,Sxz=0,Syz=0;
+        for(let y=0;y<h;y++) for(let x=0;x<w;x++){ const z=o[y*w+x]; Sx+=x;Sy+=y;Sz+=z;Sxx+=x*x;Syy+=y*y;Sxy+=x*y;Sxz+=x*z;Syz+=y*z; }
+        const M=[[Sxx,Sxy,Sx],[Sxy,Syy,Sy],[Sx,Sy,n]], V=[Sxz,Syz,Sz];
+        const dc=m=>m[0][0]*(m[1][1]*m[2][2]-m[1][2]*m[2][1])-m[0][1]*(m[1][0]*m[2][2]-m[1][2]*m[2][0])+m[0][2]*(m[1][0]*m[2][1]-m[1][1]*m[2][0]);
+        const det=dc(M);
+        if(Math.abs(det)>1e-9){
+          const col=(m,i,v)=>m.map((r,j)=>r.map((c,k)=>k===i?v[j]:c));
+          const a=dc(col(M,0,V))/det, b=dc(col(M,1,V))/det, c=dc(col(M,2,V))/det;
+          for(let y=0;y<h;y++) for(let x=0;x<w;x++) o[y*w+x]-=(a*x+b*y+c);
+        }
+      }
+      return o;
+    }
+
+    /* colormaps: t in [0,1] -> [r,g,b] */
+    function _cmap(name, t){
+      t = Math.max(0, Math.min(1, t));
+      if(name==='gray'){ const v=Math.round(t*255); return [v,v,v]; }
+      if(name==='afmhot'){ return [Math.round(255*Math.min(1,t*3)), Math.round(255*Math.max(0,Math.min(1,t*3-1))), Math.round(255*Math.max(0,Math.min(1,t*3-2)))]; }
+      if(name==='jet'){
+        const r=Math.max(0,Math.min(1,1.5-Math.abs(4*t-3))), g=Math.max(0,Math.min(1,1.5-Math.abs(4*t-2))), b=Math.max(0,Math.min(1,1.5-Math.abs(4*t-1)));
+        return [Math.round(r*255),Math.round(g*255),Math.round(b*255)];
+      }
+      const stops = (name==='inferno')
+        ? [[0,0,4],[40,11,84],[101,21,110],[159,42,99],[212,72,66],[245,125,21],[250,193,39],[252,255,164]]
+        : [[68,1,84],[72,40,120],[62,74,137],[49,104,142],[38,130,142],[31,158,137],[53,183,121],[110,206,88],[181,222,43],[253,231,37]];
+      const s=t*(stops.length-1), i=Math.floor(s), f=s-i, a=stops[i], b=stops[Math.min(stops.length-1,i+1)];
+      return [Math.round(a[0]+(b[0]-a[0])*f), Math.round(a[1]+(b[1]-a[1])*f), Math.round(a[2]+(b[2]-a[2])*f)];
+    }
+
+    /* Δh = Image 1 - Image 2 (each flattened with its own setting), then colormapped */
+    function computeDh(){
+      const view = document.getElementById('imgDhView');
+      const s1 = imgState[1], s2 = imgState[2];
+      if(!s1 || !s2){ view.textContent = 'load both images first'; return; }
+      view.innerHTML = '<span style="font-size:0.7rem;color:var(--text-muted);">computing…</span>';
+      setTimeout(()=>{
+        try{
+          const o1=(document.getElementById('flatten1')||{}).value||'none';
+          const o2=(document.getElementById('flatten2')||{}).value||'none';
+          const f1=_flatten(s1.height,s1.w,s1.h,o1);
+          const f2=_flatten(s2.height,s2.w,s2.h,o2);
+          const w=Math.min(s1.w,s2.w), h=Math.min(s1.h,s2.h);
+          const dh=new Float32Array(w*h);
+          for(let y=0;y<h;y++) for(let x=0;x<w;x++) dh[y*w+x]=f1[y*s1.w+x]-f2[y*s2.w+x];
+          let mn=Infinity,mx=-Infinity; for(let i=0;i<dh.length;i++){ if(dh[i]<mn)mn=dh[i]; if(dh[i]>mx)mx=dh[i]; }
+          const rng=(mx-mn)||1;
+          const cmap=(document.getElementById('cmapDh')||{}).value||'viridis';
+          const out=new Uint8ClampedArray(w*h*4);
+          for(let i=0;i<dh.length;i++){ const rgb=_cmap(cmap,(dh[i]-mn)/rng); out[i*4]=rgb[0];out[i*4+1]=rgb[1];out[i*4+2]=rgb[2];out[i*4+3]=255; }
+          const c=document.createElement('canvas'); c.width=w; c.height=h;
+          c.getContext('2d').putImageData(new ImageData(out,w,h),0,0);
+          c.style.cssText='max-width:100%;max-height:200px;border-radius:6px;object-fit:contain;image-rendering:pixelated;';
+          view.innerHTML='';
+          const wrap=document.createElement('div'); wrap.style.cssText='display:flex;gap:6px;align-items:center;justify-content:center;';
+          wrap.appendChild(c); wrap.appendChild(_colorbar(cmap, mn, mx));
+          view.appendChild(wrap);
+          window.dhData={dh,w,h,mn,mx};   // for QSCM / line profile
+        }catch(err){ view.textContent='Δh error'; console.error(err); }
+      }, 30);
+    }
+
+    /* ---- exports ---- */
+    function exportImgPNG(which){
+      let canvas, label;
+      if(which==='dh'){ canvas=document.querySelector('#imgDhView canvas'); label='dh_map'; }
+      else { canvas=_imgView(which).querySelector('canvas'); label=(document.getElementById('name'+which)||{}).value||('image_'+which); }
+      if(!canvas){ if(window.toast)toast('Nothing to export yet','info'); return; }
+      const scale=4;
+      const hi=document.createElement('canvas'); hi.width=canvas.width*scale; hi.height=canvas.height*scale;
+      const ctx=hi.getContext('2d'); ctx.imageSmoothingEnabled=false; ctx.drawImage(canvas,0,0,hi.width,hi.height);
+      const a=document.createElement('a'); a.download=String(label).replace(/\s+/g,'_')+'_300dpi.png'; a.href=hi.toDataURL('image/png'); a.click();
+    }
+    function exportImgPDF(){
+      if(!window.jspdf){ if(window.toast)toast('PDF library not loaded','error'); return; }
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF({ orientation:'portrait', unit:'mm', format:'a4' });
+      pdf.setFontSize(14); pdf.text('SR-SICM Suite | Image report', 12, 15);
+      let y=25;
+      const add=(which)=>{
+        let canvas,label;
+        if(which==='dh'){ canvas=document.querySelector('#imgDhView canvas'); label='Δh map'; }
+        else { canvas=_imgView(which).querySelector('canvas'); label=(document.getElementById('name'+which)||{}).value||('Image '+which); }
+        if(!canvas) return;
+        if(y>250){ pdf.addPage(); y=20; }
+        pdf.setFontSize(10); pdf.setTextColor(30); pdf.text(String(label), 12, y); y+=3;
+        const w=70, h=w*canvas.height/canvas.width;
+        pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 12, y, w, h);
+        y+=h+8;
+      };
+      add(1); add(2); add('dh');
+      pdf.setFontSize(8); pdf.setTextColor(120); pdf.text('Generated by SR-SICM Suite', 12, 288);
+      pdf.save('sr-sicm-image-report.pdf');
+    }
+    </script>
 </body>
 </html>
