@@ -2037,7 +2037,7 @@ body.lp-lock{overflow:hidden}
     <main>
         <!-- ==================== INTRO/ABOUT TAB ==================== -->
         <div class="tab-content active" id="content-intro">
-            <div class="conv-slot"></div>
+            <p class="conv-ref">Conventions: see <a href="javascript:void(0)" onclick="switchTab('theory')">Theory</a>.</p>
             <div class="hero-section">
                 <div style="display:flex;gap:2rem;flex-wrap:wrap;align-items:flex-start;">
                     <div style="flex:1 1 300px;min-width:260px;">
@@ -2046,7 +2046,7 @@ body.lp-lock{overflow:hidden}
                         <p>
                             Each tab is one module: approach curves (z<sub>99</sub>, Δz<sub>99</sub>), topography,
                             surface charge (calibration and dual-bias imaging), asymmetric conductivity, stiffness
-                            (s<sub>∞</sub>/s) and deconvolution (SR-SICM). The conventions above apply to all modules.
+                            (s<sub>∞</sub>/s) and deconvolution (SR-SICM). The conventions in the Theory tab apply to all modules.
                         </p>
                     </div>
                     <div style="flex:1.5 1 470px;min-width:320px;">
@@ -2601,8 +2601,8 @@ body.lp-lock{overflow:hidden}
                             SICM topography is blurred by the finite pipette aperture. SR-SICM models this blur as a point-spread function set by the tip geometry, then deconvolves the image (Richardson-Lucy) to recover sharper features below the nominal resolution limit. Set the pipette and scan parameters below, load an image, and run the deconvolution.
                         </p>
                     </div>
-                    <div style="flex:0 1 260px;min-width:200px;text-align:center;">
-                        <img src="WEBpage_img/sr.png" style="max-width:100%;border-radius:10px;border:1px solid var(--line);" alt="SR-SICM illustration">
+                    <div class="sr-fig">
+                        <img src="WEBpage_img/sr_CDE.png" alt="SR-SICM illustration: sensing zone, SICM and SR-SICM images">
                     </div>
                 </div>
             </div>
@@ -3560,7 +3560,7 @@ body.lp-lock{overflow:hidden}
             <p>Akay, L. N. – BioSPM group, Aarhus University. SR-SICM Suite, version 1.1 (2026). https://github.com/LeilaqL/sr-sicm-suite
                (accessed <span id="cite-date-suite"></span>). Please also cite the method reference for the module you used.</p>
 
-            <div class="conv-slot" style="margin-top:22px"></div>
+            <p class="conv-ref" style="margin-top:22px">Conventions: see <a href="javascript:void(0)" onclick="switchTab('theory')">Theory</a>.</p>
         </div>
     </div>
     <script>
