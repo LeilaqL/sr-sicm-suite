@@ -1,0 +1,97 @@
+/* CIHD dual-bias imaging module. Uses the suite's theme variables; fixed data colours. */
+#cihd-root {
+  --c-plus: #d62728; --c-minus: #2f6fb5; --c-dh: #2ca02c; --c-acc: #660033;
+  margin-top: 1.4rem; padding: 1.1rem 1.15rem 1.25rem; scroll-margin-top: 170px;
+  border: 1px solid var(--line, #ccc); border-radius: 8px; background: var(--surface, transparent);
+  color: var(--txt, inherit); font-size: 13.5px; line-height: 1.55;
+}
+#cihd-root *, #cihd-root *::before, #cihd-root *::after { box-sizing: border-box; }
+.cihd-head { display: flex; gap: 1rem; justify-content: space-between; align-items: flex-start; flex-wrap: wrap;
+  padding-bottom: .8rem; margin-bottom: .9rem; border-bottom: 1px solid var(--line-2, #ddd); }
+.cihd-title { margin: 0; font-size: 16px; font-weight: 600; letter-spacing: -.01em; }
+.cihd-sub { margin: .3rem 0 0; max-width: 72ch; color: var(--muted, #555); font-size: 13px; }
+.cihd-panel { margin-bottom: .8rem; }
+.cihd-row { display: flex; flex-wrap: wrap; gap: .6rem 1rem; align-items: center; margin: .45rem 0; }
+.cihd-note, .cihd-caption { color: var(--muted, #555); font-size: 12.5px; margin: .45rem 0; max-width: 100ch; }
+.cihd-caption { margin-top: .2rem; }
+.cihd-hint { color: var(--faint, #777); font-size: 12px; }
+.cihd-readout { font-family: "Geist Mono", ui-monospace, monospace; font-size: 12px; color: var(--muted, #555); }
+.cihd-label { font-size: 12px; color: var(--faint, #777); }
+
+/* segmented buttons */
+.cihd-seg { display: inline-flex; border: 1px solid var(--line, #ccc); border-radius: 6px; overflow: hidden; flex-wrap: wrap; }
+.cihd-seg button { appearance: none; border: 0; border-right: 1px solid var(--line, #ccc); background: transparent;
+  color: var(--muted, #555); font: inherit; font-size: 13px; padding: .38rem .8rem; cursor: pointer; min-height: 34px; }
+.cihd-seg button:last-child { border-right: 0; }
+.cihd-seg button span { color: var(--faint, #777); font-size: 11.5px; margin-left: .25rem; }
+.cihd-seg button[aria-pressed="true"] { background: var(--c-acc); color: #fff; }
+.cihd-seg button[aria-pressed="true"] span { color: rgba(255,255,255,.75); }
+.cihd-seg-sm button { padding: .2rem .65rem; min-height: 30px; font-weight: 600; }
+.cihd-seg-sm button.is-plus[aria-pressed="true"] { background: var(--c-plus); }
+.cihd-seg-sm button.is-minus[aria-pressed="true"] { background: var(--c-minus); }
+.cihd-seg button:focus-visible, .cihd-drop:focus-visible { outline: 2px solid var(--c-acc); outline-offset: 1px; }
+
+.cihd-check { display: inline-flex; align-items: center; gap: .4rem; margin: 0; font-size: 13px; color: var(--muted, #555); }
+.cihd-check input { width: auto; margin: 0; }
+.cihd-inline { display: inline-flex; align-items: center; gap: .4rem; margin: 0; font-size: 12.5px; color: var(--muted, #555); }
+.cihd-inline input[type="number"] { width: 6.5rem; padding: .3rem .45rem; font-size: 13px; }
+.cihd-inline select { width: auto; padding: .3rem .45rem; font-size: 13px; }
+.cihd-grow { flex: 1 1 260px; }
+.cihd-grow input[type="range"] { flex: 1 1 auto; padding: 0; border: 0; background: none; accent-color: var(--c-acc); min-width: 120px; }
+
+.cihd-permission { margin: 0 0 .8rem; padding: .45rem .7rem; border-left: 3px solid var(--c-acc);
+  background: var(--ov2, rgba(0,0,0,.03)); font-size: 12.5px; color: var(--muted, #555); }
+
+/* file loading */
+.cihd-drop { border: 1px dashed var(--hair, #aaa); border-radius: 6px; padding: .9rem 1rem; cursor: pointer;
+  color: var(--muted, #555); font-size: 13px; }
+.cihd-drop strong { color: var(--txt, inherit); font-weight: 600; }
+.cihd-drop span { font-size: 12px; color: var(--faint, #777); }
+.cihd-drop.is-over { border-color: var(--c-acc); background: var(--ov2, rgba(0,0,0,.03)); }
+.cihd-files { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: .6rem; margin-top: .6rem; }
+.cihd-file { border: 1px solid var(--line, #ccc); border-radius: 6px; padding: .55rem .7rem; min-width: 0; }
+.cihd-file-name { font-weight: 600; font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cihd-file-meta { font-family: "Geist Mono", ui-monospace, monospace; font-size: 11.5px; color: var(--faint, #777); overflow-wrap: anywhere; }
+.cihd-x { height: 30px !important; font-size: 12px !important; margin-left: auto; }
+
+/* processing steps */
+.cihd-step { border: 1px solid var(--line-2, #ddd); border-radius: 6px; padding: .35rem .75rem; margin: .45rem 0; }
+.cihd-step summary { cursor: pointer; font-weight: 600; font-size: 13px; padding: .2rem 0; }
+.cihd-step p { margin: .25rem 0 .35rem; color: var(--muted, #555); font-size: 12.5px; max-width: 95ch; }
+.cihd-step .btn { height: 32px; font-size: 12.5px; }
+
+.cihd-msg { min-height: 1.2em; font-size: 12.5px; color: var(--muted, #555); margin: .3rem 0; }
+.cihd-msg-err { color: #b3261e; }
+:root[data-lp="ink"] .cihd-msg-err, :root[data-lp="slate"] .cihd-msg-err, :root[data-lp="aurora"] .cihd-msg-err { color: #ff8a80; }
+
+/* maps and profile */
+.cihd-maps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .8rem; margin-top: .4rem; }
+.cihd-map { margin: 0; min-width: 0; }
+.cihd-map svg { display: block; width: 100%; height: auto; touch-action: none; cursor: ns-resize; user-select: none; }
+.cihd-cropping .cihd-map svg { cursor: crosshair; }
+.cihd-prof { width: 100%; margin-top: .3rem; overflow-x: auto; }
+.cihd-prof svg { display: block; width: 100%; height: auto; }
+.cihd-profctl { margin-top: .7rem; }
+
+.cihd-summary { margin-top: .5rem; overflow-x: auto; }
+.cihd-table { border-collapse: collapse; font-size: 12.5px; min-width: 460px; }
+.cihd-table caption { text-align: left; font-weight: 600; padding-bottom: .3rem; font-size: 13px; }
+.cihd-table th, .cihd-table td { padding: .28rem .7rem .28rem 0; border-bottom: 1px solid var(--line-2, #ddd); text-align: left; }
+.cihd-table th { font-weight: 500; color: var(--faint, #777); font-size: 12px; }
+.cihd-table td.num { font-family: "Geist Mono", ui-monospace, monospace; text-align: right; padding-right: 1rem; white-space: nowrap; }
+#cihd-root .btn { width: auto; display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; margin: 0; }
+.cihd-export .btn { height: 34px; font-size: 12.5px; }
+.cihd-inline { white-space: nowrap; }
+.cihd-inline.cihd-grow { white-space: normal; flex-wrap: wrap; min-width: 0; max-width: 100%; }
+
+@media (max-width: 900px) {
+  .cihd-maps { grid-template-columns: minmax(0, 1fr); }
+  .cihd-map { max-width: 520px; }
+}
+@media (max-width: 520px) {
+  #cihd-root { padding: .8rem .7rem 1rem; }
+  .cihd-head { flex-direction: column; }
+  .cihd-inline input[type="number"] { width: 5.5rem; }
+  .cihd-table { min-width: 0; width: 100%; font-size: 12px; }
+  #cihdSummary .cihd-table td:last-child, #cihdSummary .cihd-table th:last-child { display: none; }
+}

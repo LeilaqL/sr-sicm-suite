@@ -1,0 +1,15 @@
+# SR-SICM Suite - static site, no build step.
+#
+# NOTE: examples/cihd/raw/, examples/cihd/py/ and tests/ are local only.
+# - Git-linked deploys: they are excluded by .gitignore, so they never reach Netlify.
+# - Drag-and-drop / CLI deploys do NOT read .gitignore: run make_deploy.ps1 and
+#   deploy the _deploy/ folder it creates, never the whole sr-sicm-suite folder.
+
+[build]
+  publish = "."
+  command = ""
+
+[[headers]]
+  for = "/examples/*"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"

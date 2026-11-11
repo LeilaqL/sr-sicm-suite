@@ -1,0 +1,179 @@
+{
+ "note": "Simulated demo data, not measured. Reference result of sicm_lib (unchanged): z_cross at 0.99 from the bulk side, blocks(discard=2), triplets(). Times from the curve time stamps (seconds).",
+ "true_dz99_nm": -6.0,
+ "drift_nm_per_min": -14.0,
+ "drift_curvature_nm_per_min2": 0.04,
+ "blocks": [
+  {
+   "index": 1,
+   "bias_V": 0.1,
+   "n_used": 3,
+   "z99_nm": 4993.614,
+   "I_inf_nA": 2.00007,
+   "I_inf_drift_pct": 0.0
+  },
+  {
+   "index": 2,
+   "bias_V": -0.1,
+   "n_used": 3,
+   "z99_nm": 4945.738,
+   "I_inf_nA": 1.80089,
+   "I_inf_drift_pct": 0.008
+  },
+  {
+   "index": 3,
+   "bias_V": 0.1,
+   "n_used": 3,
+   "z99_nm": 4911.682,
+   "I_inf_nA": 2.0021,
+   "I_inf_drift_pct": 0.009
+  },
+  {
+   "index": 4,
+   "bias_V": -0.1,
+   "n_used": 3,
+   "z99_nm": 4864.646,
+   "I_inf_nA": 1.80268,
+   "I_inf_drift_pct": 0.002
+  },
+  {
+   "index": 5,
+   "bias_V": 0.1,
+   "n_used": 3,
+   "z99_nm": 4831.63,
+   "I_inf_nA": 2.00393,
+   "I_inf_drift_pct": 0.004
+  },
+  {
+   "index": 6,
+   "bias_V": -0.1,
+   "n_used": 3,
+   "z99_nm": 4786.54,
+   "I_inf_nA": 1.80437,
+   "I_inf_drift_pct": 0.008
+  },
+  {
+   "index": 7,
+   "bias_V": 0.1,
+   "n_used": 3,
+   "z99_nm": 4755.057,
+   "I_inf_nA": 2.02102,
+   "I_inf_drift_pct": 0.493
+  },
+  {
+   "index": 8,
+   "bias_V": -0.1,
+   "n_used": 3,
+   "z99_nm": 4712.51,
+   "I_inf_nA": 1.80631,
+   "I_inf_drift_pct": 0.002
+  },
+  {
+   "index": 9,
+   "bias_V": 0.1,
+   "n_used": 3,
+   "z99_nm": 4681.28,
+   "I_inf_nA": 2.00799,
+   "I_inf_drift_pct": 0.007
+  },
+  {
+   "index": 10,
+   "bias_V": -0.1,
+   "n_used": 3,
+   "z99_nm": 4639.873,
+   "I_inf_nA": 1.80805,
+   "I_inf_drift_pct": 0.009
+  }
+ ],
+ "triplets": [
+  {
+   "blocks": [
+    "demo_block01_1.tiff",
+    "demo_block02_1.tiff",
+    "demo_block03_1.tiff"
+   ],
+   "dz99_nm": -6.91,
+   "max_I_inf_drift_pct": 0.009
+  },
+  {
+   "blocks": [
+    "demo_block02_1.tiff",
+    "demo_block03_1.tiff",
+    "demo_block04_1.tiff"
+   ],
+   "dz99_nm": -6.489,
+   "max_I_inf_drift_pct": 0.009
+  },
+  {
+   "blocks": [
+    "demo_block03_1.tiff",
+    "demo_block04_1.tiff",
+    "demo_block05_1.tiff"
+   ],
+   "dz99_nm": -7.009,
+   "max_I_inf_drift_pct": 0.009
+  },
+  {
+   "blocks": [
+    "demo_block04_1.tiff",
+    "demo_block05_1.tiff",
+    "demo_block06_1.tiff"
+   ],
+   "dz99_nm": -6.037,
+   "max_I_inf_drift_pct": 0.008
+  },
+  {
+   "blocks": [
+    "demo_block05_1.tiff",
+    "demo_block06_1.tiff",
+    "demo_block07_1.tiff"
+   ],
+   "dz99_nm": -6.804,
+   "max_I_inf_drift_pct": 0.493
+  },
+  {
+   "blocks": [
+    "demo_block06_1.tiff",
+    "demo_block07_1.tiff",
+    "demo_block08_1.tiff"
+   ],
+   "dz99_nm": -5.532,
+   "max_I_inf_drift_pct": 0.493
+  },
+  {
+   "blocks": [
+    "demo_block07_1.tiff",
+    "demo_block08_1.tiff",
+    "demo_block09_1.tiff"
+   ],
+   "dz99_nm": -5.659,
+   "max_I_inf_drift_pct": 0.493
+  },
+  {
+   "blocks": [
+    "demo_block08_1.tiff",
+    "demo_block09_1.tiff",
+    "demo_block10_1.tiff"
+   ],
+   "dz99_nm": -5.089,
+   "max_I_inf_drift_pct": 0.009
+  }
+ ],
+ "dz99_all": {
+  "n": 8,
+  "mean_nm": -6.191,
+  "sd_nm": 0.718
+ },
+ "dz99_without_flagged": {
+  "n": 5,
+  "mean_nm": -6.307,
+  "sd_nm": 0.782
+ },
+ "flagged_blocks": [
+  7
+ ],
+ "naive_pairs_without_drift_correction": {
+  "n": 5,
+  "mean_nm": -44.791
+ }
+}

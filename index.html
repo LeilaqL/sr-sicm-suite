@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-lp="ink">
+<html lang="en" data-lp="paper">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1650,21 +1650,30 @@ body.lp-lock{overflow:hidden}
 @media(max-width:1000px){#landing .themebar{margin-left:auto}}
 
     </style>
+    <style>
+    /* narrow screens: the tab bar scrolls sideways instead of widening the page (2026-11-11) */
+    @media (max-width: 760px) {
+      .tab-nav { max-width: 100%; overflow-x: auto; flex-wrap: nowrap; border-radius: 10px; scrollbar-width: thin; }
+      .tab-btn { white-space: nowrap; flex: 0 0 auto; }
+    }
+    </style>
+    <link rel="stylesheet" href="css/site.css">
+    <link rel="stylesheet" href="css/cihd.css">
 </head>
 <body data-theme="dark">
 
 <!-- ==================== LANDING / ENTRY SCREEN ==================== -->
-<div id="landing" data-lp="ink">
+<div id="landing" data-lp="paper">
 <div class="boot"></div>
 <div class="wrap">
 
 
   <nav>
-    <div class="brand"><div class="mark">SR</div>SR-SICM Suite <span>v1.0</span></div>
+    <div class="brand"><div class="mark">SR</div>SR-SICM Suite <span>v1.1</span></div>
     <div class="navright">
       <div class="navlinks">
         <a href="javascript:void(0)" onclick="openSuite('approach')">Current-Distance Curve</a><a href="javascript:void(0)" onclick="openSuite('qscm')">QSCM</a>
-        <a href="javascript:void(0)" onclick="openSuite('sicm')">SR-SICM</a><a href="javascript:void(0)" onclick="openSuite('theory')">Theory</a>
+        <a href="javascript:void(0)" onclick="openSuite('sicm')">SR-SICM</a><a href="javascript:void(0)" onclick="openSuite('theory')">Theory</a><a href="javascript:void(0)" onclick="openSuite('aboutapp')">About</a>
       </div>
       <div class="themebar" role="group" aria-label="Colour theme">
         <button class="sw" data-t="ink"    title="Ink"    style="background:#0A0C10"></button>
@@ -1680,20 +1689,20 @@ body.lp-lock{overflow:hidden}
     <!-- copy -->
     <section class="rise" style="--d:120ms">
       <div class="eyebrow">Scanning ion conductance microscopy</div>
-      <h1>Surface charge,<br>resolved without<br><span class="dim">ever touching.</span></h1>
+      <h1>SR-SICM Suite<br><span class="dim">Analysis of SICM approach curves and images</span></h1>
       <p class="lede">
-        A nanopipette approaches at two bias polarities. Each approach stops at the same
-        current setpoint, but at a different height. That gap, <b>Δh</b>, converts
-        directly into local surface charge density.
+        Surface charge from dual-bias approach curves (<b>Δz<sub>99</sub></b>) and dual-bias images (<b>Δh</b>),
+        relative stiffness from the slope of the approach curve (<b>s<sub>∞</sub>/s</b>), and deconvolution of
+        topography. Park XE-Bio / XEI files are read in the browser; data are not uploaded.
       </p>
       <div class="actions">
         <a class="lp-btn p" href="javascript:void(0)" onclick="openSuite('intro')">Open the suite</a>
-        <a class="lp-btn s" href="javascript:void(0)" onclick="openSuite('theory')">Read the method</a>
+        <a class="lp-btn s" href="javascript:void(0)" onclick="openSuite('theory')">Method and conventions</a>
       </div>
       <p class="meta">
-        <em>σ = (Δh − 0.81) × 5.79 mC/m²</em><br>
-        150 mM NaCl &nbsp;·&nbsp; ±100 mV &nbsp;·&nbsp; 99 % setpoint<br>
-        Klausen 2016 &nbsp;·&nbsp; Sønderskov 2025
+        <em>Δz<sub>99</sub> = z<sub>99</sub>(V−) − z<sub>99</sub>(V+); sign of Δz<sub>99</sub> = sign of σ<sub>s</sub></em><br>
+        Example panel: ±100 mV, setpoint I/I<sub>∞</sub> = 0.99<br>
+        Leyla Nur Akay · Aarhus University · v1.1
       </p>
     </section>
 
@@ -1705,7 +1714,7 @@ body.lp-lock{overflow:hidden}
       </div>
 
       <svg id="s" viewBox="0 0 1000 520" preserveAspectRatio="xMidYMid meet"
-           aria-label="Nanopipette approach at two bias polarities, resolving Δh at the current setpoint">
+           aria-label="Schematic: nanopipette approach at two bias polarities; the distance between the two curves at I/I∞ = 0.99 is Δz99">
         <defs>
           <linearGradient id="gg" x1="0" y1="0" x2="1" y2="0">
             <stop offset="0" stop-color="var(--glass-a)"/>
@@ -1825,7 +1834,7 @@ body.lp-lock{overflow:hidden}
             <line id="dA" stroke="var(--hl)" stroke-width=".9" opacity=".5"/>
             <line id="dB" stroke="var(--hl)" stroke-width=".9" opacity=".5"/>
             <line id="dL" stroke="var(--hl)" stroke-width="1.2"/>
-            <text id="dT" font-family="Geist Mono" font-size="12" font-weight="500" fill="var(--hl)" text-anchor="middle">Δh</text>
+            <text id="dT" font-family="Geist Mono" font-size="12" font-weight="500" fill="var(--hl)" text-anchor="middle">Δz99</text>
           </g>
 
           <!-- legend -->
@@ -1837,22 +1846,84 @@ body.lp-lock{overflow:hidden}
       </svg>
 
       <div class="stats">
-        <div class="st p" id="sHp"><div class="k">h at +100 mV</div><div class="v"><span id="rHp">—</span><u>nm</u></div></div>
-        <div class="st m" id="sHm"><div class="k">h at −100 mV</div><div class="v"><span id="rHm">—</span><u>nm</u></div></div>
-        <div class="st"   id="sDh"><div class="k">Δh</div><div class="v"><span id="rDh">—</span><u>nm</u></div></div>
+        <div class="st p" id="sHp"><div class="k">z99 at +100 mV</div><div class="v"><span id="rHp">—</span><u>nm</u></div></div>
+        <div class="st m" id="sHm"><div class="k">z99 at −100 mV</div><div class="v"><span id="rHm">—</span><u>nm</u></div></div>
+        <div class="st"   id="sDh"><div class="k">Δz99</div><div class="v"><span id="rDh">—</span><u>nm</u></div></div>
         <div class="st"   id="sSg"><div class="k">σ surface charge</div><div class="v"><span id="rSg">—</span><u>mC/m²</u></div></div>
       </div>
     </section>
   </div>
 
+<!-- ===== v1.1: how SICM works, model surfaces, what the outputs mean ===== -->
+<section class="lp-sec" id="lp-how">
+    <div class="eyebrow">How SICM works</div>
+    <h2>Approach curve and setpoint</h2>
+    <p class="lp-intro">A glass nanopipette filled with electrolyte approaches the sample. The ion current I through the
+      tip opening falls when the tip comes close to the surface. Distances are read where the normalised current
+      I/I<sub>∞</sub> crosses 0.99 (z<sub>99</sub>), with the height from the Z detector (0.879 nm/count).</p>
+    <figure class="vid vid-main">
+      <video controls muted playsinline preload="metadata" src="assets/animations/SICM_principle.mp4#t=0.1"
+             aria-label="Animation: principle of scanning ion conductance microscopy"></video>
+      <figcaption><b>SICM principle.</b> Pipette approach and ion current. Schematic, not to scale.</figcaption>
+    </figure>
+</section>
+
+<section class="lp-sec" id="lp-cases">
+    <div class="eyebrow">Model surfaces</div>
+    <h2>Rigid charged surface and neutral compliant surface</h2>
+    <p class="lp-intro">Two limiting cases. On a rigid, charged surface the two bias polarities stop at different
+      heights (charge readout, Δz<sub>99</sub>). On a neutral, compliant surface the surface is pushed in and the approach
+      curve is less steep than on a rigid reference (stiffness readout, s<sub>∞</sub>/s).</p>
+    <div class="lp-two">
+      <figure class="vid">
+        <video controls muted playsinline preload="metadata" src="assets/animations/Case_A_rigid_charged_panel.mp4#t=0.1"
+               aria-label="Animation: case A, rigid charged surface"></video>
+        <figcaption><b>Case A.</b> Rigid, charged surface. Schematic, not to scale.</figcaption>
+      </figure>
+      <figure class="vid">
+        <video controls muted playsinline preload="metadata" src="assets/animations/Case_B_neutral_compliant_panel.mp4#t=0.1"
+               aria-label="Animation: case B, neutral compliant surface"></video>
+        <figcaption><b>Case B.</b> Neutral, compliant surface. Schematic, not to scale.</figcaption>
+      </figure>
+    </div>
+</section>
+
+<section class="lp-sec" id="lp-use">
+    <div class="eyebrow">What the outputs mean</div>
+    <h2>Two readouts</h2>
+    <div class="lp-two">
+      <div class="lp-box">
+        <h3>Δz<sub>99</sub> → sign and size of the surface charge</h3>
+        <p>Δz<sub>99</sub> = z<sub>99</sub>(V−) − z<sub>99</sub>(V+). Its sign is the sign of σ<sub>s</sub>: bare mica (negative) is expected
+          to give Δz<sub>99</sub> &lt; 0, poly-L-lysine on mica (positive) Δz<sub>99</sub> &gt; 0. Larger |Δz<sub>99</sub>| means a larger
+          charge density; σ<sub>s</sub> in mC/m² needs a calibration for the same pipette, electrolyte and bias.
+          The same sign rule holds for dual-bias images (Δh), shown here for lipid patches on mica.</p>
+        <div id="useChargeFig" role="img" aria-label="Bar chart: median Δh on lipid patches relative to mica"></div>
+        <p class="fig-cap">Median Δh on lipid patches relative to mica (bars: median, whiskers: interquartile range), ±100 mV.
+          Cationic DPTAP and zwitterionic DPPE are higher at −100 mV than at +100 mV (Δh &gt; 0), anionic DPPG is lower (Δh &lt; 0).
+          Data: Klausen et al., Nat. Commun. (2016); re-processed. Full maps in Surface Charge → Dual-bias imaging.</p>
+      </div>
+      <div class="lp-box">
+        <h3>s<sub>∞</sub>/s → relative stiffness</h3>
+        <p>s is the slope of I/I<sub>∞</sub> versus z, fitted per curve between 0.98 and 0.99. On a rigid reference
+          (mica, glass) the slope is s<sub>∞</sub>. A softer sample is pushed in by the approaching pipette, so the
+          curve is less steep: s<sub>∞</sub>/s &gt; 1 and indentation δ = 0.01 (1/s − 1/s<sub>∞</sub>) &gt; 0. Reference and sample
+          must be measured with the same pipette and the same bias.</p>
+        <div id="useStiffFig" role="img" aria-label="Schematic approach curves for a rigid reference and a soft sample"></div>
+        <p class="fig-cap">Schematic approach curves (normalised current vs. distance from the 0.99 crossing, nm) for a rigid
+          reference and a softer sample (e.g. a cell). The shaded band is the fit window 0.98–0.99. Not measured data.</p>
+      </div>
+    </div>
+</section>
+
 <section class="band">
     <div class="head rise" style="--d:60ms">
       <div>
         <div class="eyebrow">Quantitative surface charge microscopy</div>
-        <h2>One Δh is a point.<br><span class="dim">A raster is a map.</span></h2>
+        <h2>Surface charge maps</h2>
       </div>
-      <p>The tip repeats the dual-bias approach across a grid. Each pixel resolves its own
-      Δh, and the surface charge landscape emerges line by line.</p>
+      <p>Repeating the dual-bias measurement on a grid gives one value per pixel and a map of the surface
+      charge (blue negative, red positive). Schematic animation, not measured data.</p>
     </div>
 
     <div class="lp-panel rise" style="--d:180ms">
@@ -1865,9 +1936,9 @@ body.lp-lock{overflow:hidden}
            aria-label="A nanopipette rasters a surface, building a surface-charge map line by line">
         <defs>
           <linearGradient id="cbar" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0"  stop-color="var(--tile-neg)"/>
+            <stop offset="0"  stop-color="var(--tile-pos)"/>
             <stop offset=".5" stop-color="var(--tile-base)"/>
-            <stop offset="1"  stop-color="var(--tile-pos)"/>
+            <stop offset="1"  stop-color="var(--tile-neg)"/>
           </linearGradient>
           <radialGradient id="scanGlow" cx=".5" cy=".5" r=".5">
             <stop offset="0" stop-color="var(--hl)"/><stop offset="1" stop-color="transparent"/>
@@ -1931,12 +2002,12 @@ body.lp-lock{overflow:hidden}
                 <div class="logo-icon">SR</div>
                 <div class="logo-text">
                     <h1>SR-SICM Suite</h1>
-                    <span>v1.0 | Super-Resolution & QSCM</span>
+                    <span>v1.1 · SICM analysis</span>
                 </div>
             </div>
             
             <nav class="tab-nav">
-                <button class="tab-btn active" onclick="switchTab('intro')" id="tab-intro">About</button>
+                <button class="tab-btn active" onclick="switchTab('intro')" id="tab-intro">Overview</button>
                 <button class="tab-btn" onclick="switchTab('approach')" id="tab-approach">Current-Distance Curve</button>
                 <button class="tab-btn" onclick="switchTab('image')" id="tab-image">Topography</button>
                 <button class="tab-btn" onclick="switchTab('qscm')" id="tab-qscm">Surface Charge (QSCM)</button>
@@ -1944,7 +2015,7 @@ body.lp-lock{overflow:hidden}
                 <button class="tab-btn" onclick="switchTab('stiffness')" id="tab-stiffness">Stiffness</button>
                 <button class="tab-btn" onclick="switchTab('sicm')" id="tab-sicm">SR-SICM</button>
                 <button class="tab-btn" onclick="switchTab('theory')" id="tab-theory">Theory</button>
-                <button class="tab-btn" onclick="switchTab('aboutapp')" id="tab-aboutapp">Info</button>
+                <button class="tab-btn" onclick="switchTab('aboutapp')" id="tab-aboutapp">About</button>
             </nav>
 
             <div class="header-controls">
@@ -1966,14 +2037,16 @@ body.lp-lock{overflow:hidden}
     <main>
         <!-- ==================== INTRO/ABOUT TAB ==================== -->
         <div class="tab-content active" id="content-intro">
+            <div class="conv-slot"></div>
             <div class="hero-section">
                 <div style="display:flex;gap:2rem;flex-wrap:wrap;align-items:flex-start;">
                     <div style="flex:1 1 300px;min-width:260px;">
-                        <div class="section-eyebrow">Analysis suite · v1.0</div>
-                        <h2>Everything the method needs,<br><span class="dim">in one place.</span></h2>
+                        <div class="section-eyebrow">Analysis suite · v1.1</div>
+                        <h2>Analysis modules<br><span class="dim">for SICM approach curves and images</span></h2>
                         <p>
-                            Load approach curves, resolve Δh at a shared setpoint, convert it to surface
-                            charge density, and export the session. The workflow from the intro, made operational.
+                            Each tab is one module: approach curves (z<sub>99</sub>, Δz<sub>99</sub>), topography,
+                            surface charge (calibration and dual-bias imaging), asymmetric conductivity, stiffness
+                            (s<sub>∞</sub>/s) and deconvolution (SR-SICM). The conventions above apply to all modules.
                         </p>
                     </div>
                     <div style="flex:1.5 1 470px;min-width:320px;">
@@ -2046,16 +2119,16 @@ body.lp-lock{overflow:hidden}
                         <ul>
                             <li><strong>Dual-bias:</strong> Apply +100mV and -100mV to pipette</li>
                             <li><strong>Approach curves:</strong> Record I vs distance at each bias</li>
-                            <li><strong>Δh extraction:</strong> Height difference at constant setpoint</li>
-                            <li><strong>Calibration:</strong> Convert Δh to σ using known references</li>
+                            <li><strong>Δz<sub>99</sub> extraction:</strong> height difference at the 0.99 setpoint</li>
+                            <li><strong>Calibration:</strong> convert Δz<sub>99</sub> to σ using known references</li>
                         </ul>
                         <div class="detail-box">
                             <p><strong>Physical Basis:</strong></p>
-                            <p>Surface charges create electric double layer (EDL). Positive pipette bias (+100mV) attracts anions, negative bias attracts cations. On negatively charged surface, +100mV allows closer approach → Δh &lt; 0.</p>
+                            <p>Surface charges create electric double layer (EDL). Positive pipette bias (+100mV) attracts anions, negative bias attracts cations. On a negatively charged surface the current at +100 mV falls off farther from the surface, so z<sub>99</sub>(+V) &gt; z<sub>99</sub>(−V) and Δz<sub>99</sub> = z<sub>99</sub>(V−) − z<sub>99</sub>(V+) &lt; 0.</p>
                         </div>
                         <div class="detail-box">
                             <p><strong>Calibration (Klausen 2016):</strong></p>
-                            <p>σ = (Δh - 0.81) × 5.79 mC/m²<br>
+                            <p>σ = (Δz<sub>99</sub> − 0.81) × 5.79 mC/m²<br>
                             Valid for: ri ≈ 15nm, 150mM NaCl, ±100mV, 99% setpoint</p>
                         </div>
                         <div class="detail-box">
@@ -2194,25 +2267,113 @@ body.lp-lock{overflow:hidden}
         <div class="tab-content" id="content-stiffness">
             <div class="card" style="margin-bottom:0.7rem;">
                 <div class="card-header">
-                    <div class="card-icon">🧫</div>
-                    <div><div class="card-title">Stiffness (SICM)</div><div class="card-subtitle">Non-contact elastic modulus from approach slopes</div></div>
+                    <div><div class="card-title">Stiffness (SICM)</div><div class="card-subtitle">Relative stiffness from approach slopes</div></div>
                 </div>
                 <p style="font-size:0.8rem;color:var(--muted);line-height:1.6;margin:0 0 0.6rem;">
-                    SICM measures cell stiffness without touching the sample. Under the pipette's hydrostatic pressure a soft surface deforms slightly, which lowers the slope of the approach curve. Comparing the slope on the sample with the slope on a stiff reference gives the effective elastic modulus.
+                    Under the pipette's hydrostatic pressure a soft surface deforms slightly, which lowers the slope of the approach curve.
+                    Comparing the slope on the sample with the slope on a rigid reference, measured with the same pipette and the same bias,
+                    gives the relative stiffness s<sub>∞</sub>/s and the indentation δ (Rheinlaender &amp; Schäffer 2013).
                 </p>
                 <div style="background:var(--raised);border:1px solid var(--line);padding:0.6rem;border-radius:8px;text-align:center;font-size:0.95rem;margin-bottom:0.6rem;">
-                    <div class="eq katex-eq" data-tex="E = \rho_0\, A \left( \dfrac{s_\infty}{s} - 1 \right)^{-1}"></div>
+                    <div class="eq katex-eq" data-tex="\delta = 0.01\left(\dfrac{1}{s} - \dfrac{1}{s_\infty}\right), \qquad \dfrac{E}{p_0} = \dfrac{A}{s_\infty/s - 1}"></div>
                 </div>
                 <ul style="font-size:0.72rem;color:var(--muted);line-height:1.6;padding-left:1.1rem;margin:0;">
                     <li><strong>s</strong>: approach-curve slope on the sample (softer sample → smaller s)</li>
-                    <li><strong>s∞</strong>: slope on a stiff reference, where the surface does not deform</li>
-                    <li><strong>ρ₀</strong>: applied pressure &nbsp;·&nbsp; <strong>A</strong>: geometry constant from FEM</li>
-                    <li>Smaller s means a lower modulus, so soft cells read as small E</li>
+                    <li><strong>s∞</strong>: slope on a rigid reference, where the surface does not deform</li>
+                    <li><strong>A</strong>: geometry constant from FEM &nbsp;·&nbsp; E/p₀ is an apparent value; absolute E (Pa) is not reported</li>
+                    <li>s∞/s &gt; 1 and δ &gt; 0 mean the sample is softer than the reference</li>
                 </ul>
-                <div style="margin-top:0.6rem;font-size:0.68rem;color:var(--text-muted);">
-                    Section under construction. Planned: load approach curves, fit s and s∞, compute E, and separate the mechanical response from charge using ±bias.
-                    <!-- Leyla: add the method / figure from MD's paper and build the workflow here -->
+                <div style="margin-top:0.6rem;font-size:0.68rem;color:var(--text-muted);line-height:1.6;">
+                    Here: s = slope of I/I∞ in the window 0.98–0.99 (1/µm), S∞ = mean slope on the reference, indentation δ = 0.01 (1/s − 1/S∞), apparent E/p₀ = A / (S∞/s − 1).
+                    Same rules as SICM quick look and MATLAB, so the same files give the same numbers.
+                    <!-- Leyla: add the method / figure from MD's paper here -->
                 </div>
+            </div>
+
+            <!-- SAMPLE / REFERENCE LOADING -->
+            <div class="card" style="margin-bottom:0.7rem;">
+                <div class="card-header">
+                    <div><div class="card-title">Reference &amp; Sample</div><div class="card-subtitle">Park approach TIFFs · bias read from each file</div></div>
+                </div>
+                <div style="display:flex;gap:0.4rem;align-items:center;flex-wrap:wrap">
+                    <div class="file-input-wrapper" style="min-width:170px">
+                        <button class="btn" style="width:100%;font-size:0.68rem;padding:0.45rem;background:var(--raised);border:1px solid var(--line);">Reference TIFF (stiff: glass / dish)</button>
+                        <input type="file" class="file-input" id="stRefInput" accept=".tif,.tiff" multiple onchange="stLoad(event,'ref')">
+                    </div>
+                    <div class="file-input-wrapper" style="min-width:170px">
+                        <button class="btn" style="width:100%;font-size:0.68rem;padding:0.45rem;background:rgba(239,68,68,0.15);border:1px solid #ef4444;color:#ef4444">Sample TIFF (cell, gel …)</button>
+                        <input type="file" class="file-input" id="stSmpInput" accept=".tif,.tiff" multiple onchange="stLoad(event,'sample')">
+                    </div>
+                    <button class="btn btn-secondary" onclick="stClear()" style="font-size:0.68rem;padding:0.45rem;width:auto">Clear</button>
+                    <span id="stStatus" style="font-size:0.65rem;color:var(--text-muted)"></span>
+                </div>
+                <div id="stFiles" style="display:none;margin-top:0.5rem;flex-wrap:wrap;gap:0.4rem;"></div>
+                <div style="font-family:'Geist Mono',monospace;font-size:11px;color:var(--faint);margin-top:0.45rem;">
+                    Sample files with the same group name are pooled (e.g. "cell", "crystal"). Click Ref / Sample on a file to move it.
+                </div>
+            </div>
+
+            <!-- SETTINGS -->
+            <div class="card" style="margin-bottom:0.7rem;">
+                <div class="card-header">
+                    <div><div class="card-title">Settings</div><div class="card-subtitle">Changing a value recalculates</div></div>
+                </div>
+                <div style="display:flex;gap:0.5rem;flex-wrap:wrap;align-items:flex-end;" oninput="stCompute()">
+                    <div class="form-group" style="margin:0"><label>I∞ window (nm)</label><input type="number" id="stFar" value="300" step="50" min="0" style="width:90px"></div>
+                    <div class="form-group" style="margin:0"><label>Threshold z_thr</label><input type="number" id="stThr" value="0.99" step="0.001" style="width:80px"></div>
+                    <div class="form-group" style="margin:0"><label>z_thr crossing</label><select id="stSide" style="width:auto"><option value="bulk" selected>bulk side (default)</option><option value="surface">surface side (as in report)</option></select></div>
+                    <div class="form-group" style="margin:0"><label>Slope window</label>
+                        <div style="display:flex;gap:0.2rem"><input type="number" id="stW0" value="0.98" step="0.005" style="width:85px"><input type="number" id="stW1" value="0.99" step="0.005" style="width:85px"></div></div>
+                    <div class="form-group" style="margin:0"><label>Discard first n</label><input type="number" id="stSkip" value="1" step="1" min="0" style="width:60px"></div>
+                    <div class="form-group" style="margin:0"><label>Z detector (nm/count)</label><input type="number" id="stZdet" value="0.879" step="0.001" min="0" style="width:85px" onchange="onZdetChange(this.value)" title="Calibrated 3 Nov 2026 (PDMS grating). Golden test files: 1.0"></div>
+                    <div class="form-group" style="margin:0"><label>A (FEM)</label><input type="number" id="stA" value="0.40" step="0.01" style="width:65px"></div>
+                    <!-- v1.1: absolute E (Pa) is not reported; the p0 input is kept hidden so stCompute is unchanged -->
+                    <div class="form-group" style="display:none"><label>p₀ (Pa)</label><input type="number" id="stP0" step="1"></div>
+                    <button class="btn btn-primary" onclick="stExportCSV()" style="font-size:0.68rem;padding:0.4rem 0.6rem;width:auto">Export CSV</button>
+                </div>
+            </div>
+
+            <!-- RESULTS -->
+            <div class="grid grid-2" style="margin-bottom:0.7rem;">
+                <div class="panel">
+                    <div class="panel-header"><div class="panel-title orange">Approach curves (aligned at z_thr)</div><div class="panel-badge" id="stCurveBadge">--</div></div>
+                    <div class="panel-content" style="min-height:280px;">
+                        <div class="placeholder" id="stCurvePh"><p>Load a reference and a sample</p></div>
+                        <canvas id="stCurveCanvas" style="display:none;"></canvas><p class="fig-cap">Single approach curves aligned at their threshold crossing. x: z − z<sub>thr</sub> (nm); y: I/I<sub>∞</sub>. Grey: rigid reference; bordeaux: sample. Shaded band: slope fit window (0.98–0.99), one linear fit per curve.</p>
+                    </div>
+                    <div class="legend">
+                        <div class="legend-item"><div class="legend-color" style="background:var(--muted)"></div><span>reference</span></div>
+                        <div class="legend-item"><div class="legend-color red"></div><span>sample</span></div>
+                        <div class="legend-item"><div class="legend-color green"></div><span>slope window</span></div>
+                    </div>
+                </div>
+                <div class="panel">
+                    <div class="panel-header"><div class="panel-title orange">Indentation δ</div><div class="panel-badge" id="stBarBadge">--</div></div>
+                    <div class="panel-content" style="min-height:280px;">
+                        <div class="placeholder" id="stBarPh"><p>Results appear here</p></div>
+                        <canvas id="stBarCanvas" style="display:none;"></canvas><p class="fig-cap">Indentation δ = 0.01 (1/s − 1/s<sub>∞</sub>) per sample group, in nm. Bar: group value; dots: single curves.</p>
+                    </div>
+                    <div class="legend">
+                        <div class="legend-item"><div class="legend-color" style="background:#9ecae1"></div><span>group mean</span></div>
+                        <div class="legend-item"><div class="legend-color" style="background:var(--muted)"></div><span>single curves</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="card" style="margin-bottom:0.7rem;">
+                <div class="card-header">
+                    <div><div class="card-title">Results</div><div class="card-subtitle" id="stRefLine">S∞ (reference) = --</div></div>
+                </div>
+                <div style="overflow-x:auto">
+                    <table style="width:100%;border-collapse:collapse;font-family:'JetBrains Mono',monospace;font-size:0.68rem;">
+                        <thead><tr style="color:var(--text-muted);text-align:right;">
+                            <th style="text-align:left;padding:0.3rem">group</th><th style="padding:0.3rem">n</th><th style="padding:0.3rem">bias</th>
+                            <th style="padding:0.3rem">s (1/µm) ± SD</th><th style="padding:0.3rem">S∞/s</th><th style="padding:0.3rem">δ (nm)</th>
+                            <th style="padding:0.3rem">E/p₀ (apparent)</th>
+                        </tr></thead>
+                        <tbody id="stBody"><tr><td colspan="7" style="padding:0.4rem;color:var(--text-muted)">No results yet</td></tr></tbody>
+                    </table>
+                </div>
+                <div id="stNotes" style="margin-top:0.5rem;font-size:0.65rem;color:var(--text-muted);line-height:1.6;"></div>
             </div>
         </div>
 
@@ -2220,7 +2381,6 @@ body.lp-lock{overflow:hidden}
         <div class="tab-content" id="content-asym">
             <div class="card" style="margin-bottom:0.7rem;">
                 <div class="card-header">
-                    <div class="card-icon">🧪</div>
                     <div><div class="card-title">Asymmetric-Conductivity Configuration</div><div class="card-subtitle">Pressure-controlled nanopipette sensing</div></div>
                 </div>
                 <div style="display:flex;gap:1.4rem;flex-wrap:wrap;align-items:flex-start;">
@@ -2229,7 +2389,7 @@ body.lp-lock{overflow:hidden}
                             In the asymmetric-conductivity configuration the electrolyte inside the pipette differs in concentration from the bulk. This mismatch, set by the dilution factor R<sub>dil</sub> = c<sub>pip</sub> / c<sub>bulk</sub>, minimises the classical surface-charge rectification while maximising electroosmotic flow. The current then reflects the rate and direction of solution mixing at the aperture, which external pressure can tune in situ to control the local ionic environment.
                         </p>
                         <p style="font-size:0.72rem;color:var(--muted);line-height:1.6;margin:0;">
-                            This makes the configuration sensitive to surface charge and useful for constant-current imaging, surface-charge mapping, and single-entity translocation. The current response is described by finite-element modelling coupling the Poisson, Nernst-Planck, and Navier-Stokes equations. Based on Skaanvik et al., ACS Nano 19, 12853 (2025).
+                            This makes the configuration sensitive to surface charge and useful for constant-current imaging, surface-charge mapping, and single-entity translocation. The current response is described by finite-element modelling that solves the Poisson, Nernst-Planck, and Navier-Stokes equations together. Based on Skaanvik et al., ACS Nano 19, 12853 (2025).
                         </p>
                     </div>
                     <div style="flex:0 1 300px;min-width:220px;text-align:center;">
@@ -2241,7 +2401,7 @@ body.lp-lock{overflow:hidden}
 
             <!-- key metrics -->
             <div class="card" style="margin-bottom:0.7rem;">
-                <div class="card-header"><div class="card-icon">📐</div><div><div class="card-title">How the configuration is characterised</div><div class="card-subtitle">The three quantities used in the paper</div></div></div>
+                <div class="card-header"><div><div class="card-title">How the configuration is characterised</div><div class="card-subtitle">The three quantities used in the paper</div></div></div>
                 <div class="equation-box"><div class="eq-num">(1)</div><div class="eq katex-eq" data-tex="R_{dil} = \dfrac{c_{pip}}{c_{bulk}}"></div><div class="description">Dilution factor: ratio of pipette to bulk concentration. R<sub>dil</sub> = 1 is the symmetric (classical) case; R<sub>dil</sub> &gt; 1 makes the pipette more conductive than the bulk.</div></div>
                 <div class="equation-box"><div class="eq-num">(2)</div><div class="eq katex-eq" data-tex="R_{rect} = \dfrac{i(+V)}{i(-V)}"></div><div class="description">Rectification ratio from the i–E curve, evaluated at ±V (the paper uses ±0.75 V). R<sub>rect</sub> = 1 means no rectification; larger values mean stronger rectification.</div></div>
                 <div class="equation-box"><div class="eq-num">(3)</div><div class="eq katex-eq" data-tex="R_{hyst}(E) = i_{forward}(E) - i_{backward}(E)"></div><div class="description">Current hysteresis between forward and backward sweeps, a signature of time-dependent solution mixing. Needs a full cyclic i–E loop.</div></div>
@@ -2249,7 +2409,7 @@ body.lp-lock{overflow:hidden}
 
             <!-- parameters + upload + compute -->
             <div class="card" style="margin-bottom:0.7rem;">
-                <div class="card-header"><div class="card-icon">⚙️</div><div><div class="card-title">Parameters &amp; data</div><div class="card-subtitle">Enter concentrations, load an i–E curve, compute</div></div></div>
+                <div class="card-header"><div><div class="card-title">Parameters &amp; data</div><div class="card-subtitle">Enter concentrations, load an i–E curve, compute</div></div></div>
                 <div style="display:flex;flex-wrap:wrap;gap:0.9rem;align-items:flex-end;margin-bottom:0.7rem;">
                     <label style="font-size:0.72rem;color:var(--muted);">c<sub>pip</sub> (mM)<br><input type="number" id="asymCpip" value="150" step="1" oninput="asymUpdateRdil()" style="width:90px;padding:0.3rem 0.4rem;border-radius:6px;border:1px solid var(--line);background:var(--glass-a);color:var(--txt);font-size:0.8rem;"></label>
                     <label style="font-size:0.72rem;color:var(--muted);">c<sub>bulk</sub> (mM)<br><input type="number" id="asymCbulk" value="30" step="1" oninput="asymUpdateRdil()" style="width:90px;padding:0.3rem 0.4rem;border-radius:6px;border:1px solid var(--line);background:var(--glass-a);color:var(--txt);font-size:0.8rem;"></label>
@@ -2266,8 +2426,8 @@ body.lp-lock{overflow:hidden}
 
             <!-- results -->
             <div class="card">
-                <div class="card-header"><div class="card-icon">📊</div><div><div class="card-title">Results</div><div class="card-subtitle">i–E curve and derived quantities</div></div></div>
-                <canvas id="asymPlot" width="620" height="360" style="max-width:100%;background:var(--glass-b);border:1px solid var(--line);border-radius:8px;"></canvas>
+                <div class="card-header"><div><div class="card-title">Results</div><div class="card-subtitle">i–E curve and derived quantities</div></div></div>
+                <canvas id="asymPlot" width="620" height="360" style="max-width:100%;background:var(--glass-b);border:1px solid var(--line);border-radius:8px;"></canvas><p class="fig-cap">Current–potential (i–E) curve. x: potential E (V); y: current I (nA).</p>
                 <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.6rem;">
                     <button onclick="asymExportPDF()" style="padding:0.4rem 0.9rem;border-radius:8px;border:1px solid var(--line);background:var(--glass-a);color:var(--txt);font-weight:600;cursor:pointer;font-size:0.78rem;">Export PDF report</button>
                     <button onclick="asymExportPNG()" style="padding:0.4rem 0.9rem;border-radius:8px;border:1px solid var(--line);background:var(--glass-a);color:var(--txt);font-weight:600;cursor:pointer;font-size:0.78rem;">Export i–E · 300 DPI</button>
@@ -2433,7 +2593,6 @@ body.lp-lock{overflow:hidden}
         <div class="tab-content" id="content-sicm">
             <div class="card" style="margin-bottom:0.7rem;">
                 <div class="card-header">
-                    <div class="card-icon">🔬</div>
                     <div><div class="card-title">Super-Resolution SICM (SR-SICM)</div><div class="card-subtitle">Deconvolution of topography using the pipette PSF</div></div>
                 </div>
                 <div style="display:flex;gap:1.4rem;flex-wrap:wrap;align-items:center;">
@@ -2450,7 +2609,6 @@ body.lp-lock{overflow:hidden}
             <div class="grid grid-4" style="margin-bottom: 0.7rem;">
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-icon">🔬</div>
                         <div>
                             <div class="card-title">Pipette Geometry</div>
                             <div class="card-subtitle">Tip parameters</div>
@@ -2481,7 +2639,6 @@ body.lp-lock{overflow:hidden}
 
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-icon">⚙️</div>
                         <div>
                             <div class="card-title">Scan Parameters</div>
                             <div class="card-subtitle">Imaging</div>
@@ -2517,7 +2674,6 @@ body.lp-lock{overflow:hidden}
 
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-icon">🎯</div>
                         <div>
                             <div class="card-title">Deconvolution</div>
                             <div class="card-subtitle">Richardson-Lucy</div>
@@ -2544,7 +2700,6 @@ body.lp-lock{overflow:hidden}
 
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-icon">▶️</div>
                         <div>
                             <div class="card-title">Actions</div>
                             <div class="card-subtitle">Process</div>
@@ -2576,7 +2731,7 @@ body.lp-lock{overflow:hidden}
                             </svg>
                             <p>Calculate PSF</p>
                         </div>
-                        <canvas id="psfCanvas" style="display:none;"></canvas>
+                        <canvas id="psfCanvas" style="display:none;"></canvas><p class="fig-cap">Point-spread function of the pipette, computed from the tip geometry; used for the deconvolution.</p>
                     </div>
                 </div>
 
@@ -2592,7 +2747,7 @@ body.lp-lock{overflow:hidden}
                             </svg>
                             <p>Load image</p>
                         </div>
-                        <canvas id="inputCanvas" style="display:none;cursor:crosshair;" onclick="srLineProfileClickCanvas(event,'input')"></canvas>
+                        <canvas id="inputCanvas" style="display:none;cursor:crosshair;" onclick="srLineProfileClickCanvas(event,'input')"></canvas><p class="fig-cap">Input topography (colour: height). Click two points on either image for a line profile.</p>
                     </div>
                 </div>
 
@@ -2608,7 +2763,7 @@ body.lp-lock{overflow:hidden}
                             </svg>
                             <p>Run deconvolution</p>
                         </div>
-                        <canvas id="outputCanvas" style="display:none;cursor:crosshair;" onclick="srLineProfileClickCanvas(event,'output')"></canvas>
+                        <canvas id="outputCanvas" style="display:none;cursor:crosshair;" onclick="srLineProfileClickCanvas(event,'output')"></canvas><p class="fig-cap">Deconvolved topography (Richardson–Lucy), same colour scale as the input.</p>
                     </div>
                     <div id="srPaletteRow" style="display:none;margin-top:0.5rem;align-items:center;gap:0.5rem;flex-wrap:wrap">
                         <label for="srPalette" style="margin:0;white-space:nowrap">Colour map</label>
@@ -2643,7 +2798,7 @@ body.lp-lock{overflow:hidden}
                     </div>
                     <div id="srLineProfileHint" style="font-size:0.6rem;color:var(--accent-cyan);margin-bottom:0.5rem;padding:0.3rem 0.5rem;background:rgba(0,212,255,0.08);border-radius:6px;">Click two points on either the <strong>Input</strong> or <strong>SR Result</strong> image above; both will be profiled along the same line.
                     </div>
-                    <canvas id="srLineProfileCanvas" style="width:100%;height:160px;background:var(--bg-tertiary);border-radius:6px;display:block;"></canvas>
+                    <canvas id="srLineProfileCanvas" style="width:100%;height:160px;background:var(--bg-tertiary);border-radius:6px;display:block;"></canvas><p class="fig-cap">Height along the selected line for the input and the deconvolved image. x: distance (px).</p>
                     <div style="display:flex;gap:1rem;margin-top:0.4rem;flex-wrap:wrap;">
                         <span style="font-size:0.6rem;color:var(--text-muted);"><span style="color:#00d4ff;">■</span> SR Result</span>
                         <span style="font-size:0.6rem;color:var(--text-muted);"><span style="color:#f59e0b;">■</span> Input</span>
@@ -2662,7 +2817,6 @@ body.lp-lock{overflow:hidden}
             <!-- DATA UPLOAD -->
             <div class="card" style="margin-bottom: 0.5rem;">
                 <div class="card-header">
-                    <div class="card-icon" style="background:var(--gradient-2);color:#fff">📂</div>
                     <div>
                         <div class="card-title">Load Data</div>
                         <div class="card-subtitle">Auto-detects format, bias, points, trace/retrace from any file</div>
@@ -2689,7 +2843,7 @@ body.lp-lock{overflow:hidden}
                 </div>
                 <!-- Loaded files list -->
                 <div id="loadedFilesList" style="display:none;margin-top:0.5rem;display:flex;flex-wrap:wrap;gap:0.4rem;"></div>
-                <div id="biasHint" style="display:none;font-family:'Geist Mono',monospace;font-size:11px;color:var(--faint);margin-top:0.45rem;">Bias is read from the filename; click +V / −V on any file to override it.</div>
+                <div id="biasHint" style="display:none;font-family:'Geist Mono',monospace;font-size:11px;color:var(--faint);margin-top:0.45rem;">Bias is read from the file (sign of the mean current); the filename is used only when the file has no sign. Click +V / −V to override; "≠ file" marks a file whose bias now disagrees with its current.</div>
                 <!-- TIFF Info Panel (auto-shown after TIFF load) -->
                 <div id="tiffInfoPanel" style="display:none;margin-top:0.4rem;padding:0.5rem;background:var(--bg-tertiary);border-radius:8px;border:1px solid var(--border-color);">
                     <div style="display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;">
@@ -2704,7 +2858,6 @@ body.lp-lock{overflow:hidden}
             <!-- MEASUREMENT NOTES -->
             <div class="card" style="margin-bottom:0.5rem;">
                 <div class="card-header">
-                    <div class="card-icon" style="background:var(--gradient-3);color:#fff">📝</div>
                     <div>
                         <div class="card-title">Measurement Notes <span style="font-size:0.6rem;color:var(--text-muted);font-weight:400;">(optional, included in reports)</span></div>
                     </div>
@@ -2744,7 +2897,6 @@ body.lp-lock{overflow:hidden}
             <div class="grid grid-4" style="margin-bottom: 0.7rem;">
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-icon" style="color: #ef4444;">➕</div>
                         <div><div class="card-title">+100mV Data</div><div class="card-subtitle">Positive bias</div></div>
                     </div>
                     <div class="form-group">
@@ -2755,7 +2907,6 @@ body.lp-lock{overflow:hidden}
                 </div>
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-icon" style="color: #3b82f6;">➖</div>
                         <div><div class="card-title">-100mV Data</div><div class="card-subtitle">Negative bias</div></div>
                     </div>
                     <div class="form-group">
@@ -2766,16 +2917,21 @@ body.lp-lock{overflow:hidden}
                 </div>
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-icon">⚙️</div>
                         <div><div class="card-title">Processing</div><div class="card-subtitle">Normalization & Stats</div></div>
                     </div>
                     <div class="form-group"><label>Distance Unit</label>
                         <select id="distUnit"><option value="um">µm (×1000)</option><option value="nm">nm</option><option value="m">m (×1e9)</option></select>
                     </div>
-                    <div class="form-group"><label>Setpoint for Δh</label>
+                    <div class="form-group"><label>Z detector scale (TIFF)</label>
+                        <div class="input-row">
+                            <input type="number" id="zdetScale" value="0.879" step="0.001" min="0" onchange="onZdetChange(this.value)" title="Calibrated 3 Nov 2026 (PDMS grating). Golden test files: 1.0">
+                            <span class="unit">nm/count</span>
+                        </div>
+                    </div>
+                    <div class="form-group"><label>Setpoint for Δz<sub>99</sub></label>
                         <select id="acSetpoint" onchange="onAlignChange()"><option value="97">97%</option><option value="98">98%</option><option value="99" selected>99%</option><option value="99.5">99.5%</option></select>
                     </div>
-                    <div class="form-group"><label>Δh Alignment</label>
+                    <div class="form-group"><label>Δz<sub>99</sub> Alignment</label>
                         <select id="alignMode" onchange="onAlignChange()">
                             <option value="raw">Raw (common origin)</option>
                             <option value="endpoint">Endpoint-aligned</option>
@@ -2794,17 +2950,16 @@ body.lp-lock{overflow:hidden}
                         <select id="uncertaintyMethod"><option value="std">Standard Deviation (SD)</option><option value="sem" selected>Standard Error (SEM)</option><option value="ci95">95% Confidence Interval</option><option value="ci99">99% Confidence Interval</option></select>
                     </div>
                     <div class="form-group"><label>P-value Test</label>
-                        <select id="pValueTest"><option value="ttest" selected>One-sample t-test (Δh≠0)</option><option value="paired">Paired t-test (x₁ vs x₂)</option><option value="wilcoxon">Wilcoxon signed-rank</option></select>
+                        <select id="pValueTest"><option value="ttest" selected>One-sample t-test (Δz<sub>99</sub>≠0)</option><option value="paired">Paired t-test (x₁ vs x₂)</option><option value="wilcoxon">Wilcoxon signed-rank</option></select>
                     </div>
                 </div>
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-icon">▶️</div>
                         <div><div class="card-title">Calculate</div><div class="card-subtitle">Process & extract</div></div>
                     </div>
                     <div class="btn-group">
                         <button class="btn btn-orange" onclick="processApproachCurves()">Process</button>
-                        <button class="btn btn-green" onclick="extractDeltaH()">Extract Δh</button>
+                        <button class="btn btn-green" onclick="extractDeltaH()">Extract Δz<sub>99</sub></button>
                         <button class="btn btn-secondary" onclick="clearApproachData()">Clear</button>
                         <div style="margin-top:0.4rem;">
                             <label style="font-size:0.6rem;color:var(--text-muted);display:block;margin-bottom:0.2rem;">Download As</label>
@@ -2836,6 +2991,7 @@ body.lp-lock{overflow:hidden}
                         <div class="panel-content" style="min-height:140px;"><canvas id="rawNegCanvas" style="display:none;"></canvas><div class="placeholder" id="rawNegPlaceholder"><p style="font-size:0.55rem;">No −V data</p></div></div>
                     </div>
                 </div>
+<p class="fig-cap">Raw ion current versus Z position for the +V file (left) and the −V file (right), before normalisation.</p>
             </div>
 
             <!-- Baseline Fit Info Panel -->
@@ -2869,7 +3025,7 @@ body.lp-lock{overflow:hidden}
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 6-6"/></svg>
                             <p>Process data</p>
                         </div>
-                        <canvas id="acCanvas" style="display:none;"></canvas>
+                        <canvas id="acCanvas" style="display:none;"></canvas><p class="fig-cap">Normalised approach curves at +V (red) and −V (blue). x: distance (nm); y: current (% of I<sub>∞</sub>). Dashed line: setpoint. Δz<sub>99</sub> is the distance between the two curves at the setpoint.</p>
                     </div>
                     <div class="legend">
                         <div class="legend-item"><div class="legend-color red"></div><span>+100mV</span></div>
@@ -2892,9 +3048,9 @@ body.lp-lock{overflow:hidden}
                         </div>
                         <div class="placeholder" id="zoomPlaceholder">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-                            <p>Extract Δh to zoom</p>
+                            <p>Extract Δz<sub>99</sub> to zoom</p>
                         </div>
-                        <canvas id="zoomFullCanvas" style="display:none;"></canvas>
+                        <canvas id="zoomFullCanvas" style="display:none;"></canvas><p class="fig-cap">Zoom around the setpoint. x: distance (nm); y: current (% of I<sub>∞</sub>). The horizontal gap between the curves at the setpoint is Δz<sub>99</sub> = z<sub>99</sub>(V−) − z<sub>99</sub>(V+).</p>
                     </div>
                     <div class="legend">
                         <div class="legend-item"><div class="legend-color red"></div><span>x₁ (+100mV)</span></div>
@@ -2905,7 +3061,7 @@ body.lp-lock{overflow:hidden}
 
             <!-- Trace / Retrace -->
             <div class="card" style="margin-bottom:0.7rem">
-                <div class="card-header"><div class="card-icon" style="background:var(--gradient-2);color:#fff">↔️</div><div><div class="card-title">Trace / Retrace</div><div class="card-subtitle">Auto-split from loaded data (approach vs retract)</div></div></div>
+                <div class="card-header"><div><div class="card-title">Trace / Retrace</div><div class="card-subtitle">Auto-split from loaded data (approach vs retract)</div></div></div>
                 <div style="display:flex;gap:0.4rem;align-items:center;flex-wrap:wrap;margin-bottom:0.5rem">
                     <select id="trCurveSelector" style="padding:0.3rem;background:var(--bg-tertiary);border:1px solid var(--border-color);border-radius:6px;color:var(--text-primary);font-size:0.65rem;min-width:100px;display:none;" onchange="onTrCurveSelected()">
                     </select>
@@ -2919,13 +3075,13 @@ body.lp-lock{overflow:hidden}
                     <div class="panel" style="margin:0"><div class="panel-header" style="padding:0.3rem 0.6rem"><div class="panel-title" style="font-size:0.6rem">Raw</div><button class="zoom-btn" onclick="exportTRImg('trRawCanvas')" style="font-size:0.5rem;width:auto;padding:0 5px">Save</button></div><div class="panel-content" style="min-height:200px"><canvas id="trRawCanvas" style="display:none"></canvas><div class="placeholder" id="trRawPlaceholder"><p style="font-size:0.55rem">Load TIFF data above</p></div></div><div class="legend"><div class="legend-item"><div class="legend-color" style="background:#f59e0b"></div><span>Trace (approach)</span></div><div class="legend-item"><div class="legend-color" style="background:#8b5cf6"></div><span>Retrace (retract)</span></div></div></div>
                     <div class="panel" style="margin:0"><div class="panel-header" style="padding:0.3rem 0.6rem"><div class="panel-title" style="font-size:0.6rem">Normalized</div><button class="zoom-btn" onclick="exportTRImg('trNormCanvas')" style="font-size:0.5rem;width:auto;padding:0 5px">Save</button></div><div class="panel-content" style="min-height:200px"><canvas id="trNormCanvas" style="display:none"></canvas><div class="placeholder" id="trNormPlaceholder"><p style="font-size:0.55rem">Load TIFF data above</p></div></div><div class="legend"><div class="legend-item"><div class="legend-color" style="background:#f59e0b"></div><span>Trace (approach)</span></div><div class="legend-item"><div class="legend-color" style="background:#8b5cf6"></div><span>Retrace (retract)</span></div></div></div>
                 </div>
+<p class="fig-cap">Trace and retrace of the selected curve: raw (left) and normalised (right).</p>
                 <div id="trStats" style="display:none;margin-top:0.4rem;padding:0.4rem;background:var(--bg-tertiary);border-radius:5px;font-family:JetBrains Mono,monospace;font-size:0.55rem;color:var(--accent-cyan)"></div>
             </div>
 
             <!-- Session Recording -->
             <div class="card" style="margin-bottom:0.7rem">
                 <div class="card-header">
-                    <div class="card-icon" style="background:linear-gradient(135deg,#ef4444,#f59e0b);color:#fff">📹</div>
                     <div><div class="card-title">Session Recording</div><div class="card-subtitle">Screen capture + activity log</div></div>
                     <div id="recDot" style="display:none;margin-left:auto;align-items:center;gap:4px;background:rgba(239,68,68,0.15);padding:3px 8px;border-radius:12px"><div style="width:6px;height:6px;border-radius:50%;background:#ef4444;animation:pulse 1s infinite"></div><span style="font-size:0.55rem;color:#ef4444;font-weight:700" id="recTime">00:00</span></div>
                 </div>
@@ -2942,23 +3098,23 @@ body.lp-lock{overflow:hidden}
             </div>
 
             <div class="results-panel">
-                <div class="card-title">Δh Results</div>
+                <div class="card-title">Δz<sub>99</sub> Results</div>
                 <div class="results-grid">
                     <div class="result-item"><div class="result-value" id="resMeanPos">--</div><div class="result-label">I<sub>mean</sub> (+)</div></div>
                     <div class="result-item"><div class="result-value" id="resMeanNeg">--</div><div class="result-label">I<sub>mean</sub> (-)</div></div>
                     <div class="result-item"><div class="result-value red" id="resX1">--</div><div class="result-label">x₁ (+) nm</div></div>
                     <div class="result-item"><div class="result-value blue" id="resX2">--</div><div class="result-label">x₂ (-) nm</div></div>
-                    <div class="result-item"><div class="result-value green" id="resDeltaHAC">--</div><div class="result-label">Δh nm</div></div>
+                    <div class="result-item"><div class="result-value green" id="resDeltaHAC">--</div><div class="result-label">Δz<sub>99</sub> nm</div></div>
                     <div class="result-item"><div class="result-value orange" id="resSetpointAC">--</div><div class="result-label">Setpoint %</div></div>
                 </div>
                 <div class="align-summary" id="alignSummary">
-                    <div class="align-row" id="dhRow_raw"><span>Δh (raw)</span><b id="dhVal_raw">—</b></div>
-                    <div class="align-row" id="dhRow_endpoint"><span>Δh (endpoint)</span><b id="dhVal_endpoint">—</b></div>
-                    <div class="align-row is-active" id="dhRow_current"><span>Δh (current)</span><b id="dhVal_current">—</b></div>
+                    <div class="align-row" id="dhRow_raw"><span>Δz<sub>99</sub> (raw)</span><b id="dhVal_raw">—</b></div>
+                    <div class="align-row" id="dhRow_endpoint"><span>Δz<sub>99</sub> (endpoint)</span><b id="dhVal_endpoint">—</b></div>
+                    <div class="align-row is-active" id="dhRow_current"><span>Δz<sub>99</sub> (current)</span><b id="dhVal_current">—</b></div>
                 </div>
                 <div class="info-box orange" style="margin-top: 0.5rem;">
-                    <p><strong>Formula:</strong> Δh = x₂(−100mV) − x₁(+100mV)</p>
-                    <p>Negative Δh → Negative surface charge | Positive Δh → Positive surface charge</p>
+                    <p><strong>Formula:</strong> Δz<sub>99</sub> = x₂(−100mV) − x₁(+100mV)</p>
+                    <p>Negative Δz<sub>99</sub> → Negative surface charge | Positive Δz<sub>99</sub> → Positive surface charge</p>
                 </div>
             </div>
 
@@ -2975,14 +3131,14 @@ body.lp-lock{overflow:hidden}
                     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.3rem;">
                         <span style="font-size:0.65rem;font-weight:600;color:var(--text-secondary);">Chart Series</span>
                         <select id="chargeChartSeries" onchange="refreshAllPointsChart()" style="font-size:0.6rem;padding:0.2rem 0.4rem;background:var(--bg-tertiary);border:1px solid var(--border-color);border-radius:4px;color:var(--text-primary);">
-                            <option value="deltaH">Δh (nm)</option>
+                            <option value="deltaH">Δz<sub>99</sub> (nm)</option>
                             <option value="charge">σ charge (mC/m²)</option>
                         </select>
                     </div>
-                    <canvas id="deltaHBarChart" style="width:100%;height:180px;"></canvas>
+                    <canvas id="deltaHBarChart" style="width:100%;height:180px;"></canvas><p class="fig-cap">Δz<sub>99</sub> (nm) or σ (mC/m²) for each loaded point; the selector above switches the quantity.</p>
                 </div>
                 <div id="statsRow" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:0.4rem;margin-bottom:0.5rem;">
-                    <div class="result-item"><div class="result-value green" id="statMean">--</div><div class="result-label">Mean Δh</div></div>
+                    <div class="result-item"><div class="result-value green" id="statMean">--</div><div class="result-label">Mean Δz<sub>99</sub></div></div>
                     <div class="result-item"><div class="result-value" id="statUncertainty">--</div><div class="result-label" id="statUncertaintyLabel">± SEM</div></div>
                     <div class="result-item"><div class="result-value orange" id="statN">--</div><div class="result-label">n</div></div>
                     <div class="result-item"><div class="result-value" id="statPValue">--</div><div class="result-label" id="statPLabel">p (t-test)</div></div>
@@ -2994,10 +3150,10 @@ body.lp-lock{overflow:hidden}
                             <th style="padding:0.3rem;text-align:left;">Point</th>
                             <th style="padding:0.3rem;text-align:right;color:#ef4444;">x₁(+V)</th>
                             <th style="padding:0.3rem;text-align:right;color:#3b82f6;">x₂(−V)</th>
-                            <th style="padding:0.3rem;text-align:right;">Δh raw</th>
-                            <th style="padding:0.3rem;text-align:right;">Δh endp.</th>
-                            <th style="padding:0.3rem;text-align:right;">Δh curr.</th>
-                            <th style="padding:0.3rem;text-align:right;color:#10b981;">Δh active</th>
+                            <th style="padding:0.3rem;text-align:right;">Δz<sub>99</sub> raw</th>
+                            <th style="padding:0.3rem;text-align:right;">Δz<sub>99</sub> endp.</th>
+                            <th style="padding:0.3rem;text-align:right;">Δz<sub>99</sub> curr.</th>
+                            <th style="padding:0.3rem;text-align:right;color:#10b981;">Δz<sub>99</sub> active</th>
                             <th style="padding:0.3rem;text-align:right;">+V drop%</th>
                             <th style="padding:0.3rem;text-align:right;">−V drop%</th>
                             <th style="padding:0.3rem;text-align:center;min-width:60px;">Bar</th>
@@ -3009,13 +3165,12 @@ body.lp-lock{overflow:hidden}
             </div>
         </div>
 
-        <!-- ==================== IMAGE TAB (Δh from images) ==================== -->
+        <!-- ==================== IMAGE TAB (Δz99 from images) ==================== -->
         <div class="tab-content" id="content-image">
             <div class="grid grid-4" style="margin-bottom:0.7rem;">
                 <!-- 1. +bias image -->
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-icon">🖼️</div>
                         <div><input id="name1" value="Image 1" title="Rename (e.g. +bias)" style="font:inherit;font-weight:600;background:transparent;border:none;border-bottom:1px dashed var(--line);color:var(--txt);width:135px;padding:0;"><div class="card-subtitle">TIFF or PNG · editable name</div></div>
                     </div>
                     <input type="file" id="imgPlusFile" accept=".tif,.tiff,.png" style="display:none" onchange="loadImage(1, this)">
@@ -3033,7 +3188,6 @@ body.lp-lock{overflow:hidden}
                 <!-- 2. -bias image -->
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-icon">🖼️</div>
                         <div><input id="name2" value="Image 2" title="Rename (e.g. −bias)" style="font:inherit;font-weight:600;background:transparent;border:none;border-bottom:1px dashed var(--line);color:var(--txt);width:135px;padding:0;"><div class="card-subtitle">TIFF or PNG · editable name</div></div>
                     </div>
                     <input type="file" id="imgMinusFile" accept=".tif,.tiff,.png" style="display:none" onchange="loadImage(2, this)">
@@ -3051,7 +3205,6 @@ body.lp-lock{overflow:hidden}
                 <!-- 3. Δh compute -->
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-icon">➗</div>
                         <div><div class="card-title">Δh compute</div><div class="card-subtitle">Image 1 minus Image 2</div></div>
                     </div>
                     <label style="font-size:0.62rem;color:var(--text-muted);display:block;margin:0 0 0.15rem;">Δh colormap</label>
@@ -3068,7 +3221,6 @@ body.lp-lock{overflow:hidden}
                 <!-- 4. Δh map -->
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-icon">📊</div>
                         <div><div class="card-title">Δh map</div><div class="card-subtitle">from the two images</div></div>
                     </div>
                     <div id="imgDhView" style="min-height:120px;border:1px dashed var(--line);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:0.7rem;">Δh map → QSCM</div>
@@ -3077,13 +3229,12 @@ body.lp-lock{overflow:hidden}
             <!-- Line profile -->
             <div class="card" style="margin-top:0.6rem;">
                 <div class="card-header">
-                    <div class="card-icon">📈</div>
                     <div><div class="card-title">Line profile</div><div class="card-subtitle">Click two points on an image</div></div>
                 </div>
                 <div id="imgLineProfile" style="min-height:120px;border:1px dashed var(--line);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:0.7rem;">click two points on the image to profile</div>
             </div>
             <div class="card" style="margin-top:0.6rem;">
-                <div class="card-header"><div class="card-icon">⬇️</div><div><div class="card-title">Export</div><div class="card-subtitle">Choose what to export</div></div></div>
+                <div class="card-header"><div><div class="card-title">Export</div><div class="card-subtitle">Choose what to export</div></div></div>
                 <div style="display:flex;gap:0.7rem;flex-wrap:wrap;align-items:center;">
                     <label style="font-size:0.74rem;color:var(--muted);">Which:
                         <select id="imgExportSel" style="margin-left:0.3rem;padding:0.3rem 0.5rem;border-radius:6px;border:1px solid var(--line);background:var(--glass-a);color:var(--txt);font-size:0.78rem;">
@@ -3104,17 +3255,26 @@ body.lp-lock{overflow:hidden}
 
         <!-- ==================== QSCM TAB ==================== -->
         <div class="tab-content" id="content-qscm">
+            <div class="vid-card">
+                <figure class="vid">
+                    <video controls muted playsinline preload="metadata" src="assets/animations/Charge_dual_bias.mp4#t=0.1"
+                           aria-label="Animation: dual-bias charge measurement"></video>
+                    <figcaption><b>Dual-bias measurement.</b> Approach at +V and −V; the two curves cross I/I<sub>∞</sub> = 0.99 at
+                        different heights, Δz<sub>99</sub> = z<sub>99</sub>(V−) − z<sub>99</sub>(V+). Schematic, not to scale.</figcaption>
+                </figure>
+            </div>
+            <!-- Triplet readout of dual-bias approach curves: built by js/triplet.js -->
+            <section id="trip-root" aria-label="Dual-bias triplet readout"></section>
             <div class="grid grid-4" style="margin-bottom: 0.7rem;">
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-icon">📏</div>
                         <div>
-                            <div class="card-title">Δh Input</div>
+                            <div class="card-title">Δz<sub>99</sub> Input</div>
                             <div class="card-subtitle">Height difference</div>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label>Δh Value <span style="font-size:0.6rem;color:var(--text-muted);">(-100 to +100 nm)</span></label>
+                        <label>Δz<sub>99</sub> Value <span style="font-size:0.6rem;color:var(--text-muted);">(-100 to +100 nm)</span></label>
                         <div class="input-row">
                             <input type="number" id="deltaHInput" step="0.01" min="-100" max="100" placeholder="Enter or auto-fill (-100 to +100)">
                             <span class="unit">nm</span>
@@ -3123,14 +3283,13 @@ body.lp-lock{overflow:hidden}
                     <button class="btn btn-secondary" onclick="autofillDeltaH()" style="margin-top: 0.3rem;">Auto-fill from Approach
                     </button>
                     <div class="formula-box" style="margin-top: 0.5rem;">
-                        <span class="var">σ</span> = (<span class="var">Δh</span> − <span class="num">c</span>) × <span class="num">m</span>
+                        <span class="var">σ</span> = (<span class="var">Δz<sub>99</sub></span> − <span class="num">c</span>) × <span class="num">m</span>
                     </div>
                     <div style="font-size:0.58rem;color:var(--text-muted);margin-top:0.3rem;">Range: −100 (negative charge) ↔ +100 (positive charge)</div>
                 </div>
 
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-icon">🧪</div>
                         <div>
                             <div class="card-title">Experiment</div>
                             <div class="card-subtitle">Conditions</div>
@@ -3167,7 +3326,6 @@ body.lp-lock{overflow:hidden}
 
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-icon">📊</div>
                         <div>
                             <div class="card-title">Calibration</div>
                             <div class="card-subtitle">Reference</div>
@@ -3208,7 +3366,6 @@ body.lp-lock{overflow:hidden}
 
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-icon">⚡</div>
                         <div>
                             <div class="card-title">Calculate</div>
                             <div class="card-subtitle">Surface charge</div>
@@ -3231,11 +3388,11 @@ body.lp-lock{overflow:hidden}
             <div class="grid grid-2">
                 <div class="panel">
                     <div class="panel-header">
-                        <div class="panel-title green">Δh vs σ · Reference Data & Calibration</div>
+                        <div class="panel-title green">Δz<sub>99</sub> vs σ · Reference Data & Calibration</div>
                         <button onclick="openChartModal()" style="background:rgba(0,212,255,0.12);border:1px solid rgba(0,212,255,0.3);border-radius:6px;padding:0.15rem 0.45rem;font-size:0.62rem;color:var(--accent-cyan);cursor:pointer;" title="Expand chart">Zoom</button>
                     </div>
                     <div class="panel-content" style="min-height: 250px;">
-                        <canvas id="qscmCalibCanvas" style="cursor:pointer;" onclick="openChartModal()"></canvas>
+                        <canvas id="qscmCalibCanvas" style="cursor:pointer;" onclick="openChartModal()"></canvas><p class="fig-cap">Calibration σ = (Δz<sub>99</sub> − c) × m with reference materials (Klausen et al. 2016: m = 5.79 mC/m² per nm, c = 0.81 nm; 150 mM NaCl, ±100 mV, setpoint 0.99). x: σ (mC/m²); y: Δz<sub>99</sub> (nm).</p>
                     </div>
                 </div>
 
@@ -3249,7 +3406,7 @@ body.lp-lock{overflow:hidden}
                                 <tr>
                                     <th>Material</th>
                                     <th>σ (mC/m²)</th>
-                                    <th>Δh (nm)</th>
+                                    <th>Δz<sub>99</sub> (nm)</th>
                                     <th>Bias</th>
                                     <th>ri (nm)</th>
                                 </tr>
@@ -3275,7 +3432,7 @@ body.lp-lock{overflow:hidden}
                 <div class="results-grid">
                     <div class="result-item">
                         <div class="result-value green" id="qscmDeltaH">--</div>
-                        <div class="result-label">Δh (nm)</div>
+                        <div class="result-label">Δz<sub>99</sub> (nm)</div>
                     </div>
                     <div class="result-item">
                         <div class="result-value orange" id="qscmSCD">--</div>
@@ -3305,10 +3462,14 @@ body.lp-lock{overflow:hidden}
                 <div style="font-weight:600;font-size:0.75rem;margin-bottom:0.5rem;">Interpretation & Reference Comparison</div>
                 <div id="qscmInterpText" style="font-size:0.73rem;line-height:1.7;color:var(--text-secondary);"></div>
             </div>
+
+            <!-- Dual-bias imaging (CIHD) module: built by js/cihd.js -->
+            <section id="cihd-root" aria-label="Dual-bias imaging (CIHD)"></section>
         </div>
         <div class="tab-content" id="content-theory">
             <div class="theory-content">
                 <h2>Theory & Methodology</h2>
+                <div class="conv-slot"></div>
 
                 <h3>1. Scanning Ion Conductance Microscopy (SICM)</h3>
                 <p>SICM uses a glass nanopipette filled with electrolyte solution as a non-contact probe. A bias voltage (typically ±100 mV) drives ionic current through the pipette opening. As the tip approaches a surface, ion flow becomes restricted (the access resistance increases) and the measured current drops. This current drop is used as a distance signal, keeping the tip at a fixed height above the sample without ever touching it.</p>
@@ -3334,7 +3495,7 @@ body.lp-lock{overflow:hidden}
 
                 <h3>4. Δh & Surface Charge (QSCM)</h3>
                 <p>When two approach curves are recorded at opposite bias polarities (+V and −V) over the same position, the curves are identical for an uncharged surface. On a charged surface, the electric double layer shifts the effective tip–surface distance differently for each polarity. This shift, Δh, is the core QSCM observable:</p>
-                <div class="equation-box"><div class="eq-num">(4)</div><div class="eq katex-eq" data-tex="\Delta h = x_2(-V) - x_1(+V)"></div><div class="description">Distance at setpoint for −V bias minus distance at setpoint for +V bias. Units: nm. Δh > 0 for negative surfaces (anions repel Cl⁻ carrier ions, reducing current faster at +V).</div></div>
+                <div class="equation-box"><div class="eq-num">(4)</div><div class="eq katex-eq" data-tex="\Delta h = x_2(-V) - x_1(+V)"></div><div class="description">Distance at setpoint for −V bias minus distance at setpoint for +V bias. Units: nm. Δh &lt; 0 for negative surfaces: at +V the current falls off farther from a negative surface, so x₁(+V) &gt; x₂(−V). Δh is the same quantity as Δz<sub>99</sub> = z<sub>99</sub>(V−) − z<sub>99</sub>(V+); its sign is the sign of σ<sub>s</sub>.</div></div>
                 <p><strong>Physical picture:</strong> At +100 mV bias, Cl⁻ ions carry most of the current from pipette to bath. Near a negatively charged surface, the local anion concentration is depleted (repulsion), so the current drops earlier, at a larger apparent distance. At −100 mV, Na⁺ ions dominate; a negative surface attracts them and delays the current drop. The difference in these two distances is Δh.</p>
                 <p><strong>Example values:</strong> A bare glass surface in 150 mM NaCl typically gives Δh ≈ −2 to −4 nm (negative charge). A lipid bilayer of DPPE (near-neutral) gives Δh ≈ 0–1 nm. DPPG (negatively charged headgroup) gives Δh ≈ −5 to −8 nm. An amine-functionalized surface (APTES, positive charge) gives Δh > 0.</p>
                 <div class="equation-box"><div class="eq-num">(5)</div><div class="eq katex-eq" data-tex="\sigma = m \times (\Delta h - c)"></div><div class="description">Linear calibration converts Δh (nm) to surface charge density σ (mC/m²). Default: m = 5.79 mC/m²/nm, c = 0.81 nm (from Klausen et al. 2016, r<sub>i</sub> = 50 nm, 150 mM NaCl).</div></div>
@@ -3374,60 +3535,32 @@ body.lp-lock{overflow:hidden}
     </main>
 
     <div class="tab-content" id="content-aboutapp" style="display:none;padding:1rem;">
-        <div style="max-width:750px;margin:0 auto;text-align:center;">
-            <div style="width:80px;height:80px;background:var(--gradient-1);border-radius:20px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:2rem;color:white;margin:0 auto 1.5rem;">SR</div>
-            <h2 style="font-size:1.6rem;margin-bottom:0.4rem;background:var(--gradient-1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">SR-SICM Suite</h2>
-            <p style="color:var(--text-secondary);margin-bottom:0.3rem;">Version 1.0</p>
-            <p style="font-size:0.75rem;color:var(--text-muted);margin-bottom:2rem;">Based on Klausen et al. 2016 & Sønderskov et al. 2025</p>
+        <div class="about">
+            <h2>SR-SICM Suite</h2>
+            <p class="ver">Version 1.1 · 11 November 2026</p>
+            <p>Browser-based analysis of scanning ion conductance microscopy (SICM) data: approach curves
+               (surface charge from Δz<sub>99</sub>, relative stiffness from the slope), dual-bias images (Δh),
+               topography and deconvolution. Files are read in the browser; data are not uploaded.</p>
 
-            <!-- Features -->
-            <div class="info-box" style="text-align:left;margin-bottom:1rem;">
-                <p><strong>SR-SICM</strong>: Super-resolution deconvolution for SICM images</p>
-                <p><strong>Current-Distance Curves</strong>: Automated Δh extraction from SICM spectroscopy</p>
-                <p><strong>QSCM</strong>: Quantitative surface charge mapping (Klausen 2016)</p>
-            </div>
+            <h3>Author</h3>
+            <p>Leyla Nur Akay<br>Department of Chemistry, Aarhus University<br>
+               Contact: <a href="mailto:lnurakay@inano.au.dk">lnurakay@inano.au.dk</a> ·
+               Source: <a href="https://github.com/LeilaqL/sr-sicm-suite" target="_blank" rel="noopener">github.com/LeilaqL/sr-sicm-suite</a></p>
 
-            <!-- Developed by -->
-            <div class="info-box orange" style="text-align:left;margin-bottom:1rem;">
-                <p><strong>Developed by</strong> BIOSPM group</p>
-                <p style="margin-top:0.3rem;font-size:0.75rem;color:var(--text-muted);">Will be updated; features and UI subject to change.</p>
-            </div>
+            <h3>Method references</h3>
+            <ol>
+                <li>Rheinlaender J., Schäffer T.E. Mapping the mechanical stiffness of live cells with the scanning ion
+                    conductance microscope. <em>Soft Matter</em> 9, 3230 (2013). Stiffness method.</li>
+                <li>Klausen L.H., Fuhs T., Dong M. <em>Nat. Commun.</em> (2016). Dual-bias surface charge readout and
+                    dual-bias imaging (CIHD example data).</li>
+                <li>Skaanvik et al., ACS Nano 19, 12853 (2025). Asymmetric-conductivity module.</li>
+            </ol>
 
-            <!-- Contact & GitHub -->
-            <div class="info-box" style="text-align:left;margin-bottom:1rem;background:rgba(59,130,246,0.07);border-color:rgba(59,130,246,0.3);">
-                <p style="font-weight:700;margin-bottom:0.6rem;color:var(--accent-cyan);">Contact</p>
-                <p style="margin-bottom:0.4rem;">For questions, bug reports or collaboration:</p>
-                <p><a href="mailto:lnurakay@inano.au.dk" style="color:var(--accent-cyan);text-decoration:none;">lnurakay@inano.au.dk</a></p>
-                <p style="margin-top:0.6rem;"><a href="https://github.com/LeilaqL" target="_blank" style="color:var(--accent-cyan);text-decoration:none;">Visit us on GitHub</a> · source code, issues & updates</p>
-            </div>
+            <h3>How to cite this software</h3>
+            <p>Akay, L. N. – BioSPM group, Aarhus University. SR-SICM Suite, version 1.1 (2026). https://github.com/LeilaqL/sr-sicm-suite
+               (accessed <span id="cite-date-suite"></span>). Please also cite the method reference for the module you used.</p>
 
-            <!-- Cite -->
-            <div class="info-box" style="text-align:left;margin-bottom:1rem;background:rgba(139,92,246,0.07);border-color:rgba(139,92,246,0.3);">
-                <p style="font-weight:700;margin-bottom:0.8rem;color:var(--accent-purple);">How to Cite</p>
-                <p style="font-size:0.78rem;color:var(--text-secondary);margin-bottom:0.6rem;">If you use SR-SICM Suite in your research, please cite the following:</p>
-
-                <!-- SR-SICM Suite cite - auto date -->
-                <div style="background:var(--bg-tertiary);border-radius:8px;padding:0.7rem 1rem;margin-bottom:0.6rem;font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--text-secondary);line-height:1.7;position:relative;">
-                    <span style="color:var(--accent-purple);font-weight:600;">SR-SICM Suite</span><br>
-                    BIOSPM group. <em>SR-SICM Suite: Super-Resolution & QSCM Analysis.</em> Available at: https://github.com/LeilaqL. Accessed <span id="cite-date-suite"></span>.
-                    <button onclick="navigator.clipboard.writeText('BIOSPM group. SR-SICM Suite — Super-Resolution & QSCM Analysis. Available at: https://github.com/LeilaqL. Accessed ' + new Date().toISOString().slice(0,10) + '.');this.textContent='✅ Copied!';setTimeout(()=>this.textContent='Copy',1500)" style="position:absolute;top:0.4rem;right:0.4rem;background:rgba(139,92,246,0.2);border:1px solid rgba(139,92,246,0.4);color:var(--accent-purple);border-radius:5px;padding:0.15rem 0.5rem;font-size:0.62rem;cursor:pointer;">Copy</button>
-                </div>
-
-                <!-- Klausen 2016 -->
-                <div style="background:var(--bg-tertiary);border-radius:8px;padding:0.7rem 1rem;margin-bottom:0.6rem;font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--text-secondary);line-height:1.7;position:relative;">
-                    <span style="color:var(--accent-purple);font-weight:600;">Klausen et al. 2016</span><br>
-                    Klausen, L. H. et al. <em>Mapping surface charge density of lipid bilayers by quantitative surface conductance microscopy.</em> Nat. Commun. 7, 12447 (2016). <a href="https://doi.org/10.1038/ncomms12447" target="_blank" style="color:var(--accent-cyan);">doi:10.1038/ncomms12447</a>
-                    <button onclick="navigator.clipboard.writeText('Klausen, L. H. et al. Mapping surface charge density of lipid bilayers by quantitative surface conductance microscopy. Nat. Commun. 7, 12447 (2016). https://doi.org/10.1038/ncomms12447');this.textContent='✅ Copied!';setTimeout(()=>this.textContent='Copy',1500)" style="position:absolute;top:0.4rem;right:0.4rem;background:rgba(139,92,246,0.2);border:1px solid rgba(139,92,246,0.4);color:var(--accent-purple);border-radius:5px;padding:0.15rem 0.5rem;font-size:0.62rem;cursor:pointer;">Copy</button>
-                </div>
-
-                <!-- Sønderskov 2025 -->
-                <div style="background:var(--bg-tertiary);border-radius:8px;padding:0.7rem 1rem;font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--text-secondary);line-height:1.7;position:relative;">
-                    <span style="color:var(--accent-purple);font-weight:600;">Sønderskov et al. 2025</span><br>
-                    Sønderskov, S. M. et al. <em>Super-resolution imaging with scanning ion conductance microscopy.</em> npj Imaging 3, 1 (2025). <a href="https://doi.org/10.1038/s44303-025-00108-9" target="_blank" style="color:var(--accent-cyan);">doi:10.1038/s44303-025-00108-9</a>
-                    <button onclick="navigator.clipboard.writeText('Sønderskov, S. M. et al. Super-resolution imaging with scanning ion conductance microscopy. npj Imaging 3, 1 (2025). https://doi.org/10.1038/s44303-025-00108-9');this.textContent='✅ Copied!';setTimeout(()=>this.textContent='Copy',1500)" style="position:absolute;top:0.4rem;right:0.4rem;background:rgba(139,92,246,0.2);border:1px solid rgba(139,92,246,0.4);color:var(--accent-purple);border-radius:5px;padding:0.15rem 0.5rem;font-size:0.62rem;cursor:pointer;">Copy</button>
-                </div>
-            </div>
-
+            <div class="conv-slot" style="margin-top:22px"></div>
         </div>
     </div>
     <script>
@@ -3585,11 +3718,12 @@ body.lp-lock{overflow:hidden}
             }
         }
 
-        const LP_THEMES = ['ink', 'slate', 'aurora', 'paper'];
-        let currentTheme = 'dark';
+        const LP_THEMES = ['paper', 'ink'];   // v1.1: light (default) and dark; old names map to dark
+        let currentTheme = 'light';
 
         function setTheme(t) {
-            if (LP_THEMES.indexOf(t) < 0) t = 'ink';
+            if (t === 'slate' || t === 'aurora') t = 'ink';
+            if (LP_THEMES.indexOf(t) < 0) t = 'paper';
             document.documentElement.setAttribute('data-lp', t);
             currentTheme = (t === 'paper') ? 'light' : 'dark';
             document.body.setAttribute('data-theme', currentTheme);
@@ -3613,7 +3747,7 @@ body.lp-lock{overflow:hidden}
             setTheme(LP_THEMES[(LP_THEMES.indexOf(cur) + 1) % LP_THEMES.length]);
         }
 
-        setTheme((function(){ try { return localStorage.getItem('sicm_theme_lp'); } catch(e){ return null; } })() || 'ink');
+        setTheme((function(){ try { return localStorage.getItem('sicm_theme_lp'); } catch(e){ return null; } })() || 'paper');
 
 
         function cssTok(name, fallback) {
@@ -3797,98 +3931,140 @@ body.lp-lock{overflow:hidden}
         // TIFF FILE LOADING - Unified Smart Handler
         // ============================================
         // All TIFF files go through batchInput. Auto-detects:
-        // - Number of points/curves
-        // - Trace vs retrace (first half / second half)
-        // - Bias from filename
+        // - Channels by name (Z Scan, Z Detector, Current), so files with Current in another slot read correctly
+        // - Every non-empty repetition = one curve
+        // - Trace = start .. Z Scan maximum (closest to surface), retrace = end of that hold .. end
+        // - Bias from the file: sign of the mean current (filename only when the file has no sign)
+        // Height = Z detector counts x Z detector scale (calibrated 0.879 nm/count, 3 Nov 2026),
+        // the same rules as SICM quick look (parktiff.py) and MATLAB (appr_block.m).
         // Shows info panel with all detected parameters
-        
+
         state._allTiffRawCurves = []; // Store raw curves for trace/retrace access
+
+        const ZDET_DEFAULT = 0.879;   // nm per Z detector count (PDMS grating, 3 Nov 2026)
+        function zdetNm() {
+            const el = document.getElementById('zdetScale');
+            const v = el ? parseFloat(el.value) : NaN;
+            return isFinite(v) && v > 0 ? v : ZDET_DEFAULT;
+        }
+        // curves remember the scale they were read with; this rescales them to the current setting
+        function zFactor(curve) { return curve && curve._zdet ? zdetNm() / curve._zdet : 1; }
+
+        function readParkSpec(buffer) {
+            const dv = new DataView(buffer);
+            const sz = buffer.byteLength;
+            const safe = (o, bytes) => o >= 0 && o + bytes <= sz;
+            const isLE = dv.getUint16(0) === 0x4949;
+            const g16  = (o) => safe(o,2) ? dv.getUint16(o, isLE) : 0;
+            const g32  = (o) => safe(o,4) ? dv.getUint32(o, isLE) : 0;
+            const gI32 = (o) => safe(o,4) ? dv.getInt32(o, isLE) : 0;
+            const gF64 = (o) => safe(o,8) ? dv.getFloat64(o, isLE) : NaN;
+
+            const magic = g16(0);
+            if (magic !== 0x4949 && magic !== 0x4D4D) return null;
+            if (g16(2) !== 42) return null;
+            const ifd = g32(4);
+            if (!safe(ifd, 2)) return null;
+            const num = g16(ifd);
+            if (num > 512) return null;
+            const tags = {};
+            for (let i = 0; i < num; i++) {
+                const off = ifd + 2 + i * 12;
+                if (!safe(off, 12)) break;
+                tags[g16(off)] = { type: g16(off+2), count: g32(off+4), value: g32(off+8) };
+            }
+            // Park Systems spectroscopy tags required
+            if (!tags[50439] || !tags[50438]) return null;
+
+            // header: per channel name (UTF-16) at c*96, scale (float64) at c*96+80; nch at 768, npts at 776
+            const hb = tags[50438].value;
+            if (!safe(hb, 784)) return null;
+            const nch = gI32(hb + 768), npts = gI32(hb + 776);
+            if (nch < 1 || nch > 32 || npts < 4) return null;
+            const names = [], scales = [];
+            for (let c = 0; c < nch; c++) {
+                let s = '';
+                for (let k = 0; k < 32; k++) {
+                    const ch = g16(hb + c * 96 + 2 * k);
+                    if (!ch) break;
+                    s += String.fromCharCode(ch);
+                }
+                names.push(s);
+                scales.push(gF64(hb + c * 96 + 80));
+            }
+            const specOff = tags[50439].value, specBytes = tags[50439].count;
+            if (!safe(specOff, specBytes)) return null;
+            const nrep = Math.floor(specBytes / 2 / (nch * npts));
+            if (nrep < 1) return null;
+            const raw = new Int16Array(nrep * nch * npts);
+            for (let i = 0; i < raw.length; i++) raw[i] = dv.getInt16(specOff + 2 * i, isLE);
+            // layout: repetition, channel, point
+            const chan = (r, c) => raw.subarray((r * nch + c) * npts, (r * nch + c + 1) * npts);
+            return { names, scales, nch, npts, nrep, chan };
+        }
 
         function parseParkTiff(buffer) {
             try {
-                const dv = new DataView(buffer);
-                const sz = buffer.byteLength;
-                const safe = (o, bytes) => o >= 0 && o + bytes <= sz;
-
-                const isLE = dv.getUint16(0) === 0x4949;
-                const g16  = (o) => safe(o,2) ? dv.getUint16(o, isLE) : 0;
-                const g32  = (o) => safe(o,4) ? dv.getUint32(o, isLE) : 0;
-                const gF64 = (o) => safe(o,8) ? dv.getFloat64(o, isLE) : NaN;
-                const gI16 = (o) => safe(o,2) ? dv.getInt16(o, isLE) : 0;
-
-                // Verify TIFF magic
-                const magic = g16(0);
-                if (magic !== 0x4949 && magic !== 0x4D4D) return null;
-                if (g16(2) !== 42) return null;
-
-                const ifd = g32(4);
-                if (!safe(ifd, 2)) return null;
-                const num = g16(ifd);
-                if (num > 512) return null;
-
-                const tags = {};
-                for (let i = 0; i < num; i++) {
-                    const off = ifd + 2 + i * 12;
-                    if (!safe(off, 12)) break;
-                    tags[g16(off)] = { type: g16(off+2), count: g32(off+4), value: g32(off+8) };
+                const S = readParkSpec(buffer);
+                if (!S) return null;
+                const low = S.names.map(n => n.toLowerCase());
+                const idx = (k) => low.findIndex(n => n.includes(k));
+                const iz = idx('z scan'), idet = idx('z detector'), icur = idx('current');
+                if (iz < 0 || icur < 0) return null;              // I-V sweep or image, not an approach file
+                const zdet = zdetNm();
+                const zPer = idet >= 0 ? zdet / 1000 : Math.abs(S.scales[iz]);   // µm per count
+                const cScale = S.scales[icur];                     // nA per count
+                const curves = [];
+                let sumI = 0, nI = 0;
+                for (let r = 0; r < S.nrep; r++) {
+                    const zc = S.chan(r, iz), zd = idet >= 0 ? S.chan(r, idet) : zc, cur = S.chan(r, icur);
+                    let zmin = Infinity, zmax = -Infinity, kt = 0;
+                    for (let i = 0; i < S.npts; i++) {
+                        if (zc[i] > zmax) { zmax = zc[i]; kt = i; }
+                        if (zc[i] < zmin) zmin = zc[i];
+                    }
+                    if (zmax - zmin < 10) continue;               // empty repetition
+                    let k2 = kt;                                   // end of the hold at the turnaround
+                    for (let i = S.npts - 1; i > kt; i--) if (zc[i] === zmax) { k2 = i; break; }
+                    const pt = (i) => ({ d: zd[i] * zPer, c: cur[i] * cScale });
+                    const combined = [];
+                    for (let i = 0; i <= kt; i++) combined.push(pt(i));
+                    for (let i = k2; i < S.npts; i++) combined.push(pt(i));
+                    combined._parkFormat = true;
+                    combined._traceLen = kt + 1;
+                    combined._rep = r;
+                    if (idet >= 0) combined._zdet = zdet;
+                    for (let i = 0; i < S.npts; i++) sumI += cur[i] * cScale;
+                    nI += S.npts;
+                    curves.push(combined);
                 }
-
-                // Park Systems spectroscopy tags required
-                if (!tags[50439] || !tags[50438]) return null;
-
-                const t438base = tags[50438].value;
-                if (!safe(t438base + 4 * 96 + 80 + 8, 0)) return null;
-
-                // Scale factors: µm/digit for Z (ch0), nA/digit for current (ch4)
-                const zScale = Math.abs(gF64(t438base + 0 * 96 + 80));  // µm/digit
-                const cScale = gF64(t438base + 4 * 96 + 80);             // nA/digit
-                if (!isFinite(zScale) || !isFinite(cScale) || zScale === 0) return null;
-
-                const specOff   = tags[50439].value;
-                const specBytes = tags[50439].count;
-                if (!safe(specOff, specBytes)) return null;
-
-                // Layout: 5 channels × ptsPerCurve int16 each
-                // Ch0 = Z, Ch1 = Z2, Ch2-3 = unused, Ch4 = current
-                // Each channel = [trace (first half) | retrace (second half)]
-                const totalInt16   = specBytes / 2;
-                const numChannels  = 5;
-                const ptsPerCurve  = Math.floor(totalInt16 / numChannels);  // e.g. 10240/2/5 = 1024
-                const halfPts      = Math.floor(ptsPerCurve / 2);           // trace = first half
-                if (ptsPerCurve < 4) return null;
-
-                // Build trace curve (first halfPts of Ch0/Z and Ch4/current)
-                const traceCurve = [];
-                for (let i = 0; i < halfPts; i++) {
-                    const zOff = specOff + (0 * ptsPerCurve + i) * 2;
-                    const cOff = specOff + (4 * ptsPerCurve + i) * 2;
-                    if (!safe(zOff, 2) || !safe(cOff, 2)) break;
-                    traceCurve.push({ d: gI16(zOff) * zScale, c: gI16(cOff) * cScale });
-                }
-
-                // Build retrace curve (second halfPts of Ch0/Z and Ch4/current)
-                const retraceCurve = [];
-                for (let i = halfPts; i < ptsPerCurve; i++) {
-                    const zOff = specOff + (0 * ptsPerCurve + i) * 2;
-                    const cOff = specOff + (4 * ptsPerCurve + i) * 2;
-                    if (!safe(zOff, 2) || !safe(cOff, 2)) break;
-                    retraceCurve.push({ d: gI16(zOff) * zScale, c: gI16(cOff) * cScale });
-                }
-
-                if (traceCurve.length < 4) return null;
-
-                // Return as array with trace and retrace embedded
-                // Each element is one "point" — here 1 point with trace+retrace combined (1024 pts)
-                // processTiffCurve will split at the midpoint
-                const combined = [...traceCurve, ...retraceCurve];
-                combined._parkFormat = true;
-                combined._traceLen = traceCurve.length;
-
-                return [combined];
+                if (!curves.length) return null;
+                curves._meanI = sumI / nI;                         // nA, sign = bias polarity
+                curves._zSource = idet >= 0 ? 'Z detector' : 'Z scan';
+                return curves;
             } catch(e) {
                 console.warn('parseParkTiff error:', e.message);
                 return null;
             }
+        }
+
+        // bias read from the file: sign of the mean current; null when the file has no sign
+        function biasFromCurves(curves) {
+            const m = curves && curves._meanI;
+            return m > 0 ? 'pos' : m < 0 ? 'neg' : null;
+        }
+        // bias hinted by the filename; null when the name says nothing
+        function biasFromName(fname) {
+            if (/[-−]V|Trace\s*-|minus|neg/i.test(fname) || /All\s*-\./i.test(fname) || /-\.(tif|tiff|txt|dat|csv)$/i.test(fname)) return 'neg';
+            if (/\+V|Trace\s*[_+]/i.test(fname) || /All\./i.test(fname)) return 'pos';
+            return null;
+        }
+        // text data: the sign is only trusted when the file actually contains negative currents
+        function biasFromData(data) {
+            if (!data || !data.length) return null;
+            let s = 0, neg = false;
+            for (const p of data) { s += p.c; if (p.c < 0) neg = true; }
+            return neg ? (s > 0 ? 'pos' : s < 0 ? 'neg' : null) : null;
         }
 
         // Generic TIFF fallback: extract spectroscopy-like data from any TIFF
@@ -3990,8 +4166,9 @@ body.lp-lock{overflow:hidden}
             // rawCurve = [{d: µm, c: nA}, ...] combined trace+retrace
             // _traceLen marks where trace ends (use only trace = approach)
             const traceLen = rawCurve._traceLen || Math.floor(rawCurve.length / 2);
-            const approach = rawCurve.slice(0, traceLen);
-            
+            const k = zFactor(rawCurve);   // Z detector scale changed since loading
+            const approach = rawCurve.slice(0, traceLen).map(p => ({ d: p.d * k, c: p.c }));
+
             // d is in µm, convert to nm. Surface = Z_max, distance_from_surface = (Z_max - Z) * 1000
             // Absolute instrument axis in nm. This is never discarded: the
             // endpoint-aligned distance is derived from it, and the raw mode
@@ -4031,70 +4208,12 @@ body.lp-lock{overflow:hidden}
             const totalToLoad = tiffFiles.length + textFiles.length;
 
             // ---- TIFF files: ArrayBuffer ----
-            // Pre-assign point numbers before async loading to preserve order
-            // Group by detected bias so pos[0] pairs with neg[0], pos[1] with neg[1], etc.
-            const tiffMeta = tiffFiles.map((file, fileIdx) => {
-                const fname = file.name;
-                let bias = 'pos';
-                if (/[-−]V|Trace\s*-|minus|neg/i.test(fname) || /All\s*-\./i.test(fname) || /-\.(tif|tiff)$/i.test(fname)) {
-                    bias = 'neg';
-                }
-                // Try to extract point number from filename (e.g. Point1, point_3, _p2_)
-                const pm = fname.match(/[Pp]oint[_\s]?(\d+)|[_\s]p(\d+)[_\s]/);
-                const filenamePoint = pm ? parseInt(pm[1] || pm[2]) : null;
-                return { file, fname, bias, fileIdx, filenamePoint };
-            });
-
-            // If filenames have point numbers use those; otherwise pair by order within each bias
-            const hasFnPoints = tiffMeta.every(m => m.filenamePoint !== null);
-            if (!hasFnPoints) {
-                let posIdx = 0, negIdx = 0;
-                tiffMeta.forEach(m => {
-                    if (m.bias === 'pos') m.assignedPoint = ++posIdx;
-                    else m.assignedPoint = ++negIdx;
-                });
-            } else {
-                tiffMeta.forEach(m => { m.assignedPoint = m.filenamePoint; });
-            }
-
-            tiffMeta.forEach(meta => {
-                const { file, fname, bias, assignedPoint } = meta;
-                file.arrayBuffer().then(buf => {
-                    let curves = parseParkTiff(buf);
-                    if (!curves) curves = parseGenericTiffSpectroscopy(buf);
-                    
-                    if (curves && curves.length > 0) {
-                        // Store raw curves for trace/retrace
-                        state._allTiffRawCurves.push({
-                            filename: fname,
-                            bias: bias,
-                            curves: curves,
-                            ptsPerCurve: curves[0].length
-                        });
-
-                        // Assign curves to points: if 1 curve → assignedPoint, if multiple → assignedPoint, assignedPoint+1, ...
-                        const pointNums = [];
-                        for (let i = 0; i < curves.length; i++) {
-                            const pointNum = assignedPoint + i;
-                            pointNums.push(pointNum);
-                            if (!state.pointPairs[pointNum]) state.pointPairs[pointNum] = {pos: null, neg: null};
-                            state.pointPairs[pointNum][bias] = processTiffCurve(curves[i]);
-                        }
-                        state._loadedFileRegistry.push({ name: fname, bias, points: pointNums,
-                                                         kind: 'tiff', curves: curves, autoBias: bias });
-                        toast(`${fname}: ${bias === 'pos' ? '+V' : '−V'} → Point${pointNums.length > 1 ? 's ' + pointNums.join(',') : ' ' + pointNums[0]}`, 'success');
-                    } else {
-                        toast('No spectroscopy data: ' + fname, 'error');
-                    }
-
-                    loaded++;
-                    if (loaded === totalToLoad) finalizeSmartLoad(files);
-                }).catch(err => {
-                    console.error('TIFF load error:', err);
-                    toast(`TIFF parse failed: ${fname} — ${err.message.includes('bounds') ? 'unsupported format or corrupted file' : err.message}`, 'error');
-                    loaded++;
-                    if (loaded === totalToLoad) finalizeSmartLoad(files);
-                });
+            // All files are read first, so the bias comes from the file itself (sign of the mean current)
+            // before point numbers are given out; pos[i] then pairs with neg[i].
+            readTiffEntries(tiffFiles).then(entries => {
+                registerTiffEntries(entries, null);
+                loaded += tiffFiles.length;
+                if (loaded === totalToLoad) finalizeSmartLoad(files);
             });
 
             // ---- Text files: readAsText ----
@@ -4106,18 +4225,20 @@ body.lp-lock{overflow:hidden}
                     const pm = fname.match(/point(\d+)/i);
                     const pointNum = pm ? parseInt(pm[1]) : 1;
 
-                    let bias = null;
-                    if (/Trace\s*-/i.test(fname) || /All\s*-\./i.test(fname)) bias = 'neg';
-                    else if (/Trace[_+]/i.test(fname) || /All\./i.test(fname)) bias = 'pos';
-                    else if (fname.match(/-\.(txt|dat|csv)$/i)) bias = 'neg';
-                    else bias = 'pos';
+                    // signed currents in the file decide; otherwise the filename
+                    const fileBias = biasFromData(rawData);
+                    const nameBias = biasFromName(fname);
+                    const bias = fileBias || nameBias || 'pos';
+                    const src = fileBias ? 'file' : nameBias ? 'name' : 'default';
 
                     if (rawData.length > 0) {
                         if (!state.pointPairs[pointNum]) state.pointPairs[pointNum] = {pos:null, neg:null};
                         state.pointPairs[pointNum][bias] = rawData;
                         if (!state._loadedFileRegistry) state._loadedFileRegistry = [];
+                        const meanI = rawData.reduce((s, p) => s + p.c, 0) / rawData.length;
                         state._loadedFileRegistry.push({ name: fname, bias, points: [pointNum],
-                                                         kind: 'text', data: rawData, autoBias: bias });
+                                                         kind: 'text', data: rawData, autoBias: bias,
+                                                         fileBias, src, meanI });
                     }
 
                     loaded++;
@@ -4129,6 +4250,62 @@ body.lp-lock{overflow:hidden}
             if (totalToLoad === 0) finalizeSmartLoad(files);
             e.target.value = '';
         });
+
+        // Read TIFF files -> [{fname, curves | null, err}] in the original order
+        function readTiffEntries(files) {
+            return Promise.all(files.map(file => file.arrayBuffer().then(buf => {
+                let curves = parseParkTiff(buf);
+                if (!curves) curves = parseGenericTiffSpectroscopy(buf);
+                return { fname: file.name, curves: curves && curves.length ? curves : null };
+            }).catch(err => ({ fname: file.name, curves: null, err }))));
+        }
+
+        /* Put read TIFF files into the point pairs and the file registry.
+           The bias is what the file says (sign of the mean current); the filename is only a fallback.
+           buttonBias: 'pos' / 'neg' when loaded with the +Bias / −Bias button; a file that disagrees
+           keeps its own bias and a warning is shown. Each file takes as many points as it has curves. */
+        function registerTiffEntries(entries, buttonBias) {
+            if (!state._loadedFileRegistry) state._loadedFileRegistry = [];
+            const fnPoint = (fname) => {
+                const pm = fname.match(/[Pp]oint[_\s]?(\d+)|[_\s]p(\d+)[_\s]/);
+                return pm ? parseInt(pm[1] || pm[2]) : null;
+            };
+            const ok = entries.filter(m => m.curves);
+            const useFnPoints = !buttonBias && ok.length > 0 && ok.every(m => fnPoint(m.fname) !== null);
+            // next free point per bias (appending fills points that still miss that bias)
+            const next = { pos: 1, neg: 1 };
+            for (const p of Object.keys(state.pointPairs).map(Number)) {
+                for (const b of ['pos', 'neg']) if (state.pointPairs[p][b]) next[b] = Math.max(next[b], p + 1);
+            }
+            const sgn = (b) => b === 'pos' ? '+V' : '−V';
+            for (const m of entries) {
+                if (!m.curves) {
+                    toast(m.err ? `TIFF parse failed: ${m.fname} — ${m.err.message}` : 'No spectroscopy data: ' + m.fname, 'error');
+                    continue;
+                }
+                const fileBias = biasFromCurves(m.curves);
+                const nameBias = biasFromName(m.fname);
+                const bias = fileBias || buttonBias || nameBias || 'pos';
+                const src = fileBias ? 'file' : buttonBias ? 'button' : nameBias ? 'name' : 'default';
+                if (fileBias && buttonBias && fileBias !== buttonBias) {
+                    toast(`${m.fname}: loaded with the ${sgn(buttonBias)} button, but the file is ${sgn(fileBias)} → used as ${sgn(fileBias)}`, 'error');
+                } else if (fileBias && !buttonBias && nameBias && fileBias !== nameBias) {
+                    toast(`${m.fname}: name says ${sgn(nameBias)}, file is ${sgn(fileBias)} → used as ${sgn(fileBias)}`, 'error');
+                }
+                const start = useFnPoints ? fnPoint(m.fname) : next[bias];
+                const pointNums = m.curves.map((_, i) => start + i);
+                if (!useFnPoints) next[bias] = start + m.curves.length;
+                state._allTiffRawCurves.push({ filename: m.fname, bias, curves: m.curves, ptsPerCurve: m.curves[0].length });
+                pointNums.forEach((pn, i) => {
+                    if (!state.pointPairs[pn]) state.pointPairs[pn] = { pos: null, neg: null };
+                    state.pointPairs[pn][bias] = processTiffCurve(m.curves[i]);
+                });
+                state._loadedFileRegistry.push({ name: m.fname, bias, points: pointNums, kind: 'tiff', curves: m.curves,
+                                                 autoBias: bias, fileBias, src, meanI: m.curves._meanI,
+                                                 zSource: m.curves._zSource });
+                toast(`${m.fname}: ${sgn(bias)} (${src}) → Point${pointNums.length > 1 ? 's ' + pointNums[0] + '–' + pointNums[pointNums.length - 1] : ' ' + pointNums[0]}`, 'success');
+            }
+        }
 
         // ============================================
         // Manual +V / -V assignment
@@ -4186,7 +4363,7 @@ body.lp-lock{overflow:hidden}
             const entry = reg[idx];
             if (!entry || entry.bias === bias) return;
             entry.bias = bias;
-            entry.manual = true;
+            entry.manual = !entry.fileBias || bias !== entry.fileBias;   // back to the file's own value = not manual
             rebuildPointPairsFromRegistry();
             const validCount = rebuildPointSelector();
             renderLoadedFiles();
@@ -4194,6 +4371,18 @@ body.lp-lock{overflow:hidden}
                 `${validCount} pairs from ${reg.length} files`;
             if (document.getElementById('pointSelector').options.length) onPointSelected();
             toast(`${entry.name} → ${bias === 'pos' ? '+V' : '−V'}`, 'success');
+        }
+
+        // chip text: where the bias came from
+        function biasSourceLabel(f) {
+            if (f.manual) return 'manual';
+            if (f.src === 'file') return `file · Ī ${f.meanI >= 0 ? '+' : ''}${f.meanI.toPrecision(3)} nA`;
+            return { name: 'from name', button: 'from button', default: 'unknown → +V' }[f.src] || 'auto';
+        }
+        function biasSourceTitle(f) {
+            const z = f.zSource ? ` · height: ${f.zSource}${f.zSource === 'Z detector' ? ' × ' + zdetNm() + ' nm/count' : ''}` : '';
+            if (f.src === 'file') return 'Bias read from the file: sign of the mean current' + z;
+            return 'The file has no current sign; bias from ' + (f.src === 'name' ? 'the filename' : f.src === 'button' ? 'the button used' : 'default (+V)') + z;
         }
 
         function renderLoadedFiles() {
@@ -4216,7 +4405,8 @@ body.lp-lock{overflow:hidden}
                         <button type="button" class="bias-btn neg${f.bias === 'neg' ? ' is-on' : ''}"
                                 onclick="setFileBias(${idx}, 'neg')" title="Assign as −V">−V</button>
                     </span>
-                    <span class="file-chip-tag">${f.manual ? 'manual' : 'auto'}</span>
+                    <span class="file-chip-tag" style="text-transform:none" title="${biasSourceTitle(f)}">${biasSourceLabel(f)}</span>${
+                        f.fileBias && f.bias !== f.fileBias ? `<span class="file-chip-tag" style="color:#ef4444;border-color:#ef4444" title="The file's current says ${f.fileBias === 'pos' ? '+V' : '−V'}">≠ file</span>` : ''}
                     <button class="file-chip-x" onclick="removeLoadedFile(${idx})" title="Remove file">✕</button>
                 </div>`).join('');
         }
@@ -4242,6 +4432,7 @@ body.lp-lock{overflow:hidden}
             if (registry.length === 0) {
                 document.getElementById('tiffInfoPanel').style.display = 'none';
             }
+            const sel = document.getElementById('pointSelector');
             if (sel.options.length > 0) { sel.selectedIndex = 0; onPointSelected(); }
             toast(`Removed: ${entry.name}`, 'info');
         }
@@ -4284,8 +4475,11 @@ body.lp-lock{overflow:hidden}
             panel.style.display = 'block';
 
             const totalCurves = state._allTiffRawCurves.reduce((s, t) => s + t.curves.length, 0);
+            const c0 = state._allTiffRawCurves[0].curves[0];
             const ptsPerCurve = state._allTiffRawCurves[0].ptsPerCurve;
-            const halfPts = Math.floor(ptsPerCurve / 2);
+            const halfPts = c0._traceLen || Math.floor(ptsPerCurve / 2);
+            const retPts = ptsPerCurve - halfPts;
+            const zSrc = state._allTiffRawCurves[0].curves._zSource;
             const biases = [...new Set(state._allTiffRawCurves.map(t => t.bias))];
             const filenames = state._allTiffRawCurves.map(t => t.filename).join(', ');
 
@@ -4297,8 +4491,9 @@ body.lp-lock{overflow:hidden}
                 { label: 'Total Curves', value: totalCurves, color: 'var(--accent-green)' },
                 { label: 'Pts/Curve', value: ptsPerCurve, color: 'var(--accent-orange)' },
                 { label: 'Approach', value: halfPts + ' pts', color: '#f59e0b' },
-                { label: 'Retract', value: halfPts + ' pts', color: '#8b5cf6' },
-                { label: 'Bias', value: biases.map(b => b === 'pos' ? '+V' : '−V').join(' & '), color: 'var(--accent-pink)' },
+                { label: 'Retract', value: retPts + ' pts', color: '#8b5cf6' },
+                { label: 'Bias (from file)', value: biases.map(b => b === 'pos' ? '+V' : '−V').join(' & '), color: 'var(--accent-pink)' },
+                { label: 'Height', value: zSrc === 'Z detector' ? `Z det × ${zdetNm()} nm` : (zSrc || '—'), color: 'var(--accent-cyan)' },
             ];
             grid.innerHTML = infoItems.map(item => `
                 <div style="background:var(--bg-secondary);padding:0.3rem 0.5rem;border-radius:5px;border-left:3px solid ${item.color};">
@@ -4349,8 +4544,9 @@ body.lp-lock{overflow:hidden}
             const traceLen = rawCurve._traceLen || Math.floor(rawCurve.length / 2);
 
             // Trace = approach (first traceLen pts), Retrace = retract (remaining)
-            const traceHalf   = rawCurve.slice(0, traceLen);
-            const retraceHalf = rawCurve.slice(traceLen);
+            const k = zFactor(rawCurve);
+            const traceHalf   = rawCurve.slice(0, traceLen).map(p => ({ d: p.d * k, c: p.c }));
+            const retraceHalf = rawCurve.slice(traceLen).map(p => ({ d: p.d * k, c: p.c }));
 
             // Convert trace
             let zMaxTr = -Infinity;
@@ -4654,7 +4850,7 @@ body.lp-lock{overflow:hidden}
                 label = 'σ'; unit = 'mC/m²';
             } else {
                 vals = dhs.map(r => r.dH);
-                label = 'Δh'; unit = 'nm';
+                label = 'Δz99'; unit = 'nm';
             }
 
             const chartMean = vals.reduce((a,b)=>a+b,0)/vals.length;
@@ -4850,7 +5046,7 @@ body.lp-lock{overflow:hidden}
 
 
         // ============================================
-        // Δh ALIGNMENT MODES  (raw / endpoint / current)
+        // Δz99 ALIGNMENT MODES  (raw / endpoint / current)
         // ============================================
         const ALIGN_MODES = ['raw', 'endpoint', 'current'];
         const ALIGN_NAME = {
@@ -4900,7 +5096,7 @@ body.lp-lock{overflow:hidden}
             return end.map(pt => ({ d: pt.d - xref, xAbs: pt.xAbs, c: pt.c }));
         }
 
-        /* Δh for every mode of one pair: Δh = x99(−V) − x99(+V) on that axis */
+        /* Δz99 for every mode of one pair: Δz99 = x99(−V) − x99(+V) on that axis */
         function deltaHAllModes(posP, negP, sp, cRef) {
             const canRaw = posP.hasAbs && negP.hasAbs;
             const x0 = canRaw ? Math.min(posP.minAbs, negP.minAbs) : 0;
@@ -5111,8 +5307,8 @@ body.lp-lock{overflow:hidden}
             plotZoom(sp);
             document.getElementById('zoomZoomControls').style.display = 'flex';
 
-            toast(`Δh = ${state.deltaH.toFixed(2)} nm`, 'success');
-            setStatus(`Δh: ${state.deltaH.toFixed(2)} nm`);
+            toast(`Δz99 = ${state.deltaH.toFixed(2)} nm`, 'success');
+            setStatus(`Δz99: ${state.deltaH.toFixed(2)} nm`);
         }
 
         // Local linear fit: find crossing, fit ±5 neighbors
@@ -5273,7 +5469,7 @@ body.lp-lock{overflow:hidden}
 
                 ctx.fillStyle = '#10b981';
                 ctx.font = 'bold 10px JetBrains Mono';
-                ctx.fillText(`Δh = ${state.deltaH.toFixed(2)} nm`, midX, spY - 30);
+                ctx.fillText(`Δz99 = ${state.deltaH.toFixed(2)} nm`, midX, spY - 30);
             }
 
             // Y axis values
@@ -5415,8 +5611,8 @@ body.lp-lock{overflow:hidden}
                     ['Distance Unit', document.getElementById('distUnit').value],
                     ['x₁ (+100mV)', state.x1 !== null ? state.x1.toFixed(3) + ' nm' : '--'],
                     ['x₂ (-100mV)', state.x2 !== null ? state.x2.toFixed(3) + ' nm' : '--'],
-                    ['Δh = x₂−x₁', state.deltaH !== null ? state.deltaH.toFixed(3) + ' nm' : '--'],
-                    ['Δh range', '-100 to +100 nm'],
+                    ['Δz99 = x₂−x₁', state.deltaH !== null ? state.deltaH.toFixed(3) + ' nm' : '--'],
+                    ['Δz99 range', '-100 to +100 nm'],
                 ];
                 // Measurement notes
                 const mPH  = document.getElementById('measPH')?.value;
@@ -5463,7 +5659,7 @@ body.lp-lock{overflow:hidden}
                     pdf.setFontSize(10); pdf.setFont('helvetica','bold');
                     pdf.text('All Points Summary', m, y); y += 6;
                     pdf.setFontSize(8); pdf.setFont('helvetica','normal');
-                    const hdrs = ['Point','x₁(+V) nm','x₂(-V) nm','Δh nm'];
+                    const hdrs = ['Point','x₁(+V) nm','x₂(-V) nm','Δz99 nm'];
                     const colW = (pw - 2*m) / hdrs.length;
                     hdrs.forEach((h,i) => { pdf.setFont('helvetica','bold'); pdf.text(h, m + i*colW, y); });
                     y += 5;
@@ -5490,7 +5686,7 @@ body.lp-lock{overflow:hidden}
             try {
                 const { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, HeadingLevel, BorderStyle, WidthType } = docx;
                 const rows = [
-                    new TableRow({ children: ['Point','x₁(+V) nm','x₂(-V) nm','Δh nm'].map(t =>
+                    new TableRow({ children: ['Point','x₁(+V) nm','x₂(-V) nm','Δz99 nm'].map(t =>
                         new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: t, bold: true })] })] })
                     )}),
                     ...(state._allResults || []).map(r =>
@@ -5523,7 +5719,7 @@ body.lp-lock{overflow:hidden}
                     new Paragraph(`Setpoint: ${document.getElementById('acSetpoint').value}%`),
                     new Paragraph(`x₁ (+100mV): ${state.x1?.toFixed(3) ?? '--'} nm`),
                     new Paragraph(`x₂ (-100mV): ${state.x2?.toFixed(3) ?? '--'} nm`),
-                    new Paragraph(`Δh = x₂−x₁: ${state.deltaH?.toFixed(3) ?? '--'} nm  (range: -100 to +100 nm)`),
+                    new Paragraph(`Δz99 = x₂−x₁: ${state.deltaH?.toFixed(3) ?? '--'} nm  (range: -100 to +100 nm)`),
                     ...(noteLines.length ? [new Paragraph(''), new Paragraph({ text: 'Measurement Notes', heading: HeadingLevel.HEADING_2 }), ...noteLines] : []),
                     new Paragraph(''),
                     new Paragraph({ text: 'All Points Summary', heading: HeadingLevel.HEADING_2 }),
@@ -5641,9 +5837,9 @@ body.lp-lock{overflow:hidden}
         function autofillDeltaH() {
             if (state.deltaH !== null) {
                 document.getElementById('deltaHInput').value = state.deltaH.toFixed(3);
-                toast('Δh filled', 'success');
+                toast('Δz99 filled', 'success');
             } else {
-                toast('Extract Δh first', 'error');
+                toast('Extract Δz99 first', 'error');
             }
         }
 
@@ -5656,7 +5852,7 @@ body.lp-lock{overflow:hidden}
         function calculateQSCM() {
             const dh = parseFloat(document.getElementById('deltaHInput').value);
             if (isNaN(dh)) {
-                toast('Enter Δh', 'error');
+                toast('Enter Δz99', 'error');
                 return;
             }
 
@@ -6027,7 +6223,7 @@ body.lp-lock{overflow:hidden}
             }
             const btn = document.getElementById('deconvBtn');
             btn.disabled = false;
-            btn.textContent = '✨ Deconvolute';
+            btn.textContent = 'Deconvolute';
             document.getElementById('cancelDeconvBtn').style.display = 'none';
             setStatus('Cancelled');
             toast('Deconvolution cancelled', 'info');
@@ -6171,7 +6367,7 @@ body.lp-lock{overflow:hidden}
                     document.getElementById('outputBadge').textContent = `${outW}×${outH}`;
                     document.getElementById('saveBtn').disabled = false;
                     btn.disabled = false;
-                    btn.textContent = '✨ Deconvolute';
+                    btn.textContent = 'Deconvolute';
                     cancelBtn.style.display = 'none';
                     _deconvWorker = null;
                     toast('Done!', 'success');
@@ -6211,7 +6407,7 @@ body.lp-lock{overflow:hidden}
             if (!r) { toast('Calculate σ first', 'error'); return; }
             const lines = [
                 'Parameter,Value',
-                `Δh (nm),${r.deltaH}`,
+                `Δz99 (nm),${r.deltaH}`,
                 `σ (mC/m²),${r.scd.toFixed(3)}`,
                 `ri (nm),${r.ri}`,
                 `pH,${r.ph}`,
@@ -6220,7 +6416,7 @@ body.lp-lock{overflow:hidden}
                 `Calibration,${r.source === 'klausen2016' ? 'Klausen 2016' : 'Custom'}`,
                 `Slope,${r.slope}`,
                 `Intercept,${r.intercept}`,
-                `Formula,"σ = (Δh - ${r.intercept}) × ${r.slope}"`,
+                `Formula,"σ = (Δz99 - ${r.intercept}) × ${r.slope}"`,
             ];
             const a = document.createElement('a');
             a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(lines.join('\n'));
@@ -6267,7 +6463,7 @@ body.lp-lock{overflow:hidden}
                 pdf.text('Measurement Parameters', m, y); y += 6;
                 pdf.setFontSize(9); pdf.setFont('helvetica', 'normal');
                 const params = [
-                    ['Δh', r.deltaH.toFixed(2) + ' nm'],
+                    ['Δz99', r.deltaH.toFixed(2) + ' nm'],
                     ['σ (surface charge)', r.scd.toFixed(3) + ' mC/m²'],
                     ['ri (pipette)', r.ri + ' nm'],
                     ['pH', r.ph],
@@ -6312,7 +6508,7 @@ body.lp-lock{overflow:hidden}
                 pdf.setFontSize(10); pdf.setFont('helvetica','bold'); pdf.setTextColor(0,0,0);
                 pdf.text('Reference Materials (Klausen et al. 2016)', m, y); y += 5;
                 const refData = [
-                    ['Material', 'σ (mC/m²)', 'Δh (nm)', 'Bias', 'ri (nm)'],
+                    ['Material', 'σ (mC/m²)', 'Δz99 (nm)', 'Bias', 'ri (nm)'],
                     ['Mica', '-34', '-5.1', '±100mV', '~15'],
                     ['APTES', '~0', '0.8', '±100mV', '~15'],
                     ['SiO₂', '-16', '-1.9', '±100mV', '~15'],
@@ -6380,7 +6576,7 @@ body.lp-lock{overflow:hidden}
                     children: [new Paragraph({ children: [new TextRun({ text: String(t), bold })] })]
                 })) });
                 const refTable = new Table({ rows: [
-                    mkRow(['Material','σ (mC/m²)','Δh (nm)','Bias','ri (nm)'], true),
+                    mkRow(['Material','σ (mC/m²)','Δz99 (nm)','Bias','ri (nm)'], true),
                     mkRow(['Mica','-34','-5.1','±100mV','~15']),
                     mkRow(['APTES','~0','0.8','±100mV','~15']),
                     mkRow(['SiO₂','-16','-1.9','±100mV','~15']),
@@ -6394,9 +6590,9 @@ body.lp-lock{overflow:hidden}
                     new Paragraph({ children: [new TextRun({ text: 'Generated: ' + new Date().toLocaleString(), italics: true })] }),
                     new Paragraph(''),
                     new Paragraph({ text: 'Result', heading: HeadingLevel.HEADING_2 }),
-                    new Paragraph({ children: [new TextRun({ text: 'Δh = ' + r.deltaH.toFixed(2) + ' nm', bold: true })] }),
+                    new Paragraph({ children: [new TextRun({ text: 'Δz99 = ' + r.deltaH.toFixed(2) + ' nm', bold: true })] }),
                     new Paragraph({ children: [new TextRun({ text: 'σ = ' + r.scd.toFixed(3) + ' mC/m²', bold: true })] }),
-                    new Paragraph({ children: [new TextRun({ text: 'Formula: σ = (Δh − ' + r.intercept + ') × ' + r.slope, italics: true })] }),
+                    new Paragraph({ children: [new TextRun({ text: 'Formula: σ = (Δz99 − ' + r.intercept + ') × ' + r.slope, italics: true })] }),
                     new Paragraph(''),
                     new Paragraph({ text: 'Measurement Parameters', heading: HeadingLevel.HEADING_2 }),
                     new Paragraph(`ri (pipette): ${r.ri} nm`),
@@ -6561,79 +6757,304 @@ body.lp-lock{overflow:hidden}
             }
         }
 
-        // Load TIFF with explicitly forced bias
-        function loadBiasedTiff(e, forcedBias) {
+        // +Bias / −Bias buttons: add files to what is loaded. The file's own current sign still decides
+        // the bias; the button is used only for files without a sign, and a mismatch is reported.
+        function loadBiasedTiff(e, buttonBias) {
             const files = Array.from(e.target.files);
             if (!files.length) return;
-            let loaded = 0;
+            if (!state._allTiffRawCurves) state._allTiffRawCurves = [];
+            readTiffEntries(files).then(entries => {
+                registerTiffEntries(entries, buttonBias);
+                finalizeSmartLoad(state._loadedFileRegistry || files);
+                e.target.value = '';
+            });
+        }
 
-            // Pre-assign point numbers: find next available slot for this bias
-            const getNextPoint = (bias) => {
-                const usedPts = Object.keys(state.pointPairs).map(Number);
-                // Find points that don't yet have this bias filled
-                const available = usedPts.find(p => !state.pointPairs[p][bias]);
-                return available || (usedPts.length > 0 ? Math.max(...usedPts) + 1 : 1);
-            };
+        // ============================================
+        // STIFFNESS: reference + sample approach curves
+        // Same rules as SICM quick look (analysis.curve_metrics / stiffness):
+        // I∞ = mean of the points farther than the I∞ window from the closest point; z_thr = first crossing
+        // of the threshold from the surface; s = linear slope of I/I∞ inside the slope window.
+        // ============================================
+        const stiff = { files: [], rows: [] };
 
-            // Assign a base point number per file before async
-            let basePoint = (() => {
-                const usedPts = Object.keys(state.pointPairs).map(Number);
-                return usedPts.length > 0 ? Math.max(...usedPts) + 1 : 1;
-            })();
-            // For existing points missing this bias, fill those first
-            const needBias = Object.keys(state.pointPairs)
-                .filter(p => !state.pointPairs[p][forcedBias])
-                .map(Number).sort((a,b) => a-b);
+        // Z detector scale is one setting, shown in Approach and Stiffness
+        function onZdetChange(v) {
+            const x = parseFloat(v);
+            if (!(isFinite(x) && x > 0)) return;
+            for (const id of ['zdetScale', 'stZdet']) { const el = document.getElementById(id); if (el) el.value = x; }
+            if ((state._loadedFileRegistry || []).length) {
+                rebuildPointPairsFromRegistry();
+                rebuildPointSelector();
+                renderLoadedFiles();
+                showTiffInfoPanel();
+                if (document.getElementById('pointSelector').options.length) onPointSelected();
+                if (document.getElementById('trCurveSelector').options.length) onTrCurveSelected();
+            }
+            stCompute();
+        }
 
-            const fileMetas = files.map((file, fi) => {
-                let assignedPoint;
-                if (fi < needBias.length) {
-                    assignedPoint = needBias[fi];
-                } else {
-                    assignedPoint = basePoint + (fi - needBias.length);
+        function stEsc(s) { return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+        function stPar(id, def) { const el = document.getElementById(id); const v = el ? parseFloat(el.value) : NaN; return isFinite(v) ? v : def; }
+        function stNanMean(a) { const b = a.filter(isFinite); return b.length ? b.reduce((s, x) => s + x, 0) / b.length : NaN; }
+        function stNanSD(a) {
+            const b = a.filter(isFinite);
+            if (b.length < 2) return NaN;
+            const m = stNanMean(b);
+            return Math.sqrt(b.reduce((s, x) => s + (x - m) ** 2, 0) / (b.length - 1));
+        }
+
+        // one approach curve: h (nm, + = away from surface, last point = closest), I (|nA|)
+        // v1.1 (approved 11 Nov 2026): I_inf = MEDIAN of the far region (as sicm_lib), z_thr crossing from the bulk side
+        // by default; side 'surface' keeps the earlier rule (first point >= thr counted from the surface).
+        function stMetrics(h, I, far, thr, w0, w1, side) {
+            const n = h.length, hl = h[n - 1];
+            const farI = [];
+            for (let i = 0; i < n; i++) if (h[i] - hl > far) farI.push(I[i]);
+            if (farI.length < 20) return null;
+            const fs_ = Float64Array.from(farI).sort(), fm = (fs_.length - 1) / 2;
+            const I0 = (fs_[Math.floor(fm)] + fs_[Math.ceil(fm)]) / 2;          // median
+            const o = Array.from({ length: n }, (_, i) => i).sort((a, b) => h[a] - h[b]);
+            const hs = o.map(i => h[i]), Is = o.map(i => I[i] / I0);
+            let z = NaN;
+            if (side === 'surface') {
+                const i = Is.findIndex(v => v >= thr);
+                if (i > 0) z = hs[i - 1] + (thr - Is[i - 1]) * (hs[i] - hs[i - 1]) / (Is[i] - Is[i - 1]);
+            } else {
+                let k = -1;
+                for (let j = n - 1; j >= 0; j--) if (Is[j] < thr) { k = j; break; }
+                if (k >= 0 && k < n - 1) z = hs[k] + (thr - Is[k]) * (hs[k + 1] - hs[k]) / (Is[k + 1] - Is[k]);
+            }
+            let sx = 0, sy = 0, m = 0;
+            for (let j = 0; j < n; j++) if (Is[j] >= w0 && Is[j] <= w1) { sx += hs[j]; sy += Is[j]; m++; }
+            let slope = NaN;
+            if (m >= 5) {
+                const mx = sx / m, my = sy / m;
+                let sxy = 0, sxx = 0;
+                for (let j = 0; j < n; j++) if (Is[j] >= w0 && Is[j] <= w1) { sxy += (hs[j] - mx) * (Is[j] - my); sxx += (hs[j] - mx) ** 2; }
+                slope = sxy / sxx;                         // 1/nm
+            }
+            return { z, slope, I0, hs, Is };
+        }
+
+        // every kept curve of a file; why = reason -> count for curves not used
+        function stFileMetrics(f, P) {
+            const out = [], why = {};
+            const skip = f.curves.length > P.skip ? P.skip : 0;
+            f.curves.forEach((c, k) => {
+                const kz = zFactor(c), L = c._traceLen || Math.floor(c.length / 2);
+                const h = new Array(L), I = new Array(L);
+                for (let i = 0; i < L; i++) { h[i] = -c[i].d * 1000 * kz; I[i] = Math.abs(c[i].c); }
+                if (k < skip) { why['discarded (first n)'] = (why['discarded (first n)'] || 0) + 1; return; }
+                const m = stMetrics(h, I, P.far, P.thr, P.w0, P.w1, P.side);
+                const w = m === null ? 'I∞ window too short' : !isFinite(m.z) ? 'threshold not reached' : null;
+                if (w) why[w] = (why[w] || 0) + 1;
+                if (m) { m.rep = k + 1; out.push(m); }
+            });
+            // I_inf variation over the used curves of this file (criterion 0.3 %, as sicm_lib.checks)
+            const I0s = out.map(m => m.I0);
+            const drift = I0s.length > 1 ? 100 * (Math.max(...I0s) - Math.min(...I0s)) / (I0s.reduce((a, b) => a + b, 0) / I0s.length) : 0;
+            return { ms: out, why, drift };
+        }
+
+        function stLoad(e, role) {
+            const files = Array.from(e.target.files);
+            if (!files.length) return;
+            readTiffEntries(files).then(entries => {
+                for (const m of entries) {
+                    if (!m.curves || !m.curves[0]._parkFormat) { toast('No Park approach curves: ' + m.fname, 'error'); continue; }
+                    stiff.files = stiff.files.filter(f => f.name !== m.fname);     // reloading replaces
+                    stiff.files.push({ name: m.fname, role, group: m.fname.replace(/\.(tif|tiff)$/i, ''),
+                                       curves: m.curves, bias: biasFromCurves(m.curves), meanI: m.curves._meanI });
                 }
-                return { file, fname: file.name, assignedPoint };
+                e.target.value = '';
+                stRenderFiles();
+                stCompute();
             });
+        }
+        function stClear() { stiff.files = []; stiff.rows = []; stRenderFiles(); stCompute(); }
+        function stSetRole(i, role) { if (stiff.files[i]) { stiff.files[i].role = role; stRenderFiles(); stCompute(); } }
+        function stSetGroup(i, g) { if (stiff.files[i]) { stiff.files[i].group = g.trim() || stiff.files[i].name; stCompute(); } }
+        function stRemove(i) { stiff.files.splice(i, 1); stRenderFiles(); stCompute(); }
 
-            fileMetas.forEach(({ file, fname, assignedPoint }) => {
-                file.arrayBuffer().then(buf => {
-                    let curves = parseParkTiff(buf);
-                    if (!curves) curves = parseGenericTiffSpectroscopy(buf);
-                    if (curves && curves.length > 0) {
-                        state._allTiffRawCurves.push({filename: fname, bias: forcedBias, curves: curves, ptsPerCurve: curves[0].length});
-                        if (!state._loadedFileRegistry) state._loadedFileRegistry = [];
-                        const pointNums = [];
-                        for (let i = 0; i < curves.length; i++) {
-                            const pointNum = assignedPoint + i;
-                            pointNums.push(pointNum);
-                            if (!state.pointPairs[pointNum]) state.pointPairs[pointNum] = {pos: null, neg: null};
-                            state.pointPairs[pointNum][forcedBias] = processTiffCurve(curves[i]);
-                        }
-                        state._loadedFileRegistry.push({ name: fname, bias: forcedBias, points: pointNums });
-                        toast(`${fname}: ${forcedBias === 'pos' ? '+V' : '−V'} forced → Point${pointNums.length > 1 ? 's ' + pointNums.join(',') : ' ' + pointNums[0]}`, 'success');
-                    } else {
-                        toast('No data found: ' + fname, 'error');
-                    }
-                    loaded++;
-                    if (loaded === files.length) {
-                        finalizeSmartLoad(files);
-                        e.target.value = '';
-                    }
-                }).catch(err => {
-                    console.error('TIFF load error:', err);
-                    toast(`TIFF parse failed: ${fname} — ${err.message.includes('bounds') ? 'unsupported format or corrupted file' : err.message}`, 'error');
-                    loaded++;
-                    if (loaded === files.length) { finalizeSmartLoad(files); e.target.value = ''; }
-                });
+        function stRenderFiles() {
+            const box = document.getElementById('stFiles');
+            if (!stiff.files.length) { box.style.display = 'none'; box.innerHTML = ''; return; }
+            box.style.display = 'flex';
+            box.innerHTML = stiff.files.map((f, i) => {
+                const b = f.bias === 'pos' ? '+V' : f.bias === 'neg' ? '−V' : '?';
+                return `<div class="file-chip">
+                    <span class="file-chip-name" title="${stEsc(f.name)}">${stEsc(f.name)}</span>
+                    <span class="bias-toggle" role="group" aria-label="Role of ${stEsc(f.name)}">
+                        <button type="button" class="bias-btn neg${f.role === 'ref' ? ' is-on' : ''}" onclick="stSetRole(${i},'ref')" title="Reference (stiff)">Ref</button>
+                        <button type="button" class="bias-btn pos${f.role === 'sample' ? ' is-on' : ''}" onclick="stSetRole(${i},'sample')" title="Sample">Sample</button>
+                    </span>
+                    ${f.role === 'sample' ? `<input type="text" value="${stEsc(f.group)}" onchange="stSetGroup(${i}, this.value)" title="Group name: samples with the same name are pooled" style="width:110px;padding:0.15rem 0.3rem;font-size:0.62rem;background:var(--bg-tertiary);border:1px solid var(--border-color);border-radius:4px;color:var(--text-primary);">` : ''}
+                    <span class="file-chip-tag" style="text-transform:none" title="Bias read from the file: sign of the mean current">${b} · Ī ${f.meanI >= 0 ? '+' : ''}${f.meanI.toPrecision(3)} nA</span>
+                    <span class="file-chip-tag">${f.curves.length} curves</span>
+                    <button class="file-chip-x" onclick="stRemove(${i})" title="Remove file">✕</button>
+                </div>`;
+            }).join('');
+        }
+
+        function stCompute() {
+            const sideEl = document.getElementById('stSide');
+            const P = { far: stPar('stFar', 300), thr: stPar('stThr', 0.99), w0: stPar('stW0', 0.98), w1: stPar('stW1', 0.99),
+                        skip: Math.max(0, Math.round(stPar('stSkip', 1))), A: stPar('stA', 0.40), p0: stPar('stP0', NaN),
+                        side: sideEl ? sideEl.value : 'bulk' };
+            const per = stiff.files.map(f => ({ f, ...stFileMetrics(f, P) }));
+            const refs = per.filter(x => x.f.role === 'ref');
+            const refSlopes = refs.flatMap(x => x.ms.map(m => m.slope));
+            const groups = new Map();
+            for (const x of per.filter(x => x.f.role === 'sample')) {
+                if (!groups.has(x.f.group)) groups.set(x.f.group, { slopes: [], biases: new Set() });
+                const g = groups.get(x.f.group);
+                g.slopes.push(...x.ms.map(m => m.slope));
+                if (x.f.bias) g.biases.add(x.f.bias);
+            }
+            const S = stNanMean(refSlopes);
+            const sg = (b) => b === 'pos' ? '+V' : '−V';
+            const refBias = new Set(refs.map(x => x.f.bias).filter(Boolean));
+            stiff.rows = [];
+            for (const [name, g] of groups) {
+                const s = stNanMean(g.slopes), ratio = S / s;
+                const delta = 0.01 * (1 / s - 1 / S);
+                const Ep0 = ratio > 1 ? P.A / (ratio - 1) : NaN;
+                stiff.rows.push({ group: name, n: g.slopes.length, bias: [...g.biases].map(sg).join('/'),
+                                  s, sd_s: stNanSD(g.slopes), ratio, delta, Ep0, E_kPa: Ep0 * P.p0 / 1000,
+                                  singles: g.slopes.map(x => 0.01 * (1 / x - 1 / S)) });
+            }
+            document.getElementById('stStatus').textContent = stiff.files.length
+                ? `${refs.length} reference, ${per.length - refs.length} sample file(s)` : '';
+            document.getElementById('stRefLine').textContent = refSlopes.length
+                ? `S∞ (reference) = ${(S * 1e3).toFixed(3)} ± ${(stNanSD(refSlopes) * 1e3).toFixed(3)} 1/µm  (n = ${refSlopes.length}, ${[...refBias].map(sg).join('/') || 'bias ?'})`
+                : 'S∞ (reference) = --  (load a reference file)';
+
+            const body = document.getElementById('stBody');
+            const f = (v, d) => isFinite(v) ? v.toFixed(d) : '—';
+            const td = 'padding:0.3rem;border-bottom:1px solid var(--border-color);text-align:right;';
+            body.innerHTML = stiff.rows.length && refSlopes.length ? stiff.rows.map(r => `<tr>
+                    <td style="${td}text-align:left">${stEsc(r.group)}</td><td style="${td}">${r.n}</td><td style="${td}">${r.bias || '?'}</td>
+                    <td style="${td}">${f(r.s * 1e3, 3)} ± ${f(r.sd_s * 1e3, 3)}</td><td style="${td}">${f(r.ratio, 2)}</td>
+                    <td style="${td}">${f(r.delta, 1)}</td><td style="${td}">${f(r.Ep0, 2)}</td></tr>`).join('')
+                : `<tr><td colspan="7" style="padding:0.4rem;color:var(--text-muted)">${stiff.files.length ? 'Need at least one reference and one sample file.' : 'No results yet'}</td></tr>`;
+
+            // notes: per-file use, bias consistency
+            const notes = per.map(x => {
+                const why = Object.entries(x.why).map(([k, v]) => `${k} ×${v}`).join(', ');
+                const dr = x.drift > 0.3 ? ` · <span style="color:#b3261e">I∞ varies by ${x.drift.toFixed(2)} % over the used curves (criterion 0.3 %)</span>` : '';
+                return `${stEsc(x.f.name)} (${x.f.role === 'ref' ? 'reference' : 'sample'}): ${x.f.curves.length} curves, ${x.ms.length} used${why ? ' · not used: ' + why : ''}${dr}`;
             });
+            notes.push(`I∞ = median current farther than ${P.far} nm from the turnaround; z_thr crossing from the ${P.side} side; first ${P.skip} curve(s) discarded in files with more curves than that.`);
+            const allBias = new Set(per.map(x => x.f.bias).filter(Boolean));
+            if (allBias.size > 1) notes.push('<span style="color:#ef4444">Reference and sample files are not all at the same bias: compare reference and sample measured at the same bias.</span>');
+            if (stiff.rows.some(r => isFinite(r.ratio) && r.ratio <= 1)) notes.push('S∞/s ≤ 1: the sample is not softer than the reference here, so E/p₀ is not defined.');
+            if (stiff.rows.length) notes.push(`E/p₀ = A / (S∞/s − 1) with A = ${P.A}: apparent value; absolute E is not reported.`);
+            notes.push(`Height: Z detector × ${zdetNm()} nm/count.`);
+            document.getElementById('stNotes').innerHTML = stiff.files.length ? notes.join('<br>') : '';
+
+            stPlotCurves(per, P);
+            stPlotBars();
+        }
+
+        function stAxes(canvas, xMin, xMax, yMin, yMax, xLabel, yLabel, xTicks, yDigits) {
+            const ctx = canvas.getContext('2d');
+            canvas.width = 520; canvas.height = 300;
+            ctx.fillStyle = getCanvasBg(); ctx.fillRect(0, 0, canvas.width, canvas.height);
+            const pad = { l: 58, r: 15, t: 15, b: 45 };
+            const w = canvas.width - pad.l - pad.r, h = canvas.height - pad.t - pad.b;
+            const X = (x) => pad.l + (x - xMin) / (xMax - xMin) * w;
+            const Y = (y) => pad.t + h - (y - yMin) / (yMax - yMin) * h;
+            ctx.strokeStyle = getGridColor(); ctx.lineWidth = 1;
+            ctx.fillStyle = getTextColor(); ctx.font = '9px JetBrains Mono';
+            for (let i = 0; i <= 4; i++) {
+                const yv = yMin + (yMax - yMin) * i / 4;
+                ctx.beginPath(); ctx.moveTo(pad.l, Y(yv)); ctx.lineTo(pad.l + w, Y(yv)); ctx.stroke();
+                ctx.textAlign = 'right'; ctx.fillText(yv.toFixed(yDigits), pad.l - 5, Y(yv) + 3);
+            }
+            (xTicks || []).forEach(([xv, lab]) => {
+                ctx.beginPath(); ctx.moveTo(X(xv), pad.t); ctx.lineTo(X(xv), pad.t + h); ctx.stroke();
+                ctx.textAlign = 'center'; ctx.fillText(lab, X(xv), pad.t + h + 15);
+            });
+            ctx.font = '10px DM Sans'; ctx.textAlign = 'center';
+            ctx.fillText(xLabel, pad.l + w / 2, canvas.height - 5);
+            ctx.save(); ctx.translate(12, pad.t + h / 2); ctx.rotate(-Math.PI / 2); ctx.fillText(yLabel, 0, 0); ctx.restore();
+            return { ctx, X, Y, pad, w, h };
+        }
+
+        function stPlotCurves(per, P) {
+            const cv = document.getElementById('stCurveCanvas');
+            const curves = per.flatMap(x => x.ms.filter(m => isFinite(m.z)).map(m => ({ m, ref: x.f.role === 'ref' })));
+            if (!curves.length) { hideCanvas('stCurveCanvas', 'stCurvePh'); document.getElementById('stCurveBadge').textContent = '--'; return; }
+            showCanvas('stCurveCanvas', 'stCurvePh');
+            const xMin = -50, xMax = 600, yMin = 0.95, yMax = 1.005;
+            const ticks = [0, 100, 200, 300, 400, 500, 600].map(v => [v, String(v)]);
+            const A = stAxes(cv, xMin, xMax, yMin, yMax, 'z − z_thr (nm)', 'I / I∞', ticks, 3);
+            const { ctx, X, Y, pad, w } = A;
+            ctx.fillStyle = 'rgba(16,185,129,0.15)';                 // slope window
+            ctx.fillRect(pad.l, Y(Math.min(P.w1, yMax)), w, Y(Math.max(P.w0, yMin)) - Y(Math.min(P.w1, yMax)));
+            ctx.save();
+            ctx.beginPath(); ctx.rect(pad.l, pad.t, w, A.h); ctx.clip();
+            for (const pass of [true, false]) {                       // references first, samples on top
+                ctx.strokeStyle = pass ? getTextColor() : (currentTheme === 'light' ? '#660033' : '#c2577f');
+                ctx.globalAlpha = 0.6; ctx.lineWidth = 1;
+                for (const c of curves.filter(c => c.ref === pass)) {
+                    ctx.beginPath();
+                    let on = false;
+                    c.m.hs.forEach((hv, j) => {
+                        const x = hv - c.m.z;
+                        if (x < xMin - 20 || x > xMax + 20) { on = false; return; }
+                        if (!on) { ctx.moveTo(X(x), Y(c.m.Is[j])); on = true; } else ctx.lineTo(X(x), Y(c.m.Is[j]));
+                    });
+                    ctx.stroke();
+                }
+            }
+            ctx.restore(); ctx.globalAlpha = 1;
+            document.getElementById('stCurveBadge').textContent = `${curves.length} curves`;
+        }
+
+        function stPlotBars() {
+            const rows = stiff.rows.filter(r => isFinite(r.delta));
+            if (!rows.length) { hideCanvas('stBarCanvas', 'stBarPh'); document.getElementById('stBarBadge').textContent = '--'; return; }
+            showCanvas('stBarCanvas', 'stBarPh');
+            const vals = rows.flatMap(r => [r.delta, ...r.singles.filter(isFinite)]);
+            let yMin = Math.min(0, ...vals), yMax = Math.max(0, ...vals);
+            const span = (yMax - yMin) || 1; yMin -= 0.08 * span; yMax += 0.08 * span;
+            const n = rows.length;
+            const ticks = rows.map((r, i) => [i + 0.5, r.group.length > 18 ? r.group.slice(0, 17) + '…' : r.group]);
+            const { ctx, X, Y } = stAxes(document.getElementById('stBarCanvas'), 0, n, yMin, yMax, 'group', 'δ (nm)', ticks, 1);
+            rows.forEach((r, i) => {
+                ctx.fillStyle = 'rgba(158,202,225,0.6)';
+                ctx.fillRect(X(i + 0.2), Y(Math.max(r.delta, 0)), X(i + 0.8) - X(i + 0.2), Math.abs(Y(r.delta) - Y(0)));
+                ctx.fillStyle = getTextColor();
+                r.singles.filter(isFinite).forEach((v, j) => {
+                    ctx.beginPath(); ctx.arc(X(i + 0.35 + 0.3 * ((j * 0.618) % 1)), Y(v), 2.5, 0, 2 * Math.PI); ctx.fill();
+                });
+                ctx.font = '10px JetBrains Mono'; ctx.textAlign = 'center';
+                ctx.fillText(r.delta.toFixed(1) + ' nm', X(i + 0.5), Y(Math.max(r.delta, 0)) - 6);
+            });
+            document.getElementById('stBarBadge').textContent = `${n} group${n > 1 ? 's' : ''}`;
+        }
+
+        function stExportCSV() {
+            if (!stiff.rows.length) { toast('No stiffness results', 'error'); return; }
+            const q = (s) => `"${String(s).replace(/"/g, '""')}"`;
+            const lines = ['# ' + document.getElementById('stRefLine').textContent,
+                           `# I_inf window ${stPar('stFar', 1000)} nm, threshold ${stPar('stThr', 0.99)}, slope window ${stPar('stW0', 0.98)}-${stPar('stW1', 0.99)}, discard first ${stPar('stSkip', 1)}, Z detector ${zdetNm()} nm/count, A ${stPar('stA', 0.4)}`,
+                           'group,n,bias,s_per_um,sd_s_per_um,S_inf_over_s,delta_nm,E_over_p0_apparent'];
+            for (const r of stiff.rows) lines.push([q(r.group), r.n, r.bias, r.s * 1e3, r.sd_s * 1e3, r.ratio, r.delta, r.Ep0].join(','));
+            const a = document.createElement('a');
+            a.download = 'stiffness-' + new Date().toISOString().slice(0, 10) + '.csv';
+            a.href = URL.createObjectURL(new Blob([lines.join('\n')], { type: 'text/csv' }));
+            a.click();
         }
 
         function genReport(){
             if(!actLog.length){toast('No activity','error');return;}
             let html='<!DOCTYPE html><html><head><meta charset=UTF-8><title>SICM Session</title><style>body{font-family:system-ui;max-width:800px;margin:2rem auto;color:#1a1a2e}h1{border-bottom:3px solid #00d4ff}.e{display:flex;gap:1rem;padding:4px 0;border-bottom:1px solid #eee;font-size:0.85rem}.t{color:#888;min-width:70px;font-family:monospace}.a{font-weight:600;min-width:120px}</style></head><body>';
-            html+='<h1>🔬 SICM Session Report</h1><p>'+new Date().toLocaleString()+' | '+actLog.length+' actions</p>';
+            html+='<h1>SICM Session Report</h1><p>'+new Date().toLocaleString()+' | '+actLog.length+' actions</p>';
             const dh=document.getElementById('resDh')?.textContent;
-            if(dh&&dh!=='--')html+='<div style="background:#f0f7ff;padding:1rem;border-radius:8px;margin:1rem 0"><b>Δh = '+dh+'</b> ('+ALIGN_NAME[activeAlignMode()]+', C_REF='+cRefValue()+'%) | x₁='+document.getElementById('resX1')?.textContent+' | x₂='+document.getElementById('resX2')?.textContent+'</div>';
+            if(dh&&dh!=='--')html+='<div style="background:#f0f7ff;padding:1rem;border-radius:8px;margin:1rem 0"><b>Δz99 = '+dh+'</b> ('+ALIGN_NAME[activeAlignMode()]+', C_REF='+cRefValue()+'%) | x₁='+document.getElementById('resX1')?.textContent+' | x₂='+document.getElementById('resX2')?.textContent+'</div>';
             actLog.forEach(l=>{html+='<div class=e><span class=t>'+l.time+'</span><span class=a>'+l.action+'</span><span>'+l.detail+'</span></div>';});
             html+='</body></html>';
             const a=document.createElement('a');a.download='sicm-report-'+Date.now()+'.html';a.href=URL.createObjectURL(new Blob([html],{type:'text/html'}));a.click();
@@ -6820,7 +7241,7 @@ body.lp-lock{overflow:hidden}
                 if (outC && outC.style.display !== 'none') {
                     _srOutputSnapshot = outC.getContext('2d').getImageData(0, 0, outC.width, outC.height);
                 }
-                document.getElementById('srLineProfileHint').innerHTML = '📌 Click two points on either <strong>Input</strong> or <strong>SR Result</strong> image — both will be profiled along the same line.';
+                document.getElementById('srLineProfileHint').innerHTML = 'Click two points on either <strong>Input</strong> or <strong>SR Result</strong> image — both will be profiled along the same line.';
                 toast('Line profile mode ON — click 2 points on any image', 'success');
             } else {
                 btn.style.background = '';
@@ -6850,7 +7271,7 @@ body.lp-lock{overflow:hidden}
             srLinePoints.push({fx, fy, which});
 
             if (srLinePoints.length === 1) {
-                document.getElementById('srLineProfileHint').innerHTML = `✅ Point 1 set on <strong>${which}</strong> — now click Point 2 on any image...`;
+                document.getElementById('srLineProfileHint').innerHTML = `Point 1 set on <strong>${which}</strong> — now click Point 2 on any image...`;
             } else if (srLinePoints.length >= 2) {
                 drawSRLineProfileDual(srLinePoints[0], srLinePoints[1]);
                 srLinePoints = [];
@@ -7079,7 +7500,7 @@ body.lp-lock{overflow:hidden}
                 }
                 ctx.closePath(); ctx.fill(); ctx.restore();
                 ctx.fillStyle='#f59e0b'; ctx.font=`bold ${8.5*sc}px JetBrains Mono`; ctx.textAlign='left';
-                ctx.fillText(`σ=${currentScd.toFixed(1)} | Δh=${currentDh.toFixed(2)}`, px+12*sc, py+4);
+                ctx.fillText(`σ=${currentScd.toFixed(1)} | Δz99=${currentDh.toFixed(2)}`, px+12*sc, py+4);
             }
             // Tick labels
             ctx.fillStyle=getTextColor(); ctx.font=`${7.5*sc}px JetBrains Mono`;
@@ -7091,10 +7512,10 @@ body.lp-lock{overflow:hidden}
             ctx.fillStyle=getTextColor(); ctx.font=`${9*sc}px JetBrains Mono`; ctx.textAlign='center';
             ctx.fillText('σ [mC/m²]', pad.l+W/2, canvasH-8);
             ctx.save(); ctx.translate(12,pad.t+H/2); ctx.rotate(-Math.PI/2);
-            ctx.fillText('Δh [nm]', 0, 0); ctx.restore();
+            ctx.fillText('Δz99 [nm]', 0, 0); ctx.restore();
             // Formula legend
             ctx.fillStyle='#10b981'; ctx.font=`${7.5*sc}px JetBrains Mono`; ctx.textAlign='left';
-            ctx.fillText(`σ=(Δh−${intercept})×${slope}`, pad.l+2, pad.t+12);
+            ctx.fillText(`σ=(Δz99−${intercept})×${slope}`, pad.l+2, pad.t+12);
         }
 
         function compareQSCMToRefs(scd, dh) {
@@ -7114,30 +7535,30 @@ body.lp-lock{overflow:hidden}
             const outOfRange = scd < minRefScd || scd > maxRefScd;
 
             let chargeChar = '';
-            if      (scd < -20) chargeChar = '🔵 <strong>Highly negative</strong>';
-            else if (scd <  -5) chargeChar = '🔵 <strong>Moderately negative</strong>';
-            else if (scd <   5) chargeChar = '🟢 <strong>Near-neutral</strong>';
-            else if (scd <  15) chargeChar = '🔴 <strong>Moderately positive</strong>';
-            else                chargeChar = '🔴 <strong>Highly positive</strong>';
+            if      (scd < -20) chargeChar = '<strong>Highly negative</strong>';
+            else if (scd <  -5) chargeChar = '<strong>Moderately negative</strong>';
+            else if (scd <   5) chargeChar = '<strong>Near-neutral</strong>';
+            else if (scd <  15) chargeChar = '<strong>Moderately positive</strong>';
+            else                chargeChar = '<strong>Highly positive</strong>';
 
-            let html = `<div style="margin-bottom:0.5rem;">${chargeChar} surface charge &nbsp;·&nbsp; σ = <strong>${scd.toFixed(1)} mC/m²</strong>, Δh = <strong>${dh.toFixed(2)} nm</strong></div>`;
-            html += `<div style="margin-bottom:0.35rem;">📌 <strong>Closest reference:</strong> <span style="color:var(--accent-cyan)">${closest.label}</span> (σ = ${closest.scd} mC/m², Δh = ${closest.dh} nm) — Δσ = <strong>${dist.toFixed(1)} mC/m²</strong></div>`;
-            html += `<div style="margin-bottom:0.5rem;">📌 <strong>2nd closest:</strong> <span style="color:var(--accent-cyan)">${second.label}</span> (σ = ${second.scd} mC/m²)</div>`;
+            let html = `<div style="margin-bottom:0.5rem;">${chargeChar} surface charge &nbsp;·&nbsp; σ = <strong>${scd.toFixed(1)} mC/m²</strong>, Δz99 = <strong>${dh.toFixed(2)} nm</strong></div>`;
+            html += `<div style="margin-bottom:0.35rem;"><strong>Closest reference:</strong> <span style="color:var(--accent-cyan)">${closest.label}</span> (σ = ${closest.scd} mC/m², Δz99 = ${closest.dh} nm) — Δσ = <strong>${dist.toFixed(1)} mC/m²</strong></div>`;
+            html += `<div style="margin-bottom:0.5rem;"><strong>2nd closest:</strong> <span style="color:var(--accent-cyan)">${second.label}</span> (σ = ${second.scd} mC/m²)</div>`;
 
             if (outOfRange) {
                 html += `<div style="padding:0.4rem 0.7rem;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.35);border-radius:7px;font-size:0.69rem;margin-bottom:0.35rem;">`;
-                html += `⚠️ <strong>Outside calibration range</strong> (${minRefScd} to ${maxRefScd} mC/m²). This value requires extrapolation of the fit line — accuracy may be reduced. `;
+                html += `<strong>Outside calibration range</strong> (${minRefScd} to ${maxRefScd} mC/m²). This value requires extrapolation of the fit line — accuracy may be reduced. `;
                 html += `<em>Recommendation: measure a known reference sample (e.g. Mica or DPTAP) to validate calibration before concluding.</em></div>`;
             } else if (dist < 3) {
                 html += `<div style="padding:0.4rem 0.7rem;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);border-radius:7px;font-size:0.69rem;margin-bottom:0.35rem;">`;
-                html += `✅ Good agreement with <strong>${closest.label}</strong> reference (Δσ &lt; 3 mC/m²).</div>`;
+                html += `Good agreement with <strong>${closest.label}</strong> reference (Δσ &lt; 3 mC/m²).</div>`;
             } else {
                 html += `<div style="padding:0.4rem 0.7rem;background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.25);border-radius:7px;font-size:0.69rem;margin-bottom:0.35rem;">`;
                 html += `ℹ️ Value lies between <strong>${closest.label}</strong> and <strong>${second.label}</strong>. `;
                 html += `<em>If the sample surface is unknown, consider first measuring a reference sample (e.g. Mica or APTES) under the same conditions to confirm calibration accuracy.</em></div>`;
             }
             if (Math.abs(scd) > 30) {
-                html += `<div style="font-size:0.67rem;color:var(--text-muted);margin-top:0.2rem;">💡 <em>For highly charged surfaces: ensure setpoint ≥99%, ri is well-characterised, and verify Δh on a Mica reference (σ ≈ −34 mC/m²).</em></div>`;
+                html += `<div style="font-size:0.67rem;color:var(--text-muted);margin-top:0.2rem;"><em>For highly charged surfaces: ensure setpoint ≥99%, ri is well-characterised, and verify Δz99 on a Mica reference (σ ≈ −34 mC/m²).</em></div>`;
             }
             return html;
         }
@@ -7148,7 +7569,7 @@ body.lp-lock{overflow:hidden}
     <div id="chartModal" onclick="closeChartModal()" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.88);backdrop-filter:blur(6px);align-items:center;justify-content:center;cursor:zoom-out;">
         <div onclick="event.stopPropagation()" style="position:relative;max-width:90vw;max-height:90vh;background:var(--bg-card);border:1px solid var(--accent-cyan);border-radius:14px;padding:1rem;box-shadow:0 0 60px rgba(0,212,255,0.2);">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.6rem;">
-                <div style="font-size:0.8rem;font-weight:600;color:var(--accent-cyan);">Δh vs σ — Reference Data & Calibration</div>
+                <div style="font-size:0.8rem;font-weight:600;color:var(--accent-cyan);">Δz99 vs σ — Reference Data & Calibration</div>
                 <button onclick="closeChartModal()" style="background:rgba(239,68,68,0.2);border:1px solid #ef4444;color:#ef4444;border-radius:6px;padding:0.2rem 0.6rem;cursor:pointer;font-size:0.75rem;">Close</button>
             </div>
             <canvas id="qscmCalibModalCanvas" style="max-width:80vw;max-height:75vh;display:block;border-radius:8px;"></canvas>
@@ -7271,7 +7692,7 @@ function bracket(){
   dL.setAttribute('x1',a);dL.setAttribute('x2',b);dL.setAttribute('y1',by);dL.setAttribute('y2',by);
   dA.setAttribute('x1',a);dA.setAttribute('x2',a);dA.setAttribute('y1',by);dA.setAttribute('y2',setY);
   dB.setAttribute('x1',b);dB.setAttribute('x2',b);dB.setAttribute('y1',by);dB.setAttribute('y2',setY);
-  dT.setAttribute('x',m);dT.setAttribute('y',by-8);dT.textContent='Δh '+Math.abs(DH).toFixed(2)+' nm';
+  dT.setAttribute('x',m);dT.setAttribute('y',by-8);dT.textContent='Δz99 '+(DH<0?'−':'+')+Math.abs(DH).toFixed(2)+' nm';
   dh.setAttribute('opacity',1);
 }
 
@@ -7306,7 +7727,7 @@ function frame(ts){
   else if(ph===4){b=-1;d=DFAR-ez(l)*(DFAR-HM);md=trace(Im,d);ma=area(Im,d);status.textContent='bias −100 mV'}
   else if(ph===5){b=-1;d=HM;md=trace(Im,HM);ma=area(Im,HM);marks(true);on(sHm,HM.toFixed(2));status.textContent='setpoint · h₋'}
   else if(ph===6){b=-1;d=HM+ez(l)*(DFAR-HM);status.textContent='retract'}
-  else{d=DFAR;bracket();on(sDh,DH.toFixed(2));on(sSg,SG.toFixed(1));status.textContent='Δh → σ'}
+  else{d=DFAR;bracket();on(sDh,DH.toFixed(2));on(sSg,SG.toFixed(1));status.textContent='Δz99 → σ'}
 
   render(d,b,tt);
   requestAnimationFrame(frame);
@@ -7868,5 +8289,8 @@ requestAnimationFrame(frame);
       pdf.save('sr-sicm-image-report.pdf');
     }
     </script>
+    <script src="js/site.js"></script>
+    <script src="js/triplet.js"></script>
+    <script src="js/cihd.js"></script>
 </body>
 </html>

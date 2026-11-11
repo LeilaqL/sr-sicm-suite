@@ -1,0 +1,21 @@
+{
+  "title": "Dual-bias SICM imaging (CIHD): lipid patches on mica",
+  "permission": {
+    "status": "preliminary",
+    "note": "Preliminary: published here with permission of the data owner (pending)."
+  },
+  "source": "Data: Klausen et al., Nat. Commun. (2016); re-processed.",
+  "doi": "https://doi.org/10.1038/ncomms12447",
+  "bias_note": "In these 2015 Park XEP files the paper's +100 mV corresponds to header sample bias -0.10 V (pipette potential = -header value). Labels follow the paper.",
+  "convention": "dh = h(-100 mV) - h(+100 mV); sign of dh = sign of the surface charge relative to the mica substrate.",
+  "profile_rows": 5,
+  "lipids": [
+    { "id": "DPTAP", "charge": "cationic",     "px_nm": 19.53125, "size_um": [4.0, 2.0], "row_um": 1.10,
+      "published_dh_nm": { "median": 9.2,  "q25": 6.2,  "q75": 11.3 } },
+    { "id": "DPPE",  "charge": "zwitterionic", "px_nm": 19.53125, "size_um": [4.0, 2.0], "row_um": 0.92,
+      "published_dh_nm": { "median": 7.0,  "q25": 6.5,  "q75": 7.4 } },
+    { "id": "DPPG",  "charge": "anionic",      "px_nm": 7.8125,   "size_um": [1.8, 0.9], "row_um": 0.40,
+      "published_dh_nm": { "median": -2.1, "q25": -3.4, "q75": -1.2 } }
+  ],
+  "files": "CIHD_<id>_map_{plus100mV,minus100mV,dh}_nm.csv (rows = y, columns = x, nm; registered, oriented and cropped as in the paper)"
+}
