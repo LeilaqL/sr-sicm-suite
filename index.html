@@ -1693,23 +1693,18 @@ body.lp-lock{overflow:hidden}
       <p class="lede">
         Surface charge from dual-bias approach curves (<b>Δz<sub>99</sub></b>) and dual-bias images (<b>Δh</b>),
         relative stiffness from the slope of the approach curve (<b>s<sub>∞</sub>/s</b>), and deconvolution of
-        topography. Park XE-Bio / XEI files are read in the browser; data are not uploaded.
+        topography. Park XE-Bio / XEI files are processed locally in your browser and are never uploaded.
       </p>
       <div class="actions">
         <a class="lp-btn p" href="javascript:void(0)" onclick="openSuite('intro')">Open the suite</a>
         <a class="lp-btn s" href="javascript:void(0)" onclick="openSuite('theory')">Method and conventions</a>
       </div>
-      <p class="meta">
-        <em>Δz<sub>99</sub> = z<sub>99</sub>(V−) − z<sub>99</sub>(V+); sign of Δz<sub>99</sub> = sign of σ<sub>s</sub></em><br>
-        Example panel: ±100 mV, setpoint I/I<sub>∞</sub> = 0.99<br>
-        Leyla Nur Akay · Aarhus University · v1.1
-      </p>
     </section>
 
     <!-- instrument -->
     <section class="lp-panel rise" style="--d:260ms">
       <div class="phead">
-        <span>Current-Distance Curve</span>
+        <span>Current-distance curve · simulated</span>
         <span id="status">bias +100 mV</span>
       </div>
 
@@ -1779,7 +1774,7 @@ body.lp-lock{overflow:hidden}
             <path d="M 0 -196 L 0 -158" stroke="var(--muted)" stroke-width="2.6" stroke-linecap="round" opacity=".55"/>
             <ellipse cx="0" cy="0" rx="14" ry="6" fill="url(#gtip)"/>
             <text class="hair" x="26" y="-172">Ag/AgCl · pipette</text>
-            <text class="hair" x="26" y="-40">rᵢ 50 nm</text>
+            <text class="hair" x="26" y="-40">rᵢ ≈ 15 nm</text>
           </g>
 
           <!-- ion path + carriers -->
@@ -1990,6 +1985,7 @@ body.lp-lock{overflow:hidden}
       </div>
     </div>
   </section>
+  <div class="site-foot">SR-SICM Suite v1.1 · L. N. Akay, BioSPM group, Aarhus University · <a href="javascript:void(0)" onclick="openSuite('aboutapp')">About</a> · <a href="https://github.com/LeilaqL/sr-sicm-suite" target="_blank" rel="noopener">GitHub</a></div>
 </div>
 </div>
 
@@ -2128,7 +2124,7 @@ body.lp-lock{overflow:hidden}
                         <div class="detail-box">
                             <p><strong>Calibration (Klausen 2016):</strong></p>
                             <p>σ = (Δz<sub>99</sub> − 0.81) × 5.79 mC/m²<br>
-                            Valid for: ri ≈ 15nm, 150mM NaCl, ±100mV, 99% setpoint</p>
+                            Valid for: r<sub>i</sub> = 14–19 nm (~15 nm), 150 mM NaCl, ±100 mV, 99 % setpoint</p>
                         </div>
                         <div class="detail-box">
                             <p><strong>Reference Materials:</strong></p>
@@ -2260,6 +2256,50 @@ body.lp-lock{overflow:hidden}
                 </div>
                 </div>
             </div>
+
+            <!-- What SICM data are used for (v1.1) -->
+            <section class="use-sec" aria-labelledby="useSecTitle">
+                <h3 class="use-title" id="useSecTitle">What SICM data are used for</h3>
+                <div class="use-grid">
+                    <div class="feature-card use-card">
+                        <h3>Live-cell topography</h3>
+                        <p>Non-contact, nanometre-resolution 3D surface of living cells, recorded without touching the sample.</p>
+                        <dl class="use-meta">
+                            <dt>Typical samples</dt><dd>Cells, microvilli, neurons</dd>
+                            <dt>Module</dt><dd><a href="javascript:void(0)" onclick="switchTab('image')">Topography</a>, <a href="javascript:void(0)" onclick="switchTab('sicm')">SR-SICM</a></dd>
+                            <dt>Reference</dt><dd>Hansma P.K. et al., Science 243, 641–643 (1989); Novak P. et al., Nat. Methods 6, 279–281 (2009)</dd>
+                        </dl>
+                    </div>
+                    <div class="feature-card use-card">
+                        <h3>Surface charge</h3>
+                        <p>Sign and map of the surface charge from dual-bias measurements: Δz<sub>99</sub> from approach curves, Δh from dual-bias images.</p>
+                        <dl class="use-meta">
+                            <dt>Typical samples</dt><dd>Lipid membranes, mica, cell surfaces</dd>
+                            <dt>Module</dt><dd><a href="javascript:void(0)" onclick="switchTab('qscm')">Surface Charge</a> (Δz<sub>99</sub>, dual-bias imaging)</dd>
+                            <dt>Reference</dt><dd>Klausen L.H., Fuhs T., Dong M., Nat. Commun. (2016)</dd>
+                        </dl>
+                    </div>
+                    <div class="feature-card use-card">
+                        <h3>Local stiffness</h3>
+                        <p>Relative stiffness (s<sub>∞</sub>/s) and indentation δ from the slope of the approach curve, compared with a rigid reference.</p>
+                        <dl class="use-meta">
+                            <dt>Typical samples</dt><dd>Cells, gels</dd>
+                            <dt>Module</dt><dd><a href="javascript:void(0)" onclick="switchTab('stiffness')">Stiffness</a></dd>
+                            <dt>Reference</dt><dd>Rheinlaender J., Schäffer T.E., Soft Matter 9, 3230 (2013)</dd>
+                        </dl>
+                    </div>
+                    <div class="feature-card use-card">
+                        <h3>Ion transport</h3>
+                        <p>Current rectification and nanopipette sensing from current–potential (i–E) curves.</p>
+                        <dl class="use-meta">
+                            <dt>Typical samples</dt><dd>Nanopipettes, nanochannels</dd>
+                            <dt>Module</dt><dd><a href="javascript:void(0)" onclick="switchTab('asym')">Asymmetric Conductivity</a></dd>
+                            <dt>Reference</dt><dd>Skaanvik et al., ACS Nano 19, 12853 (2025)</dd>
+                        </dl>
+                    </div>
+                </div>
+                <p class="use-note">Load your own Park files in the corresponding tab; files stay in your browser.</p>
+            </section>
         </div>
 
         <!-- ==================== STIFFNESS TAB ==================== -->
@@ -2300,7 +2340,7 @@ body.lp-lock{overflow:hidden}
                         <input type="file" class="file-input" id="stRefInput" accept=".tif,.tiff" multiple onchange="stLoad(event,'ref')">
                     </div>
                     <div class="file-input-wrapper" style="min-width:170px">
-                        <button class="btn" style="width:100%;font-size:0.68rem;padding:0.45rem;background:rgba(239,68,68,0.15);border:1px solid #ef4444;color:#ef4444">Sample TIFF (cell, gel …)</button>
+                        <button class="btn" style="width:100%;font-size:0.68rem;padding:0.45rem;background:rgba(102,0,51,0.08);border:1px solid var(--acc);color:var(--acc)">Sample TIFF (cell, gel …)</button>
                         <input type="file" class="file-input" id="stSmpInput" accept=".tif,.tiff" multiple onchange="stLoad(event,'sample')">
                     </div>
                     <button class="btn btn-secondary" onclick="stClear()" style="font-size:0.68rem;padding:0.45rem;width:auto">Clear</button>
@@ -2417,7 +2457,7 @@ body.lp-lock{overflow:hidden}
                 </div>
                 <div style="display:flex;flex-wrap:wrap;gap:0.6rem;align-items:center;">
                     <input type="file" id="asymDataFile" accept=".csv,.txt" onchange="asymLoadData(this)" style="font-size:0.75rem;">
-                    <button onclick="asymCompute()" style="padding:0.4rem 0.9rem;border-radius:8px;border:1px solid var(--line);background:var(--plus);color:#fff;font-weight:600;cursor:pointer;font-size:0.8rem;">Compute</button>
+                    <button onclick="asymCompute()" style="padding:0.4rem 0.9rem;border-radius:8px;border:1px solid var(--line);background:var(--acc);color:#fff;font-weight:600;cursor:pointer;font-size:0.8rem;">Compute</button>
                     <span id="asymDataInfo" style="font-size:0.7rem;color:var(--faint);"></span>
                 </div>
                 <div style="font-size:0.66rem;color:var(--faint);margin-top:0.4rem;">CSV format: two columns E (V), I (nA). A full up-and-down sweep enables hysteresis.</div>
@@ -2711,7 +2751,7 @@ body.lp-lock{overflow:hidden}
                             <input type="file" class="file-input" id="imageInput" accept="image/*,.tif,.tiff">
                         </div>
                         <button class="btn btn-primary" onclick="runDeconvolution()" id="deconvBtn" disabled>Deconvolute</button>
-                        <button class="btn" id="cancelDeconvBtn" onclick="cancelDeconvolution()" style="display:none;background:rgba(239,68,68,0.2);border:1px solid #ef4444;color:#ef4444;font-size:0.7rem;padding:0.4rem;">Cancel</button>
+                        <button class="btn" id="cancelDeconvBtn" onclick="cancelDeconvolution()" style="display:none;background:transparent;border:1px solid var(--acc);color:var(--acc);font-size:0.7rem;padding:0.4rem;">Cancel</button>
                         <button class="btn btn-secondary" onclick="saveResult()" id="saveBtn" disabled>Save</button>
                     </div>
                 </div>
@@ -3167,13 +3207,13 @@ body.lp-lock{overflow:hidden}
         <!-- ==================== IMAGE TAB (Δz99 from images) ==================== -->
         <div class="tab-content" id="content-image">
             <div class="grid grid-4" style="margin-bottom:0.7rem;">
-                <!-- 1. +bias image -->
+                <!-- 1. -V image (image 1) -->
                 <div class="card">
                     <div class="card-header">
-                        <div><input id="name1" value="Image 1" title="Rename (e.g. +bias)" style="font:inherit;font-weight:600;background:transparent;border:none;border-bottom:1px dashed var(--line);color:var(--txt);width:135px;padding:0;"><div class="card-subtitle">TIFF or PNG · editable name</div></div>
+                        <div><input id="name1" value="Image 1 (−V)" title="Rename (keep: image 1 = −V)" style="font:inherit;font-weight:600;background:transparent;border:none;border-bottom:1px dashed var(--line);color:var(--txt);width:135px;padding:0;"><div class="card-subtitle">TIFF or PNG · editable name</div></div>
                     </div>
                     <input type="file" id="imgPlusFile" accept=".tif,.tiff,.png" style="display:none" onchange="loadImage(1, this)">
-                    <button class="btn btn-primary" style="width:100%" onclick="document.getElementById('imgPlusFile').click()">Load image 1</button>
+                    <button class="btn btn-primary" style="width:100%" onclick="document.getElementById('imgPlusFile').click()">Load image 1 (−V)</button>
                     <div id="imgPlusView" style="margin-top:0.5rem;min-height:120px;border:1px dashed var(--line);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:0.7rem;">no image</div>
                     <div style="display:flex;gap:0.3rem;margin-top:0.4rem;">
                         <select id="flatten1" onchange="processImage(1)" style="flex:1;padding:0.25rem;font-size:0.62rem;border-radius:6px;border:1px solid var(--line);background:var(--surface);color:var(--txt);">
@@ -3184,13 +3224,13 @@ body.lp-lock{overflow:hidden}
                         </select>
                     </div>
                 </div>
-                <!-- 2. -bias image -->
+                <!-- 2. +V image (image 2) -->
                 <div class="card">
                     <div class="card-header">
-                        <div><input id="name2" value="Image 2" title="Rename (e.g. −bias)" style="font:inherit;font-weight:600;background:transparent;border:none;border-bottom:1px dashed var(--line);color:var(--txt);width:135px;padding:0;"><div class="card-subtitle">TIFF or PNG · editable name</div></div>
+                        <div><input id="name2" value="Image 2 (+V)" title="Rename (keep: image 2 = +V)" style="font:inherit;font-weight:600;background:transparent;border:none;border-bottom:1px dashed var(--line);color:var(--txt);width:135px;padding:0;"><div class="card-subtitle">TIFF or PNG · editable name</div></div>
                     </div>
                     <input type="file" id="imgMinusFile" accept=".tif,.tiff,.png" style="display:none" onchange="loadImage(2, this)">
-                    <button class="btn btn-primary" style="width:100%" onclick="document.getElementById('imgMinusFile').click()">Load image 2</button>
+                    <button class="btn btn-primary" style="width:100%" onclick="document.getElementById('imgMinusFile').click()">Load image 2 (+V)</button>
                     <div id="imgMinusView" style="margin-top:0.5rem;min-height:120px;border:1px dashed var(--line);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:0.7rem;">no image</div>
                     <div style="display:flex;gap:0.3rem;margin-top:0.4rem;">
                         <select id="flatten2" onchange="processImage(2)" style="flex:1;padding:0.25rem;font-size:0.62rem;border-radius:6px;border:1px solid var(--line);background:var(--surface);color:var(--txt);">
@@ -3204,7 +3244,7 @@ body.lp-lock{overflow:hidden}
                 <!-- 3. Δh compute -->
                 <div class="card">
                     <div class="card-header">
-                        <div><div class="card-title">Δh compute</div><div class="card-subtitle">Image 1 minus Image 2</div></div>
+                        <div><div class="card-title">Δh compute</div><div class="card-subtitle" style="text-transform:none;letter-spacing:.02em">Δh = h(−V) − h(+V) = image 1 − image 2</div></div>
                     </div>
                     <label style="font-size:0.62rem;color:var(--text-muted);display:block;margin:0 0 0.15rem;">Δh colormap</label>
                     <select id="cmapDh" onchange="if(window.dhData)computeDh()" style="width:100%;padding:0.3rem;font-size:0.68rem;border-radius:6px;border:1px solid var(--line);background:var(--surface);color:var(--txt);">
@@ -3215,7 +3255,8 @@ body.lp-lock{overflow:hidden}
                         <option value="jet">Jet</option>
                     </select>
                     <button class="btn btn-orange" style="width:100%;margin-top:0.4rem;" onclick="computeDh()">Compute Δh</button>
-                    <div style="margin-top:0.4rem;font-size:0.6rem;color:var(--text-muted);">Aligns and subtracts the two flattened images.</div>
+                    <div style="margin-top:0.4rem;font-size:0.6rem;color:var(--text-muted);">Aligns and subtracts the two flattened images. Same sign rule as Δz<sub>99</sub>: Δh &gt; 0 where the surface is more positive.</div>
+                    <div style="margin-top:0.35rem;font-size:0.62rem;color:var(--muted);">For registered dual-bias images with line profiles, use <a href="javascript:void(0)" onclick="switchTab('qscm');setTimeout(()=>{const e=document.getElementById('cihd-root');if(e)e.scrollIntoView({block:'start'})},50)">Surface Charge → Dual-bias imaging</a>.</div>
                 </div>
                 <!-- 4. Δh map -->
                 <div class="card">
@@ -3237,12 +3278,12 @@ body.lp-lock{overflow:hidden}
                 <div style="display:flex;gap:0.7rem;flex-wrap:wrap;align-items:center;">
                     <label style="font-size:0.74rem;color:var(--muted);">Which:
                         <select id="imgExportSel" style="margin-left:0.3rem;padding:0.3rem 0.5rem;border-radius:6px;border:1px solid var(--line);background:var(--glass-a);color:var(--txt);font-size:0.78rem;">
-                            <option value="1">Image 1</option>
-                            <option value="2">Image 2</option>
+                            <option value="1">Image 1 (−V)</option>
+                            <option value="2">Image 2 (+V)</option>
                             <option value="dh">Δh map</option>
                         </select>
                     </label>
-                    <button onclick="exportImgPNG(({'1':1,'2':2,'dh':'dh'})[document.getElementById('imgExportSel').value])" style="padding:0.4rem 0.9rem;border-radius:8px;border:1px solid var(--line);background:var(--plus);color:#fff;font-weight:600;cursor:pointer;font-size:0.78rem;">PNG · 300 DPI</button>
+                    <button onclick="exportImgPNG(({'1':1,'2':2,'dh':'dh'})[document.getElementById('imgExportSel').value])" style="padding:0.4rem 0.9rem;border-radius:8px;border:1px solid var(--line);background:var(--acc);color:#fff;font-weight:600;cursor:pointer;font-size:0.78rem;">PNG · 300 DPI</button>
                     <button onclick="exportImgPDF()" style="padding:0.4rem 0.9rem;border-radius:8px;border:1px solid var(--line);background:var(--glass-a);color:var(--txt);font-weight:600;cursor:pointer;font-size:0.78rem;">PDF report</button>
                 </div>
             </div>
@@ -3356,7 +3397,7 @@ body.lp-lock{overflow:hidden}
                     <div id="refCalibDiv">
                         <div class="info-box">
                             <p><strong>Klausen 2016:</strong><br>
-                            Bias: ±100mV | ri: 14-19nm<br>
+                            Bias: ±100 mV | r<sub>i</sub>: 14–19 nm (~15 nm)<br>
                             150mM NaCl | 99% setpoint<br>
                             m=5.79 | c=0.81</p>
                         </div>
@@ -3422,6 +3463,7 @@ body.lp-lock{overflow:hidden}
                         <div style="padding: 0.5rem; font-size: 0.6rem; color: var(--text-muted);">
                             Klausen et al. 2016 | 150mM NaCl | pH 7.4 | 99%
                         </div>
+                    <div style="padding: 0 0.5rem 0.6rem; font-size: 0.66rem; color: var(--muted); line-height: 1.5;">Δz<sub>99</sub> values from approach curves (absolute). The CIHD example shows Δh of lipid patches relative to mica, so the numbers are not directly comparable.</div>
                     </div>
                 </div>
             </div>
@@ -3497,8 +3539,8 @@ body.lp-lock{overflow:hidden}
                 <div class="equation-box"><div class="eq-num">(4)</div><div class="eq katex-eq" data-tex="\Delta h = x_2(-V) - x_1(+V)"></div><div class="description">Distance at setpoint for −V bias minus distance at setpoint for +V bias. Units: nm. Δh &lt; 0 for negative surfaces: at +V the current falls off farther from a negative surface, so x₁(+V) &gt; x₂(−V). Δh is the same quantity as Δz<sub>99</sub> = z<sub>99</sub>(V−) − z<sub>99</sub>(V+); its sign is the sign of σ<sub>s</sub>.</div></div>
                 <p><strong>Physical picture:</strong> At +100 mV bias, Cl⁻ ions carry most of the current from pipette to bath. Near a negatively charged surface, the local anion concentration is depleted (repulsion), so the current drops earlier, at a larger apparent distance. At −100 mV, Na⁺ ions dominate; a negative surface attracts them and delays the current drop. The difference in these two distances is Δh.</p>
                 <p><strong>Example values:</strong> A bare glass surface in 150 mM NaCl typically gives Δh ≈ −2 to −4 nm (negative charge). A lipid bilayer of DPPE (near-neutral) gives Δh ≈ 0–1 nm. DPPG (negatively charged headgroup) gives Δh ≈ −5 to −8 nm. An amine-functionalized surface (APTES, positive charge) gives Δh > 0.</p>
-                <div class="equation-box"><div class="eq-num">(5)</div><div class="eq katex-eq" data-tex="\sigma = m \times (\Delta h - c)"></div><div class="description">Linear calibration converts Δh (nm) to surface charge density σ (mC/m²). Default: m = 5.79 mC/m²/nm, c = 0.81 nm (from Klausen et al. 2016, r<sub>i</sub> = 50 nm, 150 mM NaCl).</div></div>
-                <p><strong>Calibration validity:</strong> The m and c constants depend on pipette geometry (r<sub>i</sub>, r<sub>o</sub>/r<sub>i</sub>), electrolyte concentration, and bias magnitude. The default values apply specifically to r<sub>i</sub> = 50 nm pipettes in 150 mM NaCl at ±100 mV. For different conditions, recalibrate against surfaces of known charge density.</p>
+                <div class="equation-box"><div class="eq-num">(5)</div><div class="eq katex-eq" data-tex="\sigma = m \times (\Delta h - c)"></div><div class="description">Linear calibration converts Δh (nm) to surface charge density σ (mC/m²). Default: m = 5.79 mC/m²/nm, c = 0.81 nm (from Klausen et al. 2016, r<sub>i</sub> = 14–19 nm (~15 nm), 150 mM NaCl).</div></div>
+                <p><strong>Calibration validity:</strong> The m and c constants depend on pipette geometry (r<sub>i</sub>, r<sub>o</sub>/r<sub>i</sub>), electrolyte concentration, and bias magnitude. The default values apply specifically to r<sub>i</sub> = 14–19 nm (~15 nm) pipettes in 150 mM NaCl at ±100 mV. For different conditions, recalibrate against surfaces of known charge density.</p>
 
                 <h3>5. Super-Resolution SR-SICM</h3>
                 <p>Lateral resolution in SICM is fundamentally limited by the pipette inner radius r<sub>i</sub>. The point spread function (PSF), how the pipette "sees" a sharp feature, is approximately a disc of radius r<sub>i</sub>. Structures smaller than r<sub>i</sub> appear blurred in the raw image.</p>
@@ -3579,6 +3621,7 @@ body.lp-lock{overflow:hidden}
         </div>
     </div>
     </main>
+    <div class="site-foot">SR-SICM Suite v1.1 · L. N. Akay, BioSPM group, Aarhus University · <a href="javascript:void(0)" onclick="switchTab('aboutapp')">About</a> · <a href="https://github.com/LeilaqL/sr-sicm-suite" target="_blank" rel="noopener">GitHub</a></div>
     <script>
         // Auto-fill today's date in cite section
         document.addEventListener('DOMContentLoaded', function() {
@@ -6902,8 +6945,8 @@ body.lp-lock{overflow:hidden}
                 return `<div class="file-chip">
                     <span class="file-chip-name" title="${stEsc(f.name)}">${stEsc(f.name)}</span>
                     <span class="bias-toggle" role="group" aria-label="Role of ${stEsc(f.name)}">
-                        <button type="button" class="bias-btn neg${f.role === 'ref' ? ' is-on' : ''}" onclick="stSetRole(${i},'ref')" title="Reference (stiff)">Ref</button>
-                        <button type="button" class="bias-btn pos${f.role === 'sample' ? ' is-on' : ''}" onclick="stSetRole(${i},'sample')" title="Sample">Sample</button>
+                        <button type="button" class="bias-btn role-ref${f.role === 'ref' ? ' is-on' : ''}" onclick="stSetRole(${i},'ref')" title="Reference (stiff)">Ref</button>
+                        <button type="button" class="bias-btn role-smp${f.role === 'sample' ? ' is-on' : ''}" onclick="stSetRole(${i},'sample')" title="Sample">Sample</button>
                     </span>
                     ${f.role === 'sample' ? `<input type="text" value="${stEsc(f.group)}" onchange="stSetGroup(${i}, this.value)" title="Group name: samples with the same name are pooled" style="width:110px;padding:0.15rem 0.3rem;font-size:0.62rem;background:var(--bg-tertiary);border:1px solid var(--border-color);border-radius:4px;color:var(--text-primary);">` : ''}
                     <span class="file-chip-tag" style="text-transform:none" title="Bias read from the file: sign of the mean current">${b} · Ī ${f.meanI >= 0 ? '+' : ''}${f.meanI.toPrecision(3)} nA</span>
@@ -7586,7 +7629,7 @@ body.lp-lock{overflow:hidden}
         <div onclick="event.stopPropagation()" style="position:relative;max-width:90vw;max-height:90vh;background:var(--bg-card);border:1px solid var(--accent-cyan);border-radius:14px;padding:1rem;box-shadow:0 0 60px rgba(0,212,255,0.2);">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.6rem;">
                 <div style="font-size:0.8rem;font-weight:600;color:var(--accent-cyan);">Δz99 vs σ — Reference Data & Calibration</div>
-                <button onclick="closeChartModal()" style="background:rgba(239,68,68,0.2);border:1px solid #ef4444;color:#ef4444;border-radius:6px;padding:0.2rem 0.6rem;cursor:pointer;font-size:0.75rem;">Close</button>
+                <button onclick="closeChartModal()" style="background:transparent;border:1px solid var(--line);color:var(--txt);border-radius:6px;padding:0.2rem 0.6rem;cursor:pointer;font-size:0.75rem;">Close</button>
             </div>
             <canvas id="qscmCalibModalCanvas" style="max-width:80vw;max-height:75vh;display:block;border-radius:8px;"></canvas>
             <div style="font-size:0.6rem;color:var(--text-muted);margin-top:0.4rem;text-align:center;">Click outside or ✕ to close</div>
@@ -7712,13 +7755,12 @@ function bracket(){
   dh.setAttribute('opacity',1);
 }
 
-if(reduce){
-  pd=trace(Ip,HP);md=trace(Im,HM);pa=area(Ip,HP);ma=area(Im,HM);
-  render(DFAR,1,0);marks(true);bracket();
-  on(sHp,HP.toFixed(2));on(sHm,HM.toFixed(2));on(sDh,DH.toFixed(2));on(sSg,SG.toFixed(1));
-  status.textContent='resolved';
-  return;
-}
+/* v1.1: the panel always shows the full simulated example (both curves, all four values); only the pipette moves */
+pd=trace(Ip,HP);md=trace(Im,HM);pa=area(Ip,HP);ma=area(Im,HM);
+marks(true);bracket();
+on(sHp,HP.toFixed(2));on(sHm,HM.toFixed(2));on(sDh,DH.toFixed(2));on(sSg,SG.toFixed(1));
+render(DFAR,1,0);status.textContent='resolved';
+if(reduce) return;
 
 /* calm, slow timeline */
 const P=[4600,1100,1500,900,4600,1100,1500,5200];
@@ -7730,20 +7772,20 @@ function frame(ts){
   if(!window.__lpVisible){t0=null;requestAnimationFrame(frame);return}
   if(t0===null)t0=ts;
   const el=ts-t0,c=Math.floor(el/CYC);
-  if(c!==cyc){cyc=c;clearAll()}
+  if(c!==cyc){cyc=c}
   const t=el%CYC,tt=el/1000;
   let acc=0,ph=0;for(let i=0;i<P.length;i++){if(t<acc+P[i]){ph=i;break}acc+=P[i]}
   const l=(t-acc)/P[ph];
   let d=DFAR,b=1;
 
-  if(ph===0){d=DFAR-ez(l)*(DFAR-HP);pd=trace(Ip,d);pa=area(Ip,d);status.textContent='bias +100 mV'}
-  else if(ph===1){d=HP;pd=trace(Ip,HP);pa=area(Ip,HP);marks(false);on(sHp,HP.toFixed(2));status.textContent='setpoint · h₊'}
+  if(ph===0){d=DFAR-ez(l)*(DFAR-HP);status.textContent='bias +100 mV'}
+  else if(ph===1){d=HP;status.textContent='setpoint · z99(+V)'}
   else if(ph===2){d=HP+ez(l)*(DFAR-HP);status.textContent='retract'}
   else if(ph===3){d=DFAR;b=l<.5?1:-1;status.textContent='polarity −100 mV'}
-  else if(ph===4){b=-1;d=DFAR-ez(l)*(DFAR-HM);md=trace(Im,d);ma=area(Im,d);status.textContent='bias −100 mV'}
-  else if(ph===5){b=-1;d=HM;md=trace(Im,HM);ma=area(Im,HM);marks(true);on(sHm,HM.toFixed(2));status.textContent='setpoint · h₋'}
+  else if(ph===4){b=-1;d=DFAR-ez(l)*(DFAR-HM);status.textContent='bias −100 mV'}
+  else if(ph===5){b=-1;d=HM;status.textContent='setpoint · z99(−V)'}
   else if(ph===6){b=-1;d=HM+ez(l)*(DFAR-HM);status.textContent='retract'}
-  else{d=DFAR;bracket();on(sDh,DH.toFixed(2));on(sSg,SG.toFixed(1));status.textContent='Δz99 → σ'}
+  else{d=DFAR;status.textContent='Δz99 → σ'}
 
   render(d,b,tt);
   requestAnimationFrame(frame);
