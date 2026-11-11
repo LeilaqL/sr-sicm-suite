@@ -114,7 +114,35 @@ a { color: var(--acc); }
 .conv dd { margin: 0; color: var(--muted); }
 .conv .conv-note { margin: 10px 0 0; font-size: 12.5px; color: var(--faint); }
 
-.conv-ref { margin: 0 0 14px; font-size: 13.5px; color: var(--muted); }
+/* Overview: what SICM data are used for */
+.use-sec { margin: 22px 0 0; }
+.use-title { margin: 0 0 12px; font-size: 16px; font-weight: 600; color: var(--txt); }
+.use-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+.use-card { display: flex; flex-direction: column; min-width: 0; padding: 18px 18px 16px !important; }
+.use-card h3 { margin: 0 0 8px; }
+.use-card > p { margin: 0 0 12px; }
+.use-meta { margin: auto 0 0; padding-top: 10px; border-top: 1px solid var(--line-2); display: grid; gap: 2px 0; font-size: 12.5px; line-height: 1.5; }
+.use-meta dt { margin-top: 6px; font-family: "Geist Mono", ui-monospace, monospace; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--faint); }
+.use-meta dt:first-child { margin-top: 0; }
+.use-meta dd { margin: 0; color: var(--muted); overflow-wrap: anywhere; }
+.use-meta a { color: var(--acc); }
+.use-note { margin: 12px 0 0; font-size: 13px; color: var(--muted); }
+@media (max-width: 1100px) { .use-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .use-grid { grid-template-columns: minmax(0, 1fr); } }
+
+/* footer (landing and suite) */
+.site-foot { margin: 28px auto 0; padding: 16px 24px 26px; border-top: 1px solid var(--line-2); text-align: center;
+  font-size: 12.5px; line-height: 1.6; color: var(--faint); }
+.site-foot a { color: var(--acc); }
+#landing .site-foot { margin-top: 8px; padding-left: 0; padding-right: 0; }
+#landing .phead { gap: 6px 14px; flex-wrap: wrap; }
+
+/* red is reserved for +V: other "action" buttons in bordeaux, stiffness roles neutral / bordeaux */
+.btn-red { background: transparent !important; color: var(--acc) !important; border-color: var(--acc) !important; }
+.btn-red:hover { background: var(--ov2) !important; }
+.bias-btn.role-ref.is-on { background: var(--ov3); color: var(--txt); }
+.bias-btn.role-smp.is-on { background: rgba(102, 0, 51, .12); color: var(--acc); }
+:root[data-lp="ink"] .bias-btn.role-smp.is-on { background: rgba(194, 87, 127, .18); }
 /* Theory headings: no red/orange (red means +V on this site) */
 .theory-content h2 { color: var(--txt) !important; border-color: var(--line) !important; }
 .theory-content h3, .theory-content h4, .conv h3 { color: var(--acc) !important; }
@@ -128,12 +156,44 @@ a { color: var(--acc); }
 }
 
 /* about */
-.about { max-width: 820px; }
-.about h2 { font-size: 22px; font-weight: 600; margin: 0 0 4px; }
-.about h3 { font-size: 15px; font-weight: 600; margin: 22px 0 6px; }
-.about p, .about li { font-size: 14px; line-height: 1.65; color: var(--muted); }
-.about ol { padding-left: 1.3rem; margin: 0; }
-.about .ver { font-family: "Geist Mono", ui-monospace, monospace; font-size: 12.5px; color: var(--faint); }
+.about { max-width: 920px; margin: 0 auto 48px; padding: 0 4px; }
+.about-head { display: flex; align-items: center; gap: 16px; padding-bottom: 18px; border-bottom: 1px solid var(--line); }
+.about-mark { flex: 0 0 52px; height: 52px; display: grid; place-items: center; border: 1.5px solid var(--acc); border-radius: 6px;
+  color: var(--acc); font-family: "Geist Mono", ui-monospace, monospace; font-size: 17px; font-weight: 600; letter-spacing: .02em; }
+.about-title { flex: 1 1 auto; min-width: 0; }
+.about-title h2 { margin: 0; font-size: 26px; font-weight: 600; letter-spacing: -.015em; color: var(--txt); }
+.about-title p { margin: 2px 0 0; font-size: 14px; color: var(--muted); }
+.about-ver { flex: 0 0 auto; font-family: "Geist Mono", ui-monospace, monospace; font-size: 12px; color: var(--muted);
+  border: 1px solid var(--line); border-radius: 4px; padding: 4px 9px; background: var(--surface); white-space: nowrap; }
+.about-lede { margin: 16px 0 22px; max-width: 76ch; font-size: 14.5px; line-height: 1.65; color: var(--muted); }
+.about-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-bottom: 16px; }
+.about-card { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 18px 20px; min-width: 0; }
+.about-card h3 { margin: 0 0 12px; font-family: "Geist Mono", ui-monospace, monospace; font-size: 11px; font-weight: 500;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--acc); }
+.about-card p { margin: 0 0 8px; font-size: 14px; line-height: 1.6; color: var(--muted); }
+.about-name { font-size: 17px !important; font-weight: 600; color: var(--txt) !important; margin-bottom: 4px !important; }
+.about-links { display: grid; grid-template-columns: max-content 1fr; gap: 4px 14px; margin: 14px 0 0; font-size: 13.5px; }
+.about-links dt { color: var(--faint); }
+.about-links dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
+.about-cite { font-size: 13.5px !important; color: var(--txt) !important; padding: 10px 12px; background: var(--bg);
+  border-left: 3px solid var(--acc); border-radius: 0 4px 4px 0; overflow-wrap: anywhere; }
+.about .about-copy { width: auto; height: 32px; font-size: 12.5px; margin: 4px 0 10px; }
+.about-note { font-size: 12.5px !important; color: var(--faint) !important; margin: 0 !important; }
+.about-refs ol { margin: 0; padding: 0; list-style: none; counter-reset: ref; }
+.about-refs li { counter-increment: ref; position: relative; padding: 10px 0 10px 30px; border-top: 1px solid var(--line-2);
+  font-size: 14px; line-height: 1.6; color: var(--muted); }
+.about-refs li:first-child { border-top: 0; padding-top: 2px; }
+.about-refs li::before { content: counter(ref); position: absolute; left: 0; top: 10px; width: 20px; height: 20px; display: grid;
+  place-items: center; border: 1px solid var(--line); border-radius: 50%; font-size: 11px; color: var(--faint); }
+.about-refs li:first-child::before { top: 2px; }
+.about-mod { display: block; margin-bottom: 2px; font-family: "Geist Mono", ui-monospace, monospace; font-size: 10.5px;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--faint); }
+@media (max-width: 760px) {
+  .about-grid { grid-template-columns: minmax(0, 1fr); }
+  .about-head { flex-wrap: wrap; }
+  .about-ver { order: 3; }
+  .about-title h2 { font-size: 22px; }
+}
 
 @media (max-width: 760px) {
   /* existing layouts that were wider than a phone */
