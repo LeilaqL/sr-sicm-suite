@@ -2037,8 +2037,7 @@ body.lp-lock{overflow:hidden}
     <main>
         <!-- ==================== INTRO/ABOUT TAB ==================== -->
         <div class="tab-content active" id="content-intro">
-            <p class="conv-ref">Conventions: see <a href="javascript:void(0)" onclick="switchTab('theory')">Theory</a>.</p>
-            <div class="hero-section">
+           <div class="hero-section">
                 <div style="display:flex;gap:2rem;flex-wrap:wrap;align-items:flex-start;">
                     <div style="flex:1 1 300px;min-width:260px;">
                         <div class="section-eyebrow">Analysis suite · v1.1</div>
@@ -2046,7 +2045,7 @@ body.lp-lock{overflow:hidden}
                         <p>
                             Each tab is one module: approach curves (z<sub>99</sub>, Δz<sub>99</sub>), topography,
                             surface charge (calibration and dual-bias imaging), asymmetric conductivity, stiffness
-                            (s<sub>∞</sub>/s) and deconvolution (SR-SICM). The conventions in the Theory tab apply to all modules.
+                            (s<sub>∞</sub>/s) and deconvolution (SR-SICM).
                         </p>
                     </div>
                     <div style="flex:1.5 1 470px;min-width:320px;">
@@ -3532,37 +3531,54 @@ body.lp-lock{overflow:hidden}
 
         <!-- ==================== AI EDITOR TAB ==================== -->
 
-    </main>
-
-    <div class="tab-content" id="content-aboutapp" style="display:none;padding:1rem;">
+        <div class="tab-content" id="content-aboutapp" style="display:none;padding:1rem;">
         <div class="about">
-            <h2>SR-SICM Suite</h2>
-            <p class="ver">Version 1.1 · 11 November 2026</p>
-            <p>Browser-based analysis of scanning ion conductance microscopy (SICM) data: approach curves
-               (surface charge from Δz<sub>99</sub>, relative stiffness from the slope), dual-bias images (Δh),
+            <div class="about-head">
+                <div class="about-mark" aria-hidden="true">SR</div>
+                <div class="about-title">
+                    <h2>SR-SICM Suite</h2>
+                    <p>Analysis of scanning ion conductance microscopy data</p>
+                </div>
+                <span class="about-ver">v1.1 · 11 Nov 2026</span>
+            </div>
+            <p class="about-lede">Approach curves (surface charge from Δz<sub>99</sub>, relative stiffness from the slope), dual-bias images (Δh),
                topography and deconvolution. Files are read in the browser; data are not uploaded.</p>
 
-            <h3>Author</h3>
-            <p>Leyla Nur Akay<br>Department of Chemistry, Aarhus University<br>
-               Contact: <a href="mailto:lnurakay@inano.au.dk">lnurakay@inano.au.dk</a> ·
-               Source: <a href="https://github.com/LeilaqL/sr-sicm-suite" target="_blank" rel="noopener">github.com/LeilaqL/sr-sicm-suite</a></p>
+            <div class="about-grid">
+                <section class="about-card">
+                    <h3>Author</h3>
+                    <p class="about-name">Leyla Nur Akay</p>
+                    <p>Department of Chemistry<br>Aarhus University</p>
+                    <dl class="about-links">
+                        <dt>Contact</dt><dd><a href="mailto:lnurakay@inano.au.dk">lnurakay@inano.au.dk</a></dd>
+                        <dt>Source</dt><dd><a href="https://github.com/LeilaqL/sr-sicm-suite" target="_blank" rel="noopener">github.com/LeilaqL/sr-sicm-suite</a></dd>
+                    </dl>
+                </section>
+                <section class="about-card">
+                    <h3>How to cite</h3>
+                    <p class="about-cite" id="aboutCite">Akay, L. N. – BioSPM group, Aarhus University. SR-SICM Suite, version 1.1 (2026).
+                       https://github.com/LeilaqL/sr-sicm-suite (accessed <span id="cite-date-suite"></span>).</p>
+                    <button type="button" class="btn about-copy"
+                            onclick="navigator.clipboard.writeText(document.getElementById('aboutCite').innerText.replace(/\s+/g,' ').trim()).then(()=>{this.textContent='Copied';setTimeout(()=>this.textContent='Copy citation',1500)})">Copy citation</button>
+                    <p class="about-note">Please also cite the method reference for the module you used.</p>
+                </section>
+            </div>
 
-            <h3>Method references</h3>
-            <ol>
-                <li>Rheinlaender J., Schäffer T.E. Mapping the mechanical stiffness of live cells with the scanning ion
-                    conductance microscope. <em>Soft Matter</em> 9, 3230 (2013). Stiffness method.</li>
-                <li>Klausen L.H., Fuhs T., Dong M. <em>Nat. Commun.</em> (2016). Dual-bias surface charge readout and
-                    dual-bias imaging (CIHD example data).</li>
-                <li>Skaanvik et al., ACS Nano 19, 12853 (2025). Asymmetric-conductivity module.</li>
-            </ol>
-
-            <h3>How to cite this software</h3>
-            <p>Akay, L. N. – BioSPM group, Aarhus University. SR-SICM Suite, version 1.1 (2026). https://github.com/LeilaqL/sr-sicm-suite
-               (accessed <span id="cite-date-suite"></span>). Please also cite the method reference for the module you used.</p>
-
-            <p class="conv-ref" style="margin-top:22px">Conventions: see <a href="javascript:void(0)" onclick="switchTab('theory')">Theory</a>.</p>
+            <section class="about-card about-refs">
+                <h3>Method references</h3>
+                <ol>
+                    <li><span class="about-mod">Stiffness</span>
+                        Rheinlaender J., Schäffer T.E. Mapping the mechanical stiffness of live cells with the scanning ion
+                        conductance microscope. <em>Soft Matter</em> 9, 3230 (2013).</li>
+                    <li><span class="about-mod">Surface charge · dual-bias imaging</span>
+                        Klausen L.H., Fuhs T., Dong M. <em>Nat. Commun.</em> (2016). Also the source of the CIHD example data.</li>
+                    <li><span class="about-mod">Asymmetric conductivity</span>
+                        Skaanvik et al., ACS Nano 19, 12853 (2025).</li>
+                </ol>
+            </section>
         </div>
     </div>
+    </main>
     <script>
         // Auto-fill today's date in cite section
         document.addEventListener('DOMContentLoaded', function() {
